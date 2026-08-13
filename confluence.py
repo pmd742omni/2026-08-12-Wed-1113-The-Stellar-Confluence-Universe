@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Confluence Master CLI Dispatcher for The Stellar Confluence Universe
-Unified command-line interface orchestrating chapter authoring, celestial ephemerides,
-faction diplomacy, 3D navigation, lore indexing, progress tracking, and regression diagnostics.
+Unified command-line interface orchestrating chapter authoring, prose drafting, manuscript compilation,
+celestial ephemerides, wave physics, faction diplomacy, 3D navigation, lore indexing, and regression tests.
 """
 
 import os
@@ -34,11 +34,21 @@ def main():
     subparsers = parser.add_subparsers(dest="command")
 
     # 1. CHAPTER SUBPARSER
-    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, beat generation & quality evaluation")
+    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, prose drafting, compilation & quality evaluation")
     chap_sub = chap_p.add_subparsers(dest="subcommand")
 
     # chapter prepare
     chap_sub.add_parser("prepare", help="Prepare next round-robin chapter stub & audit constraints")
+
+    # chapter draft
+    draft_p = chap_sub.add_parser("draft", help="Autonomous prose drafting co-pilot for high-quality chapter text")
+    draft_p.add_argument("--book", type=int, default=1)
+    draft_p.add_argument("--chapter", type=int, default=1)
+    draft_p.add_argument("--save", action="store_true")
+
+    # chapter compile
+    comp_book_p = chap_sub.add_parser("compile", help="Compile individual book chapters into unified publishing manuscript")
+    comp_book_p.add_argument("--book", type=int, default=1)
 
     # chapter complete
     comp_p = chap_sub.add_parser("complete", help="Complete chapter, log diary, propagate ephemeris & advance queue")
@@ -54,7 +64,7 @@ def main():
     beat_p.add_argument("--book", type=int, default=1, help="Book ID number (1-74)")
 
     # 2. UNIVERSE SUBPARSER
-    uni_p = subparsers.add_parser("universe", help="Universe state, ephemeris, navigation & dashboard")
+    uni_p = subparsers.add_parser("universe", help="Universe state, wave physics, ephemeris, navigation & dashboard")
     uni_sub = uni_p.add_subparsers(dest="subcommand")
 
     # universe status
@@ -62,6 +72,16 @@ def main():
 
     # universe dashboard
     uni_sub.add_parser("dashboard", help="Generate interactive HTML/SVG galactic radar dashboard")
+
+    # universe wave
+    wave_p = uni_sub.add_parser("wave", help="Compute 3D Confluence Wavefront wave phase & Doppler shift")
+    wave_p.add_argument("--sector", default="[10, 5, 0]")
+    wave_p.add_argument("--gut", type=float, default=100.0)
+    wave_p.add_argument("--velocity", default="[0, 0, 0]")
+
+    # universe mesh
+    mesh_p = uni_sub.add_parser("mesh", help="Inspect character relationship mesh, mentors & comms call-sign")
+    mesh_p.add_argument("--book", type=int, default=1)
 
     # universe ephemeris
     eph_p = uni_sub.add_parser("ephemeris", help="Propagate celestial ephemeris across GUT ticks")
@@ -104,7 +124,7 @@ def main():
     chk_p.add_argument("--codename", required=True)
 
     # 5. TEST SUBPARSER
-    subparsers.add_parser("test", help="Run automated 18-point agent sanity regression suite")
+    subparsers.add_parser("test", help="Run automated 22-point agent sanity regression suite")
 
     args = parser.parse_args()
 
@@ -112,28 +132,29 @@ def main():
         sys.exit(run_test_suite())
 
     elif args.command == "chapter":
-        import chapter_engine
         if args.subcommand == "prepare":
-            res = chapter_engine.prepare_next_chapter_stub()
-            print(json.dumps(res, indent=2))
+            import chapter_engine
+            print(json.dumps(chapter_engine.prepare_next_chapter_stub(), indent=2))
+        elif args.subcommand == "draft":
+            import story_generator
+            print(json.dumps(story_generator.generate_full_chapter_prose(args.book, args.chapter, save=args.save), indent=2))
+        elif args.subcommand == "compile":
+            import anthology_compiler
+            print(json.dumps(anthology_compiler.compile_book_manuscript(args.book), indent=2))
         elif args.subcommand == "complete":
-            res = chapter_engine.complete_chapter_generation(args.synopsis, args.gut_delta)
-            print(json.dumps(res, indent=2))
+            import chapter_engine
+            print(json.dumps(chapter_engine.complete_chapter_generation(args.synopsis, args.gut_delta), indent=2))
         elif args.subcommand == "evaluate":
             import chapter_prose_evaluator
-            res = chapter_prose_evaluator.evaluate_file(args.file)
-            print(json.dumps(res, indent=2))
+            print(json.dumps(chapter_prose_evaluator.evaluate_file(args.file), indent=2))
         elif args.subcommand == "beats":
-            import narrative_beat_architect
-            rot = chapter_engine.read_rotation_tracker()
+            import chapter_engine, narrative_beat_architect
             char = chapter_engine.get_character_info(args.book)
             if char:
                 beats = narrative_beat_architect.generate_scene_beats(
                     char["hero"], char["title"], char["faction"], char["world"], char["loc_type"], 15.0, "PEAK_FACING", "Solar output", "Heat risk"
                 )
                 print(json.dumps(beats, indent=2))
-            else:
-                print(json.dumps({"error": f"Book {args.book} not found"}, indent=2))
 
     elif args.command == "universe":
         if args.subcommand == "status":
@@ -142,12 +163,17 @@ def main():
         elif args.subcommand == "dashboard":
             import generate_universe_dashboard
             print(json.dumps(generate_universe_dashboard.generate_dashboard(), indent=2))
+        elif args.subcommand == "wave":
+            import confluence_wave_physics
+            print(json.dumps(confluence_wave_physics.calculate_wavefront_state(args.sector, args.gut, args.velocity), indent=2))
+        elif args.subcommand == "mesh":
+            import character_mesh_graph
+            print(json.dumps(character_mesh_graph.get_character_mesh(args.book), indent=2))
         elif args.subcommand == "ephemeris":
             import advance_rotation, cosmic_ephemeris_engine
             rot = advance_rotation.read_rotation_tracker()
             curr_g = rot["current_gut"]
-            res = cosmic_ephemeris_engine.propagate_ephemeris(curr_g, curr_g + args.advance_by, save=args.save)
-            print(json.dumps(res, indent=2))
+            print(json.dumps(cosmic_ephemeris_engine.propagate_ephemeris(curr_g, curr_g + args.advance_by, save=args.save), indent=2))
         elif args.subcommand == "route":
             import galactic_navigator
             print(json.dumps(galactic_navigator.plan_interstellar_route(args.origin, args.dest), indent=2))
