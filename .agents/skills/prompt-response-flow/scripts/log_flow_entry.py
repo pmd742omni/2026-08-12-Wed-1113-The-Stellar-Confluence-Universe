@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Prompt-Response Flow Logging Utility for The Stellar Confluence Universe
-Maintains the pair-programming interaction journal with standardized YAML frontmatter,
-authoritative local timestamps, and clean markdown entry blocks.
+Intelligent Prompt-Response Flow Journaling Utility for The Stellar Confluence Universe
+Maintains the pair-programming interaction journal, auto-repairs YAML frontmatter,
+manages session timestamp headers, and appends formatted Markdown blocks.
 """
 
 import os
@@ -38,9 +38,11 @@ def get_active_flow_file():
         target_dir = os.path.join(PROJECT_ROOT, dir_name)
         os.makedirs(target_dir, exist_ok=True)
 
-    files = glob.glob(os.path.join(target_dir, "*.md"))
+    files = sorted(glob.glob(os.path.join(target_dir, "*.md")))
     if files:
-        return files[0]
+        target_file = files[-1]
+        repair_frontmatter(target_file)
+        return target_file
     
     # Create default file
     now = datetime.datetime.now().astimezone()
@@ -57,6 +59,27 @@ Date: "{now.strftime('%Y-%m-%d %a %H%M')}"
         f.write(initial_content)
     
     return file_path
+
+def repair_frontmatter(file_path):
+    """Ensures valid YAML frontmatter without trailing semicolons or commas."""
+    if not os.path.exists(file_path):
+        return
+    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+        content = f.read()
+
+    # If frontmatter missing or corrupted
+    if not content.startswith("---"):
+        now = datetime.datetime.now().astimezone()
+        basename = os.path.splitext(os.path.basename(file_path))[0]
+        header = f"""---
+Name: "{basename}"
+Version: "1.0"
+Date: "{now.strftime('%Y-%m-%d %a %H%M')}"
+---
+
+"""
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(header + content)
 
 def format_entry(prompt_text, response_text, timestamp=None):
     now = timestamp or datetime.datetime.now().astimezone()

@@ -14,48 +14,52 @@ This skill provides comprehensive management, synchronization, and verification 
 Activate this skill when:
 - Initializing a new workspace or restoring state files: `"bootstrap universe state"` or `"initialize state"`.
 - Auditing universe integrity: `"audit state"`, `"check universe health"`, or `"verify rotation consistency"`.
-- Managing in-transit starships, waypoint ETAs, or cross-book environmental disruptions: `"sync transit"` or `"update ephemeris"`.
+- Managing in-transit starships, waypoint ETAs, or logging cross-book environmental disruptions: `"sync transit"`, `"log cosmic event"`, or `"check hazards"`.
 
 ---
 
-## 2. Core State Files Architecture
+## 2. Dynamic Ephemeris & Cosmic Event Bus
 
-The universe state resides in `00_System_State/`:
+### Dynamic Ephemeris Engine (`cosmic_ephemeris_engine.py`)
+Computes astronomical time propagation across all 74 storylines:
+- **`SURFACE`**: Planetary axial spin ($\omega_{rot} = 15^\circ / GUT$, 24 GUT full rotation).
+- **`ORBITAL`**: Rapid orbital transit ($\omega_{orb} = 60^\circ / GUT$, 6 GUT full orbit).
+- **`DEEP_SPACE_TRANSIT`**: Vector heading towards destination sector; automatic orbital transition upon arrival.
+- **`GATEWAY_SUBSPACE`**: Wavefront-disconnected neutral stasis ($Re = 0.5$).
 
-1. **`00_System_State/character_registry.md`**:
-   - Master index of all 74 books, titles, primary protagonists, factions (30 Core: Sun-Forged 1-10, Void-Bound 11-20, Astrolabe 21-30; 44 Expansion 31-74), home worlds/vessels, location types, and starting coordinates.
-2. **`00_System_State/cosmic_clockwork.md`**:
-   - Ephemeris ledger tracking current Galactic Universal Time (GUT), spatial sector coordinates `[X, Y, Z]`, facing angle $\theta$, active resonance state, and specific power capabilities/limitations.
-3. **`00_System_State/rotation_tracker.md`**:
-   - Round-robin queue controller: Active Book Index (1 - 74), Active Chapter Number (1 - N), Current GUT, and Next in Queue.
-4. **`00_System_State/diary.md`**:
-   - Append-only execution log of all completed chapters with timestamps and synopses.
+```bash
+# Propagate ephemeris by N ticks and save
+python .agents/skills/universe-state-manager/scripts/cosmic_ephemeris_engine.py --current-gut <GUT> --advance-by <N> --save
+```
+
+### Cosmic Event Bus (`cosmic_event_bus.py`)
+Records stellar flares, gateway collapses, or beacon pulses, calculating spatial ripple effects on nearby ships and worlds:
+
+```bash
+# Log a new cosmic event
+python .agents/skills/universe-state-manager/scripts/cosmic_event_bus.py log \
+  --type BEACON_PULSE \
+  --source "Book 04" \
+  --sector "[15, 6, 0]" \
+  --radius 5.0 \
+  --start-gut 100 \
+  --duration 10 \
+  --desc "High-intensity solar flare pulse radiating through Sector [15, 6, 0]"
+
+# Check active hazards for any character's sector
+python .agents/skills/universe-state-manager/scripts/cosmic_event_bus.py check --sector "[12, 5, 1]" --gut 105
+```
 
 ---
 
-## 3. Automation Scripts & Tools
+## 3. Bootstrapping & Diagnostics
 
-### Bootstrap State
-Initialize or regenerate the full 74-book state structure:
+### Bootstrap 74-Book Universe Roster
 ```bash
 python .agents/skills/universe-state-manager/scripts/bootstrap_universe_state.py
 ```
-*(Use `--force` to overwrite existing files, or `--dry-run` to preview).*
 
-### Audit State Integrity
-Run full diagnostics on state files and chapter library:
+### Audit System State Integrity
 ```bash
 python .agents/skills/universe-state-manager/scripts/audit_universe_state.py
 ```
-
----
-
-## 4. In-Transit Synchronization Rules
-
-When a character departs a planet or station to travel across interstellar space:
-1. Update their status in `cosmic_clockwork.md`:
-   - Set `Loc_Type: DEEP_SPACE_TRANSIT`.
-   - Compute `Eta_Destination_GUT` = Current GUT + Transit Duration.
-2. Calculate their facing angle based on the starship's flight vector relative to the Confluence Wavefront beam.
-3. Apply the **Deep-Space Exposure Rule**: Powers are 2x amplified in magnitude, but control is 2x more difficult; mistakes risk hull fractures.
-4. **Cross-Book Environmental Ripple Effect**: If a character in another book fires a high-energy stellar beacon or destabilizes a gateway along that sector corridor, log the turbulence immediately into the traveling ship's next chapter.

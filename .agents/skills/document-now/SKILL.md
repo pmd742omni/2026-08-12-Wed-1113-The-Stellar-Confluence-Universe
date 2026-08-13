@@ -26,12 +26,6 @@ Ensure the workspace progress tracking system is initialized:
 ```bash
 python .agents/skills/document-now/scripts/version_registry.py bootstrap
 ```
-This command automatically:
-1. Locates the project root.
-2. Initializes `progress tracking/` directory if missing.
-3. Initializes `progress tracking/version_registry.json` and `progress tracking/Version_Registry.md`.
-4. Validates Git repository status.
-5. Returns `next_version` (e.g., `1.0.0`) and `suggested_codename` (e.g., `Isisekelo`).
 
 ---
 
@@ -53,10 +47,11 @@ Outputs:
    ```bash
    python .agents/skills/document-now/scripts/version_registry.py next-version
    ```
-3. **Select & Verify Unique Ndebele Codename**:
-   Get vocabulary suggestions or propose a word, then check uniqueness:
+3. **Select & Verify Unique Ndebele Codename (100+ Vocabulary Catalog)**:
+   Filter suggestions by domain or query:
    ```bash
-   python .agents/skills/document-now/scripts/version_registry.py suggest 5
+   # Categories: Foundation, Cosmos, Energy, Engineering, Movement, Security, Harmony, Wisdom
+   python .agents/skills/document-now/scripts/version_registry.py suggest --category Cosmos --count 5
    python .agents/skills/document-now/scripts/version_registry.py check <proposed_codename>
    ```
    *Requirement*: The check MUST return `"unique": true`.
@@ -101,7 +96,6 @@ Co-developed by Peter Dube and Antigravity (AI Coding Assistant).
 ---
 
 ### Step 4: Register Version in Registry Database
-Register the new version into the database and Markdown table:
 ```bash
 python .agents/skills/document-now/scripts/version_registry.py register <version> <codename> "<meaning>" "<human_date_time>" <filename>
 ```
@@ -109,9 +103,7 @@ python .agents/skills/document-now/scripts/version_registry.py register <version
 ---
 
 ### Step 5: Git Commit
-Stage all modifications and create a standardized commit:
 ```bash
 git add .
 git commit -m "<YYYY-MM-DD Day HHMM>: [Title] ([Ndebele Codename] [Version])"
 ```
-*(Example: `2026-08-13 Thu 2155: Initial Optimization of Agent Skills and Universe Registry (Isisekelo Version 1.0.0)`)*

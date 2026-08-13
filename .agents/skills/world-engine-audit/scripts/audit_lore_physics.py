@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-World Engine & Lore/Physics Consistency Auditor for The Stellar Confluence Universe
+World Engine Lore, Ephemeris & Physics Consistency Auditor for The Stellar Confluence Universe
 Verifies celestial geometry, planetary ephemerides, wavefront alignment vectors,
-power constraint compliance, and cross-book narrative continuity.
+power constraint compliance, cosmic event bus integrity, and faction distribution.
 """
 
 import os
@@ -25,12 +25,14 @@ def find_project_root():
 
 PROJECT_ROOT = find_project_root()
 COSMIC_CLOCKWORK_MD = os.path.join(PROJECT_ROOT, "00_System_State", "cosmic_clockwork.md")
+EVENTS_JSON = os.path.join(PROJECT_ROOT, "00_System_State", "cosmic_events.json")
 
 def audit_physics():
     results = {
         "status": "PASS",
         "total_ephemeris_records": 0,
         "valid_records": 0,
+        "total_cosmic_events": 0,
         "anomalies": [],
         "faction_balance": {
             "Sun-Forged Hegemony": 0,
@@ -92,6 +94,18 @@ def audit_physics():
             results["anomalies"].append(f"Line {idx+1} ({book_id}): DEEP_SPACE_TRANSIT must reflect 2x Volatility in capability description")
 
         results["valid_records"] += 1
+
+    # Audit Cosmic Events
+    if os.path.exists(EVENTS_JSON):
+        try:
+            with open(EVENTS_JSON, "r", encoding="utf-8") as f:
+                events = json.load(f)
+                results["total_cosmic_events"] = len(events)
+                for ev in events:
+                    if ev.get("blast_radius", 0) <= 0:
+                        results["anomalies"].append(f"Cosmic Event {ev.get('id')}: Non-positive blast radius ({ev.get('blast_radius')})")
+        except Exception as e:
+            results["anomalies"].append(f"Error reading cosmic_events.json: {e}")
 
     if results["anomalies"]:
         results["status"] = "FAIL"
