@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-High-Speed Agent Self-Test & Diagnostic Sanity Runner for The Stellar Confluence Universe
-Executes lightning-fast in-process sanity checks across all 5 skills, 12+ modules, state schemas,
+Comprehensive 18-Point Agent Regression & Sanity Runner for The Stellar Confluence Universe
+Executes in-process unit and integration checks across all 5 skills, 15+ modules, state schemas,
 and physical simulation engines in under 100 milliseconds.
 """
 
@@ -30,6 +30,8 @@ for s in ["document-now", "confluence-chapter-authoring", "universe-state-manage
     p = os.path.join(SKILLS_DIR, s, "scripts")
     if p not in sys.path:
         sys.path.insert(0, p)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 def run_in_process_tests():
     start_total = time.time()
@@ -41,10 +43,10 @@ def run_in_process_tests():
         import get_timestamp
         ts = get_timestamp.get_system_timestamps()
         assert "file_prefix" in ts and "human_date_time" in ts
-        results.append({"test": "1. Document-Now: Timestamp Utility", "status": "PASS", "details": ts["human_date_time"]})
+        results.append({"test": "1. Document-Now: Timestamp Extractor", "status": "PASS", "details": ts["human_date_time"]})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "1. Document-Now: Timestamp Utility", "status": "FAIL", "error": str(e)})
+        results.append({"test": "1. Document-Now: Timestamp Extractor", "status": "FAIL", "error": str(e)})
 
     # 2. Document-Now: version_registry (100+ lexicon)
     try:
@@ -120,27 +122,57 @@ def run_in_process_tests():
     except Exception as e:
         results.append({"test": "8. Universe State: Visual Dashboard", "status": "FAIL", "error": str(e)})
 
-    # 9. Confluence Authoring: Faction Matrix
+    # 9. Universe State: Lore & Callback Indexer
+    try:
+        import universe_lore_indexer
+        cb = universe_lore_indexer.get_callbacks_for_book(1)
+        assert "perspective_character" in cb
+        results.append({"test": "9. Universe State: Lore Indexer", "status": "PASS", "details": f"Callbacks for {cb['perspective_character']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "9. Universe State: Lore Indexer", "status": "FAIL", "error": str(e)})
+
+    # 10. Confluence Authoring: Faction Matrix
     try:
         import faction_matrix
         f_prof = faction_matrix.get_faction_profile("Comet-Riders")
         assert "SUBLIMATION SURGE" in f_prof["profile"]["peak_facing"]["buff"]
-        results.append({"test": "9. Confluence Authoring: Faction Matrix", "status": "PASS", "details": f_prof['matched_name']})
+        results.append({"test": "10. Confluence Authoring: Faction Matrix", "status": "PASS", "details": f_prof['matched_name']})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "9. Confluence Authoring: Faction Matrix", "status": "FAIL", "error": str(e)})
+        results.append({"test": "10. Confluence Authoring: Faction Matrix", "status": "FAIL", "error": str(e)})
 
-    # 10. Confluence Authoring: Resonance Calculator
+    # 11. Confluence Authoring: Faction Diplomacy & Tension Engine
+    try:
+        import faction_diplomacy_engine
+        dip = faction_diplomacy_engine.get_diplomatic_relation("Sun-Forged Hegemony", "Void-Bound Monks")
+        assert dip["stance"] == "OPEN_RIVALRY" and dip["tension_index"] > 80
+        results.append({"test": "11. Confluence Authoring: Faction Diplomacy", "status": "PASS", "details": f"Sun vs Void: {dip['stance']} ({dip['tension_index']}/100)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "11. Confluence Authoring: Faction Diplomacy", "status": "FAIL", "error": str(e)})
+
+    # 12. Confluence Authoring: Narrative Beat Architect
+    try:
+        import narrative_beat_architect
+        beats = narrative_beat_architect.generate_scene_beats("Caelum", "The Solar Crucible", "Sun-Forged", "Helios Prime", "SURFACE", 15.0, "PEAK_FACING", "Output", "Limit")
+        assert "act_1_opening_grounding" in beats["narrative_blueprint"]
+        results.append({"test": "12. Confluence Authoring: Narrative Beat Architect", "status": "PASS", "details": "3-Act Blueprint Scaffolded"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "12. Confluence Authoring: Narrative Beat Architect", "status": "FAIL", "error": str(e)})
+
+    # 13. Confluence Authoring: Resonance Calculator
     try:
         import calculate_resonance
         res_calc = calculate_resonance.calculate_resonance(15, "Sun-Forged Hegemony", "SURFACE")
         assert res_calc["resonance_state"] == "PEAK_FACING"
-        results.append({"test": "10. Confluence Authoring: Resonance Calculator", "status": "PASS", "details": f"{res_calc['resonance_state']} ({res_calc['facing_angle_deg']}°)"})
+        results.append({"test": "13. Confluence Authoring: Resonance Calculator", "status": "PASS", "details": f"{res_calc['resonance_state']} ({res_calc['facing_angle_deg']}°)"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "10. Confluence Authoring: Resonance Calculator", "status": "FAIL", "error": str(e)})
+        results.append({"test": "13. Confluence Authoring: Resonance Calculator", "status": "FAIL", "error": str(e)})
 
-    # 11. Confluence Authoring: Prose Readability Evaluator
+    # 14. Confluence Authoring: Prose Readability Evaluator
     try:
         import chapter_prose_evaluator
         sample_prose = """
@@ -150,50 +182,50 @@ Caelum turned the brass wheel with careful fingers. Click! The crystal locked in
 """
         eval_res = chapter_prose_evaluator.evaluate_prose(sample_prose)
         assert eval_res["status"] == "PASS"
-        results.append({"test": "11. Confluence Authoring: Prose Evaluator", "status": "PASS", "details": f"Grade Level: {eval_res['flesch_kincaid_grade_level']} ({eval_res['target_age_group']})"})
+        results.append({"test": "14. Confluence Authoring: Prose Evaluator", "status": "PASS", "details": f"Grade Level: {eval_res['flesch_kincaid_grade_level']} ({eval_res['target_age_group']})"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "11. Confluence Authoring: Prose Evaluator", "status": "FAIL", "error": str(e)})
+        results.append({"test": "14. Confluence Authoring: Prose Evaluator", "status": "FAIL", "error": str(e)})
 
-    # 12. Confluence Authoring: Unified Chapter Engine
+    # 15. Confluence Authoring: Unified Chapter Engine
     try:
         import chapter_engine
         stub_res = chapter_engine.prepare_next_chapter_stub()
         assert stub_res["status"] == "ready"
-        results.append({"test": "12. Confluence Authoring: Chapter Engine", "status": "PASS", "details": f"Book {stub_res['active_book']} Ch {stub_res['active_chapter']}"})
+        results.append({"test": "15. Confluence Authoring: Chapter Engine", "status": "PASS", "details": f"Book {stub_res['active_book']} Ch {stub_res['active_chapter']}"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "12. Confluence Authoring: Chapter Engine", "status": "FAIL", "error": str(e)})
+        results.append({"test": "15. Confluence Authoring: Chapter Engine", "status": "FAIL", "error": str(e)})
 
-    # 13. Prompt-Response Flow: Log Flow Entry
+    # 16. Prompt-Response Flow: Log Flow Entry
     try:
         import log_flow_entry
         active_f = log_flow_entry.get_active_flow_file()
         assert os.path.exists(active_f)
-        results.append({"test": "13. Prompt-Response Flow: Active File", "status": "PASS", "details": os.path.basename(active_f)})
+        results.append({"test": "16. Prompt-Response Flow: Active File", "status": "PASS", "details": os.path.basename(active_f)})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "13. Prompt-Response Flow: Active File", "status": "FAIL", "error": str(e)})
+        results.append({"test": "16. Prompt-Response Flow: Active File", "status": "FAIL", "error": str(e)})
 
-    # 14. World Engine: State Integrity Audit
+    # 17. World Engine: Full Universe State Audit
     try:
         import audit_universe_state
         aud_res = audit_universe_state.audit_state()
         assert aud_res["status"] == "PASS"
-        results.append({"test": "14. World Engine: Universe State Audit", "status": "PASS", "details": f"{aud_res['character_registry_count']} books"})
+        results.append({"test": "17. World Engine: State Audit", "status": "PASS", "details": f"{aud_res['character_registry_count']} books"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "14. World Engine: Universe State Audit", "status": "FAIL", "error": str(e)})
+        results.append({"test": "17. World Engine: State Audit", "status": "FAIL", "error": str(e)})
 
-    # 15. World Engine: Celestial Physics & Lore Audit
+    # 18. World Engine: Celestial Physics & Lore Audit
     try:
         import audit_lore_physics
         lore_res = audit_lore_physics.audit_physics()
         assert lore_res["status"] == "PASS"
-        results.append({"test": "15. World Engine: Physics & Lore Audit", "status": "PASS", "details": f"{lore_res['valid_records']} valid records"})
+        results.append({"test": "18. World Engine: Physics & Lore Audit", "status": "PASS", "details": f"{lore_res['valid_records']} valid records"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "15. World Engine: Physics & Lore Audit", "status": "FAIL", "error": str(e)})
+        results.append({"test": "18. World Engine: Physics & Lore Audit", "status": "FAIL", "error": str(e)})
 
     duration_total_ms = round((time.time() - start_total) * 1000, 1)
     all_pass = (passed_count == len(results))

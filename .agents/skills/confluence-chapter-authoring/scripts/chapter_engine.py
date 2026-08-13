@@ -2,7 +2,7 @@
 """
 Unified Chapter Engine & Authoring Orchestrator for The Stellar Confluence Universe
 Automates the full pipeline: state auditing, hazard detection, resonance calculation,
-chapter directory & stub generation, ephemeris propagation, and rotation advancement.
+3-act narrative beat architecture, ephemeris propagation, and rotation advancement.
 """
 
 import os
@@ -40,6 +40,7 @@ from advance_rotation import read_rotation_tracker, advance_rotation, write_rota
 from calculate_resonance import calculate_resonance
 from cosmic_event_bus import check_hazards
 from cosmic_ephemeris_engine import propagate_ephemeris
+from narrative_beat_architect import generate_scene_beats
 
 def slugify(text):
     clean = re.sub(r"[^\w\s-]", "", text).strip()
@@ -88,7 +89,7 @@ def get_clockwork_state(book_index):
     }
 
 def prepare_next_chapter_stub():
-    """Audits system state and generates the chapter stub file in 01_Books_Library."""
+    """Audits system state, generates 3-act scene blueprint, and scaffolds chapter stub."""
     rot = read_rotation_tracker()
     active_book = rot["active_book_index"]
     active_chap = rot["active_chapter_number"]
@@ -109,13 +110,19 @@ def prepare_next_chapter_stub():
     # Compute resonance & constraints
     res = calculate_resonance(facing_angle, char_info["faction"], loc_type)
 
+    # Generate 3-Act Scene Beats Blueprint
+    beats = generate_scene_beats(
+        char_info["hero"], char_info["title"], char_info["faction"], char_info["world"],
+        loc_type, facing_angle, res["resonance_state"], res["power_capability"], res["active_limitation"], hazards["hazards"]
+    )
+
     # Format paths
     title_slug = slugify(char_info["title"])
     book_folder = os.path.join(BOOKS_LIB_DIR, f"Book_{active_book:02d}_{title_slug}")
     chapter_file = os.path.join(book_folder, f"Book_{active_book:02d}_Chapter_{active_chap:02d}.md")
     os.makedirs(book_folder, exist_ok=True)
 
-    # Generate Chapter Stub Markdown
+    # Generate Chapter Stub Markdown with Scene Blueprint
     hazard_section = ""
     if hazards["active_hazard_count"] > 0:
         hazard_section = "\n**Active Environmental Anomalies**:\n"
@@ -131,9 +138,17 @@ def prepare_next_chapter_stub():
 **Resonance State**: `{res['resonance_state']}` ({facing_angle:.1f}° Facing Alignment)
 **Power Capabilities**: {res['power_capability']}
 **Active Constraints**: {res['active_limitation']}{hazard_section}
+
+<!-- NARRATIVE SCENE BLUEPRINT (3-ACT PACING) -->
+<!-- 
+Act 1 (Sensory Opening): {beats['narrative_blueprint']['act_1_opening_grounding']}
+Act 2 (Physical Dilemma): {beats['narrative_blueprint']['act_2_escalating_dilemma']}
+Act 3 (Climax & Rotation Hand-off): {beats['narrative_blueprint']['act_3_climax_discovery']}
+-->
+
 ---
 
-[Draft chapter content here with 10-year-old child readability, high emotional stakes, physical grounding, and wonder...]
+[Draft chapter prose here with Grade 4-6 readability, high emotional stakes, sensory immersion, and bravery...]
 """
 
     if not os.path.exists(chapter_file):
@@ -157,6 +172,7 @@ def prepare_next_chapter_stub():
         "resonance_state": res["resonance_state"],
         "power_capability": res["power_capability"],
         "active_limitation": res["active_limitation"],
+        "scene_blueprint": beats["narrative_blueprint"],
         "active_hazards": hazards["hazards"],
         "chapter_file_path": chapter_file,
         "chapter_stub_created": created
@@ -223,6 +239,5 @@ if __name__ == "__main__":
         res = complete_chapter_generation(args.synopsis, args.gut_delta)
         print(json.dumps(res, indent=2))
     else:
-        # Default to prepare
         res = prepare_next_chapter_stub()
         print(json.dumps(res, indent=2))
