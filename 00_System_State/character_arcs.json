@@ -1,0 +1,14 @@
+{
+  "Book_01": {
+    "book_id": 1,
+    "inventory": [
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      }
+    ],
+    "condition": "PEAK_HEALTH",
+    "alliances": [],
+    "major_milestones": []
+  }
+}

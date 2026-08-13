@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """
 Resonance & Capability Constraints Calculator for The Stellar Confluence Universe
-Computes angular facing alignment (0° - 180°), location modifier, faction-specific power capabilities,
-and active physical constraints for chapter authoring.
+Integrates with the Faction Physics Matrix to compute angular alignment, location modifiers,
+deep-space volatility, and distinct faction power limits.
 """
 
 import sys
 import json
 import argparse
+import os
+
+# Ensure faction_matrix is importable
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, SCRIPT_DIR)
+from faction_matrix import get_faction_profile
 
 def calculate_resonance(facing_angle, faction, loc_type):
     # Normalize facing angle to 0 - 180
@@ -17,7 +23,6 @@ def calculate_resonance(facing_angle, faction, loc_type):
 
     loc_upper = loc_type.upper().strip()
     faction_clean = faction.strip()
-    faction_lower = faction_clean.lower()
 
     # Determine Base Resonance State
     if loc_upper == "GATEWAY_SUBSPACE":
@@ -37,71 +42,25 @@ def calculate_resonance(facing_angle, faction, loc_type):
         resonance_val = 0.5
         facing_desc = f"Horizon / Twilight Facing ({angle:.1f}° Alignment)"
 
-    # Deep space volatility modifier
     is_deep_space = (loc_upper == "DEEP_SPACE_TRANSIT")
-    is_orbital = (loc_upper == "ORBITAL")
-    is_surface = (loc_upper == "SURFACE")
 
-    # Faction capability and limitation logic
-    if "sun" in faction_lower or "radiant" in faction_lower:
-        faction_category = "Sun-Forged Hegemony"
-        if state == "PEAK_FACING":
-            buff = "SUPER-CHARGED: High-intensity solar beam output, blinding luminous radiance, long-range thermal projection."
-            debuff = "OVERHEAT RISK: Lenses and power armor heat rapidly; equipment burns out or melts if unchanneled."
-        elif state == "SHADOW_FACING":
-            buff = "NONE: Solar lenses produce zero beam output. Powered armor shuts down into lock."
-            debuff = "ECLIPSE LOCK: Must rely strictly on stored kinetic springs, auxiliary battery cells, or physical bravery."
-        elif state == "TRANSIT_FACING":
-            buff = "HARMONIC BASELINE: Stable, predictable radiant beams, moderate heat, steady thermal shields."
-            debuff = "STANDARD LIMIT: Cannot sustain maximum burst output without overheating."
-        else:
-            buff = "SUBSPACE BASELINE: Standard kinetic & auxiliary capabilities; light-magic dampened."
-            debuff = "DISCONNECTED: No natural solar recharge available."
+    # Fetch rich faction physics profile
+    f_info = get_faction_profile(faction_clean)
+    matched_faction = f_info["matched_name"]
+    profile = f_info["profile"]
 
-    elif "void" in faction_lower or "shadow" in faction_lower or "monk" in faction_lower:
-        faction_category = "Void-Bound Monks"
-        if state == "PEAK_FACING":
-            buff = "NONE: Shadow constructs dissolve under radiant pressure."
-            debuff = "SEVERELY SUPPRESSED: Stealth cloaks fail, shadow-stepping disabled. Must rely purely on physical grit and melee weapons."
-        elif state == "SHADOW_FACING":
-            buff = "APEX SHADOW SURGE: Phase-shift through solid rock, weave dense shadow-cloaks, bend light completely around self."
-            debuff = "COLD ACCELERATION: Deep shadow draws warmth from character's body; prolonged use induces frost exhaustion."
-        elif state == "TRANSIT_FACING":
-            buff = "HARMONIC BASELINE: Controlled short-range shadow tendrils, reliable stealth in dim cover."
-            debuff = "STANDARD LIMIT: Cannot phase through thick composite materials."
-        else:
-            buff = "SUBSPACE BASELINE: Stable stealth mechanics without celestial interference."
-            debuff = "NEUTRAL SHADOW: No apex surge potential."
-
-    elif "astrolabe" in faction_lower or "engineer" in faction_lower or "gear" in faction_lower:
-        faction_category = "Astrolabe Engineers"
-        if state == "PEAK_FACING":
-            buff = "HYPER-EFFICIENT: Crystalline gear arrays spin effortlessly with zero kinetic friction and instant torque."
-            debuff = "CENTRIFUGAL STRESS: Extreme rotation speeds require precise timing to avoid throwing gears off axis."
-        elif state == "SHADOW_FACING":
-            buff = "HIGH-TORQUE POTENTIAL: Flywheel momentum can be discharged in heavy bursts."
-            debuff = "MECHANICAL DRAG: High rotational resistance; gears feel heavy, must hand-crank flywheels or draw thermal battery."
-        elif state == "TRANSIT_FACING":
-            buff = "HARMONIC BASELINE: Predictable mechanical clockwork, smooth gear operation, steady chronometer synchronization."
-            debuff = "STANDARD LIMIT: Power output bounded by physical flywheel storage capacity."
-        else:
-            buff = "SUBSPACE BASELINE: Standard mechanical gear systems function normally."
-            debuff = "CHRONO-DRIFT: Subspace currents require frequent astrolabe recalibration."
-
-    else:
-        faction_category = f"Expansion Faction: {faction_clean}"
-        if state == "PEAK_FACING":
-            buff = "WAVEFRONT SURGE: Elemental/gravitational powers amplified by cosmic radiant vector."
-            debuff = "STRESS SURGE: Power systems operate near critical threshold; tight control required."
-        elif state == "SHADOW_FACING":
-            buff = "NIGHT SURGE / INERTIAL FOCUS: Gravitational/inertial manipulation operates without radiant interference."
-            debuff = "ENERGY STARVATION: Radiant-derived systems are powerless; rely on stored kinetic/chemical reserves."
-        elif state == "TRANSIT_FACING":
-            buff = "HARMONIC BASELINE: Balanced elemental control, predictable energy consumption."
-            debuff = "STANDARD LIMIT: Standard physical stamina constraints."
-        else:
-            buff = "SUBSPACE BASELINE: Standard baseline operation."
-            debuff = "SUBSPACE DAMPING: Advanced cosmic resonance techniques are muted."
+    if state == "PEAK_FACING":
+        buff = profile["peak_facing"]["buff"]
+        debuff = profile["peak_facing"]["debuff"]
+    elif state == "SHADOW_FACING":
+        buff = profile["shadow_facing"]["buff"]
+        debuff = profile["shadow_facing"]["debuff"]
+    elif state == "TRANSIT_FACING":
+        buff = profile["transit_facing"]["buff"]
+        debuff = profile["transit_facing"]["debuff"]
+    else: # GATEWAY_SUBSPACE
+        buff = f"SUBSPACE BASELINE: {profile.get('subspace', 'Standard baseline operation')}"
+        debuff = "SUBSPACE DISCONNECTION: Cosmic Wavefront buffs are completely neutralized (Re = 0.5)."
 
     # Apply deep space environmental volatility
     if is_deep_space:
@@ -110,7 +69,11 @@ def calculate_resonance(facing_angle, faction, loc_type):
 
     return {
         "faction_input": faction_clean,
-        "faction_category": faction_category,
+        "matched_faction": matched_faction,
+        "faction_domain": profile.get("domain", ""),
+        "energy_medium": profile.get("energy_medium", ""),
+        "signature_gear": profile.get("signature_gear", ""),
+        "tactical_style": profile.get("tactical_style", ""),
         "location_type": loc_upper,
         "facing_angle_deg": angle,
         "facing_description": facing_desc,
@@ -125,7 +88,7 @@ def calculate_resonance(facing_angle, faction, loc_type):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate Stellar Confluence Resonance & Power Constraints")
     parser.add_argument("--facing", type=float, default=0.0, help="Facing angle in degrees relative to Confluence Wavefront (0 - 180)")
-    parser.add_argument("--faction", type=str, default="Sun-Forged", help="Faction name (e.g. Sun-Forged, Void-Bound, Astrolabe, Comet-Rider)")
+    parser.add_argument("--faction", type=str, default="Sun-Forged Hegemony", help="Faction name")
     parser.add_argument("--loc", type=str, default="SURFACE", help="Location type (SURFACE, ORBITAL, DEEP_SPACE_TRANSIT, GATEWAY_SUBSPACE)")
     
     args = parser.parse_args()

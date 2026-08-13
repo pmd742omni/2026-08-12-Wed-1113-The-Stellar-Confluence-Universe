@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Stellar Confluence Universe Dashboard</title>
+<style>
+  :root {
+    --bg: #0b0f19;
+    --card: #131b2e;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --sun: #f59e0b;
+    --void: #8b5cf6;
+    --astro: #10b981;
+    --exp: #06b6d4;
+  }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  h1 { margin: 0; font-size: 24px; font-weight: 700; }
+  .metrics {
+    display: flex;
+    gap: 16px;
+  }
+  .metric-badge {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .metric-val { font-size: 18px; font-weight: bold; color: var(--sun); display: block; }
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card h2 { margin-top: 0; font-size: 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  svg.radar {
+    width: 100%;
+    height: auto;
+    background: #070a13;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .radar-dot { transition: all 0.2s; cursor: pointer; }
+  .radar-dot:hover { r: 9; filter: brightness(1.5); }
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  th { color: var(--muted); }
+  .active-row { background: rgba(245, 158, 11, 0.1); font-weight: bold; }
+  @keyframes pulse {
+    0% { transform: scale(0.98); opacity: 0.4; }
+    50% { transform: scale(1.02); opacity: 0.8; }
+    100% { transform: scale(0.98); opacity: 0.4; }
+  }
+  .hazard-pulse { animation: pulse 3s infinite ease-in-out; transform-origin: center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>The Stellar Confluence Universe</h1>
+    <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">74-Book Interconnected Series State Engine</div>
+  </div>
+  <div class="metrics">
+    <div class="metric-badge">
+      <span class="metric-val">Book 01</span>
+      <span>Active Queue</span>
+    </div>
+    <div class="metric-badge">
+      <span class="metric-val">Chapter 01</span>
+      <span>Current Cycle</span>
+    </div>
+    <div class="metric-badge">
+      <span class="metric-val">GUT 100</span>
+      <span>Galactic Universal Time</span>
+    </div>
+  </div>
+</div>
+
+<div class="main-layout">
+  <!-- Left: Galactic Radar Map -->
+  <div class="card">
+    <h2>Galactic Spatial Radar (Sector X / Y Projection)</h2>
+    <svg class="radar" viewBox="0 0 800 800">
+      <!-- Grid & Rings -->
+      <circle cx="400" cy="400" r="360" fill="none" stroke="#1e293b" stroke-width="1" />
+      <circle cx="400" cy="400" r="270" fill="none" stroke="#1e293b" stroke-width="1" />
+      <circle cx="400" cy="400" r="180" fill="none" stroke="#1e293b" stroke-width="1" />
+      <circle cx="400" cy="400" r="90" fill="none" stroke="#1e293b" stroke-width="1" />
+      <line x1="0" y1="400" x2="800" y2="400" stroke="#1e293b" stroke-width="1" />
+      <line x1="400" y1="0" x2="400" y2="800" stroke="#1e293b" stroke-width="1" />
+      
+      <!-- Wavefront Direction Indicator -->
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b" />
+        </marker>
+      </defs>
+      <line x1="400" y1="760" x2="400" y2="700" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" />
+      <text x="415" y="740" font-size="11" fill="#f59e0b" font-family="monospace">Confluence Wavefront Vector (+Y)</text>
+
+      <!-- Active Hazards -->
+      <circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
+                <title>HAZARD EVT-0001: BEACON_PULSE (Book 04)</title>
+            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
+                <title>HAZARD EVT-0002: BEACON_PULSE (Book 04)</title>
+            </circle>
+
+      <!-- Character Coordinates -->
+      <circle cx="490.0" cy="355.0" r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="2" class="radar-dot sun-forged">
+            <title>Book 01: Caelum Dawnrunner | Sector [10, 5, 0] | PEAK_FACING (15°)</title>
+        </circle>
+        <text x="496.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 01</text>
+        <circle cx="508.0" cy="355.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 02: Captain Vespera Ray | Sector [12, 5, 1] | PEAK_FACING (25°)</title>
+        </circle>
+        <text x="514.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 02</text>
+        <circle cx="526.0" cy="364.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 03: Tariq Sunstrider | Sector [14, 4, -2] | PEAK_FACING (10°)</title>
+        </circle>
+        <text x="532.0" y="367.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 03</text>
+        <circle cx="535.0" cy="346.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 04: Navigator Lyra Solis | Sector [15, 6, 0] | PEAK_FACING (30°)</title>
+        </circle>
+        <text x="541.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 04</text>
+        <circle cx="499.0" cy="328.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 05: High Optician Orin | Sector [11, 8, 2] | PEAK_FACING (5°)</title>
+        </circle>
+        <text x="505.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 05</text>
+        <circle cx="517.0" cy="337.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 06: Seraphina Goldvein | Sector [13, 7, -1] | PEAK_FACING (20°)</title>
+        </circle>
+        <text x="523.0" y="340.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 06</text>
+        <circle cx="544.0" cy="355.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 07: Commander Brant | Sector [16, 5, 3] | PEAK_FACING (18°)</title>
+        </circle>
+        <text x="550.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 07</text>
+        <circle cx="490.0" cy="373.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 08: Kaelen Lightweaver | Sector [10, 3, -3] | PEAK_FACING (28°)</title>
+        </circle>
+        <text x="496.0" y="376.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 08</text>
+        <circle cx="508.0" cy="382.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 09: Forge-Master Theron | Sector [12, 2, 1] | PEAK_FACING (12°)</title>
+        </circle>
+        <text x="514.0" y="385.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 09</text>
+        <circle cx="526.0" cy="346.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot sun-forged">
+            <title>Book 10: Aria Skydancer | Sector [14, 6, 4] | PEAK_FACING (22°)</title>
+        </circle>
+        <text x="532.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 10</text>
+        <circle cx="490.0" cy="355.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 11: Kage Silentstep | Sector [-10, 5, 0] | SHADOW_FACING (165°)</title>
+        </circle>
+        <text x="496.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 11</text>
+        <circle cx="508.0" cy="364.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 12: Nyx Riftseeker | Sector [-12, 4, 2] | SHADOW_FACING (175°)</title>
+        </circle>
+        <text x="514.0" y="367.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 12</text>
+        <circle cx="535.0" cy="346.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 13: Captain Vane | Sector [-15, 6, 0] | SHADOW_FACING (160°)</title>
+        </circle>
+        <text x="541.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 13</text>
+        <circle cx="499.0" cy="328.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 14: Elder Morren | Sector [-11, 8, -2] | SHADOW_FACING (178°)</title>
+        </circle>
+        <text x="505.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 14</text>
+        <circle cx="517.0" cy="337.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 15: Liora Shadeborn | Sector [-13, 7, 1] | SHADOW_FACING (170°)</title>
+        </circle>
+        <text x="523.0" y="340.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 15</text>
+        <circle cx="544.0" cy="355.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 16: Brother Ronin | Sector [-16, 5, -1] | SHADOW_FACING (155°)</title>
+        </circle>
+        <text x="550.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 16</text>
+        <circle cx="562.0" cy="400.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 17: Zephyr the Unseen | Sector [-18, 0, 0] | GATEWAY_SUBSPACE (90°)</title>
+        </circle>
+        <text x="568.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 17</text>
+        <circle cx="526.0" cy="373.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 18: Matron Karen | Sector [-14, 3, 3] | SHADOW_FACING (172°)</title>
+        </circle>
+        <text x="532.0" y="376.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 18</text>
+        <circle cx="490.0" cy="382.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 19: Acolyte Fen | Sector [-10, 2, -2] | SHADOW_FACING (168°)</title>
+        </circle>
+        <text x="496.0" y="385.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 19</text>
+        <circle cx="508.0" cy="346.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot void-bound">
+            <title>Book 20: Master Kuro | Sector [-12, 6, 2] | SHADOW_FACING (162°)</title>
+        </circle>
+        <text x="514.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 20</text>
+        <circle cx="400.0" cy="310.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 21: Tobias Cogsmith | Sector [0, 10, 5] | TRANSIT_FACING (45°)</title>
+        </circle>
+        <text x="406.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 21</text>
+        <circle cx="418.0" cy="292.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 22: Master Horologist Vera | Sector [2, 12, 4] | TRANSIT_FACING (60°)</title>
+        </circle>
+        <text x="424.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 22</text>
+        <circle cx="418.0" cy="301.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 23: Garrick Gearhead | Sector [-2, 11, 3] | TRANSIT_FACING (50°)</title>
+        </circle>
+        <text x="424.0" y="304.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 23</text>
+        <circle cx="400.0" cy="265.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 24: Elia Springtide | Sector [0, 15, 6] | TRANSIT_FACING (70°)</title>
+        </circle>
+        <text x="406.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 24</text>
+        <circle cx="427.0" cy="319.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 25: Caelen Dialmaker | Sector [3, 9, 2] | TRANSIT_FACING (40°)</title>
+        </circle>
+        <text x="433.0" y="322.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 25</text>
+        <circle cx="409.0" cy="328.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 26: Thurston Ratchet | Sector [1, 8, -3] | TRANSIT_FACING (80°)</title>
+        </circle>
+        <text x="415.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 26</text>
+        <circle cx="409.0" cy="274.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 27: Lina Torsion | Sector [-1, 14, 5] | TRANSIT_FACING (55°)</title>
+        </circle>
+        <text x="415.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 27</text>
+        <circle cx="436.0" cy="310.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 28: Orson Balancemaster | Sector [4, 10, -1] | TRANSIT_FACING (65°)</title>
+        </circle>
+        <text x="442.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 28</text>
+        <circle cx="418.0" cy="256.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 29: Kendra Vector | Sector [2, 16, 7] | TRANSIT_FACING (75°)</title>
+        </circle>
+        <text x="424.0" y="259.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 29</text>
+        <circle cx="400.0" cy="328.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot astrolabe">
+            <title>Book 30: Grand Clocksmith Aldous | Sector [0, 8, 4] | TRANSIT_FACING (48°)</title>
+        </circle>
+        <text x="406.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 30</text>
+        <circle cx="580.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 31: Talon Frostskimmer | Sector [20, 0, 10] | TRANSIT_FACING (85°)</title>
+        </circle>
+        <text x="586.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 31</text>
+        <circle cx="400.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 32: Aria Gossamer | Sector [0, 20, -5] | TRANSIT_FACING (90°)</title>
+        </circle>
+        <text x="406.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 32</text>
+        <circle cx="445.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 33: Magda Magmabore | Sector [-5, -15, 0] | TRANSIT_FACING (140°)</title>
+        </circle>
+        <text x="451.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 33</text>
+        <circle cx="670.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 34: Corin Wellspring | Sector [30, 10, -10] | TRANSIT_FACING (60°)</title>
+        </circle>
+        <text x="676.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 34</text>
+        <circle cx="562.0" cy="292.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 35: Joren Plasmahook | Sector [18, -12, 4] | TRANSIT_FACING (35°)</title>
+        </circle>
+        <text x="568.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 35</text>
+        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 36: Mira Timefinder | Sector [0, 0, 0] | GATEWAY_SUBSPACE (90°)</title>
+        </circle>
+        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 36</text>
+        <circle cx="472.0" cy="328.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 37: Sylva Greenbloom | Sector [8, -8, 8] | TRANSIT_FACING (50°)</title>
+        </circle>
+        <text x="478.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 37</text>
+        <circle cx="472.0" cy="292.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 38: Karris Resonator | Sector [-8, 12, -6] | TRANSIT_FACING (110°)</title>
+        </circle>
+        <text x="478.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 38</text>
+        <circle cx="535.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 39: Gideon Stillwater | Sector [15, -15, 2] | TRANSIT_FACING (90°)</title>
+        </circle>
+        <text x="541.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 39</text>
+        <circle cx="598.0" cy="274.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 40: Nesta Skywing | Sector [22, 14, -8] | TRANSIT_FACING (40°)</title>
+        </circle>
+        <text x="604.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 40</text>
+        <circle cx="445.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 41: Zayd Driftwalker | Sector [5, -10, 15] | TRANSIT_FACING (70°)</title>
+        </circle>
+        <text x="451.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 41</text>
+        <circle cx="580.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 42: Tesla Sparkchaser | Sector [-20, 15, 10] | PEAK_FACING (25°)</title>
+        </circle>
+        <text x="586.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 42</text>
+        <circle cx="490.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 43: Volcan Smeltmaster | Sector [10, -20, -5] | PEAK_FACING (20°)</title>
+        </circle>
+        <text x="496.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 43</text>
+        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 44: Aegis Gatewarden | Sector [0, 0, 100] | GATEWAY_SUBSPACE (90°)</title>
+        </circle>
+        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 44</text>
+        <circle cx="526.0" cy="274.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 45: Marina Deepglow | Sector [-14, -14, 0] | SHADOW_FACING (175°)</title>
+        </circle>
+        <text x="532.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 45</text>
+        <circle cx="625.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 46: Kite Windrunner | Sector [25, 0, 0] | PEAK_FACING (10°)</title>
+        </circle>
+        <text x="631.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 46</text>
+        <circle cx="454.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 47: Chip Arborist | Sector [6, 18, -12] | TRANSIT_FACING (55°)</title>
+        </circle>
+        <text x="460.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 47</text>
+        <circle cx="553.0" cy="328.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 48: Rust Sandtracker | Sector [17, -8, -10] | PEAK_FACING (30°)</title>
+        </circle>
+        <text x="559.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 48</text>
+        <circle cx="472.0" cy="175.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 49: Vera Ringwarden | Sector [8, 25, 4] | TRANSIT_FACING (65°)</title>
+        </circle>
+        <text x="478.0" y="178.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 49</text>
+        <circle cx="625.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 50: Darius Shadowtracker | Sector [-25, -5, 12] | SHADOW_FACING (165°)</title>
+        </circle>
+        <text x="631.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 50</text>
+        <circle cx="508.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 51: Aero Cloudstrider | Sector [12, 10, -15] | TRANSIT_FACING (45°)</title>
+        </circle>
+        <text x="514.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 51</text>
+        <circle cx="445.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 52: Valen Containment | Sector [-5, 20, 20] | TRANSIT_FACING (85°)</title>
+        </circle>
+        <text x="451.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 52</text>
+        <circle cx="526.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 53: Pyra Flamecaller | Sector [14, -18, 6] | PEAK_FACING (15°)</title>
+        </circle>
+        <text x="532.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 53</text>
+        <circle cx="670.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 54: Wraith Helmsman | Sector [-30, 0, -15] | SHADOW_FACING (150°)</title>
+        </circle>
+        <text x="676.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 54</text>
+        <circle cx="400.0" cy="175.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 55: Lyrica Beaconkeeper | Sector [0, -25, 18] | TRANSIT_FACING (70°)</title>
+        </circle>
+        <text x="406.0" y="178.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 55</text>
+        <circle cx="562.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 56: Gem Crystalline | Sector [-18, 18, -4] | TRANSIT_FACING (120°)</title>
+        </circle>
+        <text x="568.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 56</text>
+        <circle cx="715.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 57: Zenith Gravitybound | Sector [35, 5, -20] | TRANSIT_FACING (40°)</title>
+        </circle>
+        <text x="721.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 57</text>
+        <circle cx="445.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 58: Lumi Ribbondancer | Sector [5, 5, 25] | TRANSIT_FACING (35°)</title>
+        </circle>
+        <text x="451.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 58</text>
+        <circle cx="490.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 59: Tess Qubit | Sector [-10, -10, -20] | TRANSIT_FACING (100°)</title>
+        </circle>
+        <text x="496.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 59</text>
+        <circle cx="445.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 60: Flare Heatshield | Sector [5, 0, 0] | PEAK_FACING (0°)</title>
+        </circle>
+        <text x="451.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 60</text>
+        <circle cx="598.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 61: Levi Singer | Sector [-22, -18, 8] | TRANSIT_FACING (135°)</title>
+        </circle>
+        <text x="604.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 61</text>
+        <circle cx="508.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 62: Frost Aquanaut | Sector [-12, 10, 15] | SHADOW_FACING (160°)</title>
+        </circle>
+        <text x="514.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 62</text>
+        <circle cx="472.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 63: Braced Slingmaster | Sector [8, -5, -8] | TRANSIT_FACING (50°)</title>
+        </circle>
+        <text x="478.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 63</text>
+        <circle cx="535.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 64: Symbio Biomancer | Sector [15, 15, 15] | TRANSIT_FACING (65°)</title>
+        </circle>
+        <text x="541.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 64</text>
+        <circle cx="580.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 65: Reflect Mirrorwright | Sector [20, -10, 5] | PEAK_FACING (12°)</title>
+        </circle>
+        <text x="586.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 65</text>
+        <circle cx="562.0" cy="292.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 66: Vector Slingshot | Sector [18, 12, -6] | TRANSIT_FACING (45°)</title>
+        </circle>
+        <text x="568.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 66</text>
+        <circle cx="535.0" cy="328.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 67: Ferrus Castellan | Sector [-15, -8, 10] | TRANSIT_FACING (110°)</title>
+        </circle>
+        <text x="541.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 67</text>
+        <circle cx="400.0" cy="130.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 68: Pulse Scout | Sector [0, 30, -10] | TRANSIT_FACING (90°)</title>
+        </circle>
+        <text x="406.0" y="133.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 68</text>
+        <circle cx="472.0" cy="202.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 69: Vapour Ventmaster | Sector [-8, -22, -10] | SHADOW_FACING (150°)</title>
+        </circle>
+        <text x="478.0" y="205.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 69</text>
+        <circle cx="490.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 70: Atlas Skymapper | Sector [10, 20, 10] | TRANSIT_FACING (60°)</title>
+        </circle>
+        <text x="496.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 70</text>
+        <circle cx="508.0" cy="274.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 71: Flux Barricader | Sector [12, -14, 18] | PEAK_FACING (30°)</title>
+        </circle>
+        <text x="514.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 71</text>
+        <circle cx="454.0" cy="346.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 72: Cable Climber | Sector [6, -6, 0] | TRANSIT_FACING (55°)</title>
+        </circle>
+        <text x="460.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 72</text>
+        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 73: Beacon Relaymaster | Sector [0, 0, 50] | GATEWAY_SUBSPACE (90°)</title>
+        </circle>
+        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 73</text>
+        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot expansion">
+            <title>Book 74: Harmonia Nexus | Sector [0, 0, 0] | PEAK_FACING (0°)</title>
+        </circle>
+        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 74</text>
+        
+    </svg>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background: var(--sun)"></div> Sun-Forged (1-10)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--void)"></div> Void-Bound (11-20)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--astro)"></div> Astrolabe (21-30)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--exp)"></div> Expansion (31-74)</div>
+    </div>
+  </div>
+
+  <!-- Right: Active Ephemeris Table -->
+  <div class="card" style="max-height: 840px; overflow-y: auto;">
+    <h2>Active Cosmic Ephemeris (74 Storylines)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Hero</th>
+          <th>Location</th>
+          <th>Facing</th>
+          <th>Resonance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="active-row">
+          <td>Book 01</td>
+          <td>Caelum Dawnrunner</td>
+          <td><code>SURFACE</code> [10, 5, 0]</td>
+          <td>15°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 02</td>
+          <td>Captain Vespera Ray</td>
+          <td><code>ORBITAL</code> [12, 5, 1]</td>
+          <td>25°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 03</td>
+          <td>Tariq Sunstrider</td>
+          <td><code>SURFACE</code> [14, 4, -2]</td>
+          <td>10°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 04</td>
+          <td>Navigator Lyra Solis</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [15, 6, 0]</td>
+          <td>30°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 05</td>
+          <td>High Optician Orin</td>
+          <td><code>SURFACE</code> [11, 8, 2]</td>
+          <td>5°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 06</td>
+          <td>Seraphina Goldvein</td>
+          <td><code>SURFACE</code> [13, 7, -1]</td>
+          <td>20°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 07</td>
+          <td>Commander Brant</td>
+          <td><code>ORBITAL</code> [16, 5, 3]</td>
+          <td>18°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 08</td>
+          <td>Kaelen Lightweaver</td>
+          <td><code>SURFACE</code> [10, 3, -3]</td>
+          <td>28°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 09</td>
+          <td>Forge-Master Theron</td>
+          <td><code>SURFACE</code> [12, 2, 1]</td>
+          <td>12°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 10</td>
+          <td>Aria Skydancer</td>
+          <td><code>ORBITAL</code> [14, 6, 4]</td>
+          <td>22°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 11</td>
+          <td>Kage Silentstep</td>
+          <td><code>SURFACE</code> [-10, 5, 0]</td>
+          <td>165°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 12</td>
+          <td>Nyx Riftseeker</td>
+          <td><code>SURFACE</code> [-12, 4, 2]</td>
+          <td>175°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 13</td>
+          <td>Captain Vane</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [-15, 6, 0]</td>
+          <td>160°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 14</td>
+          <td>Elder Morren</td>
+          <td><code>SURFACE</code> [-11, 8, -2]</td>
+          <td>178°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 15</td>
+          <td>Liora Shadeborn</td>
+          <td><code>SURFACE</code> [-13, 7, 1]</td>
+          <td>170°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 16</td>
+          <td>Brother Ronin</td>
+          <td><code>ORBITAL</code> [-16, 5, -1]</td>
+          <td>155°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 17</td>
+          <td>Zephyr the Unseen</td>
+          <td><code>GATEWAY_SUBSPACE</code> [-18, 0, 0]</td>
+          <td>90°</td>
+          <td><code>GATEWAY_SUBSPACE</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 18</td>
+          <td>Matron Karen</td>
+          <td><code>SURFACE</code> [-14, 3, 3]</td>
+          <td>172°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 19</td>
+          <td>Acolyte Fen</td>
+          <td><code>SURFACE</code> [-10, 2, -2]</td>
+          <td>168°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 20</td>
+          <td>Master Kuro</td>
+          <td><code>ORBITAL</code> [-12, 6, 2]</td>
+          <td>162°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 21</td>
+          <td>Tobias Cogsmith</td>
+          <td><code>SURFACE</code> [0, 10, 5]</td>
+          <td>45°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 22</td>
+          <td>Master Horologist Vera</td>
+          <td><code>ORBITAL</code> [2, 12, 4]</td>
+          <td>60°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 23</td>
+          <td>Garrick Gearhead</td>
+          <td><code>SURFACE</code> [-2, 11, 3]</td>
+          <td>50°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 24</td>
+          <td>Elia Springtide</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [0, 15, 6]</td>
+          <td>70°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 25</td>
+          <td>Caelen Dialmaker</td>
+          <td><code>SURFACE</code> [3, 9, 2]</td>
+          <td>40°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 26</td>
+          <td>Thurston Ratchet</td>
+          <td><code>SURFACE</code> [1, 8, -3]</td>
+          <td>80°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 27</td>
+          <td>Lina Torsion</td>
+          <td><code>ORBITAL</code> [-1, 14, 5]</td>
+          <td>55°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 28</td>
+          <td>Orson Balancemaster</td>
+          <td><code>SURFACE</code> [4, 10, -1]</td>
+          <td>65°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 29</td>
+          <td>Kendra Vector</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [2, 16, 7]</td>
+          <td>75°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 30</td>
+          <td>Grand Clocksmith Aldous</td>
+          <td><code>SURFACE</code> [0, 8, 4]</td>
+          <td>48°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 31</td>
+          <td>Talon Frostskimmer</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [20, 0, 10]</td>
+          <td>85°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 32</td>
+          <td>Aria Gossamer</td>
+          <td><code>ORBITAL</code> [0, 20, -5]</td>
+          <td>90°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 33</td>
+          <td>Magda Magmabore</td>
+          <td><code>SURFACE</code> [-5, -15, 0]</td>
+          <td>140°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 34</td>
+          <td>Corin Wellspring</td>
+          <td><code>ORBITAL</code> [30, 10, -10]</td>
+          <td>60°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 35</td>
+          <td>Joren Plasmahook</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [18, -12, 4]</td>
+          <td>35°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 36</td>
+          <td>Mira Timefinder</td>
+          <td><code>GATEWAY_SUBSPACE</code> [0, 0, 0]</td>
+          <td>90°</td>
+          <td><code>GATEWAY_SUBSPACE</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 37</td>
+          <td>Sylva Greenbloom</td>
+          <td><code>SURFACE</code> [8, -8, 8]</td>
+          <td>50°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 38</td>
+          <td>Karris Resonator</td>
+          <td><code>SURFACE</code> [-8, 12, -6]</td>
+          <td>110°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 39</td>
+          <td>Gideon Stillwater</td>
+          <td><code>SURFACE</code> [15, -15, 2]</td>
+          <td>90°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 40</td>
+          <td>Nesta Skywing</td>
+          <td><code>ORBITAL</code> [22, 14, -8]</td>
+          <td>40°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 41</td>
+          <td>Zayd Driftwalker</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [5, -10, 15]</td>
+          <td>70°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 42</td>
+          <td>Tesla Sparkchaser</td>
+          <td><code>ORBITAL</code> [-20, 15, 10]</td>
+          <td>25°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 43</td>
+          <td>Volcan Smeltmaster</td>
+          <td><code>SURFACE</code> [10, -20, -5]</td>
+          <td>20°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 44</td>
+          <td>Aegis Gatewarden</td>
+          <td><code>GATEWAY_SUBSPACE</code> [0, 0, 100]</td>
+          <td>90°</td>
+          <td><code>GATEWAY_SUBSPACE</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 45</td>
+          <td>Marina Deepglow</td>
+          <td><code>SURFACE</code> [-14, -14, 0]</td>
+          <td>175°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 46</td>
+          <td>Kite Windrunner</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [25, 0, 0]</td>
+          <td>10°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 47</td>
+          <td>Chip Arborist</td>
+          <td><code>SURFACE</code> [6, 18, -12]</td>
+          <td>55°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 48</td>
+          <td>Rust Sandtracker</td>
+          <td><code>SURFACE</code> [17, -8, -10]</td>
+          <td>30°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 49</td>
+          <td>Vera Ringwarden</td>
+          <td><code>ORBITAL</code> [8, 25, 4]</td>
+          <td>65°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 50</td>
+          <td>Darius Shadowtracker</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [-25, -5, 12]</td>
+          <td>165°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 51</td>
+          <td>Aero Cloudstrider</td>
+          <td><code>ORBITAL</code> [12, 10, -15]</td>
+          <td>45°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 52</td>
+          <td>Valen Containment</td>
+          <td><code>ORBITAL</code> [-5, 20, 20]</td>
+          <td>85°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 53</td>
+          <td>Pyra Flamecaller</td>
+          <td><code>SURFACE</code> [14, -18, 6]</td>
+          <td>15°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 54</td>
+          <td>Wraith Helmsman</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [-30, 0, -15]</td>
+          <td>150°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 55</td>
+          <td>Lyrica Beaconkeeper</td>
+          <td><code>ORBITAL</code> [0, -25, 18]</td>
+          <td>70°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 56</td>
+          <td>Gem Crystalline</td>
+          <td><code>SURFACE</code> [-18, 18, -4]</td>
+          <td>120°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 57</td>
+          <td>Zenith Gravitybound</td>
+          <td><code>ORBITAL</code> [35, 5, -20]</td>
+          <td>40°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 58</td>
+          <td>Lumi Ribbondancer</td>
+          <td><code>SURFACE</code> [5, 5, 25]</td>
+          <td>35°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 59</td>
+          <td>Tess Qubit</td>
+          <td><code>SURFACE</code> [-10, -10, -20]</td>
+          <td>100°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 60</td>
+          <td>Flare Heatshield</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [5, 0, 0]</td>
+          <td>0°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 61</td>
+          <td>Levi Singer</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [-22, -18, 8]</td>
+          <td>135°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 62</td>
+          <td>Frost Aquanaut</td>
+          <td><code>SURFACE</code> [-12, 10, 15]</td>
+          <td>160°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 63</td>
+          <td>Braced Slingmaster</td>
+          <td><code>SURFACE</code> [8, -5, -8]</td>
+          <td>50°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 64</td>
+          <td>Symbio Biomancer</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [15, 15, 15]</td>
+          <td>65°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 65</td>
+          <td>Reflect Mirrorwright</td>
+          <td><code>SURFACE</code> [20, -10, 5]</td>
+          <td>12°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 66</td>
+          <td>Vector Slingshot</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [18, 12, -6]</td>
+          <td>45°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 67</td>
+          <td>Ferrus Castellan</td>
+          <td><code>ORBITAL</code> [-15, -8, 10]</td>
+          <td>110°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 68</td>
+          <td>Pulse Scout</td>
+          <td><code>DEEP_SPACE_TRANSIT</code> [0, 30, -10]</td>
+          <td>90°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 69</td>
+          <td>Vapour Ventmaster</td>
+          <td><code>SURFACE</code> [-8, -22, -10]</td>
+          <td>150°</td>
+          <td><code>SHADOW_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 70</td>
+          <td>Atlas Skymapper</td>
+          <td><code>SURFACE</code> [10, 20, 10]</td>
+          <td>60°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 71</td>
+          <td>Flux Barricader</td>
+          <td><code>ORBITAL</code> [12, -14, 18]</td>
+          <td>30°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 72</td>
+          <td>Cable Climber</td>
+          <td><code>ORBITAL</code> [6, -6, 0]</td>
+          <td>55°</td>
+          <td><code>TRANSIT_FACING</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 73</td>
+          <td>Beacon Relaymaster</td>
+          <td><code>GATEWAY_SUBSPACE</code> [0, 0, 50]</td>
+          <td>90°</td>
+          <td><code>GATEWAY_SUBSPACE</code></td>
+        </tr>
+        <tr class="">
+          <td>Book 74</td>
+          <td>Harmonia Nexus</td>
+          <td><code>ORBITAL</code> [0, 0, 0]</td>
+          <td>0°</td>
+          <td><code>PEAK_FACING</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
