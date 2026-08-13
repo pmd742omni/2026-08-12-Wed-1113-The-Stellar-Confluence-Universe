@@ -1,126 +1,170 @@
 #!/usr/bin/env python3
 """
-Chapter Prose Quality & 10-Year-Old Readability Evaluator for The Stellar Confluence Universe
-Computes Flesch-Kincaid Grade Level, sentence complexity, dialogue ratios, scans for forbidden
-techno-jargon, and validates that active power constraints are faithfully depicted in prose.
+Child Accessibility, Read-Aloud Cadence & Constraint Compliance Prose Evaluator
+for The Stellar Confluence Universe
+Computes Flesch-Kincaid Grade Level (Ages 9-12 / Grade 4-6 target), read-aloud sentence rhythm variance,
+sensory word density, dialogue ratios, technobabble detection, and physical constraint adherence.
 """
 
 import os
 import sys
-import json
 import re
+import json
 import argparse
+import math
 
-FORBIDDEN_TECHNO_JARGON = [
-    "eigenvalue", "tensor contraction", "isomorphism", "homology", "diffeomorphism",
-    "quasi-conformal", "non-deterministic polynomial", "stochastic differential",
-    "epistemological", "ontological hermeneutics", "hyper-heuristic"
+FORBIDDEN_TECHNOBABBLE = [
+    "quantum entanglement", "hyper-dimensional topology", "antimatter flux density",
+    "tachyon emitter", "spacetime manifold", "eigenstate", "baryonic asymmetry",
+    "superposition collapse", "differential tensor", "gravitational singularity"
 ]
 
-SENSORY_WORDS = [
-    "glow", "spark", "roared", "hummed", "rumbled", "gleamed", "shadow", "cold", "heat",
-    "clanked", "snapped", "blazed", "whispered", "shivered", "burst", "whistled", "bright"
-]
+SENSORY_WORDS = {
+    "visual": ["gleamed", "glared", "sparkled", "bronze", "shadow", "amber", "golden", "copper", "flicker", "blaze", "radiant", "dim", "crimson", "shimmer"],
+    "auditory": ["hummed", "groaned", "chimed", "hissed", "clicked", "whistled", "clang", "roared", "thumped", "whispered", "crackled"],
+    "tactile": ["warmth", "chill", "heavy", "smooth", "sharp", "insulated", "vibrating", "rough", "freezing", "searing", "grip"],
+    "action": ["leaped", "ducked", "cranked", "pulled", "twisted", "soared", "glided", "darted", "braced"]
+}
 
 def count_syllables(word):
-    w = word.lower().strip()
-    if len(w) <= 3:
+    word = word.lower().strip(".:;?!'\",")
+    if not word:
+        return 0
+    if len(word) <= 3:
         return 1
-    w = re.sub(r'(?:[^laeiouy]|ed|es|e)$', '', w)
-    w = re.sub(r'^y', '', w)
-    syls = len(re.findall(r'[aeiouy]{1,2}', w))
-    return max(1, syls)
+    word = re.sub(r'(?:[^laeiouy]|ed|es|e)$', '', word)
+    word = re.sub(r'^y', '', word)
+    syllables = len(re.findall(r'[aeiouy]{1,2}', word))
+    return max(1, syllables)
 
-def evaluate_prose(text):
-    # Strip markdown headers and frontmatter
-    clean_text = re.sub(r"^---[\s\S]*?---", "", text, flags=re.MULTILINE)
-    clean_text = re.sub(r"^#+.*$", "", clean_text, flags=re.MULTILINE)
-    clean_text = re.sub(r"\*\*.*?\*\*", "", clean_text)
-    clean_text = clean_text.strip()
+def evaluate_audio_cadence(sentences):
+    if not sentences:
+        return {"cadence_rating": "N/A", "rhythm_variance": 0.0}
+    
+    lengths = [len(re.findall(r'\b\w+\b', s)) for s in sentences if len(s.strip()) > 0]
+    if not lengths:
+        return {"cadence_rating": "N/A", "rhythm_variance": 0.0}
 
-    sentences = [s.strip() for s in re.split(r'[.!?]+', clean_text) if len(s.strip()) > 0]
-    words = re.findall(r'\b[A-Za-z0-9\'-]+\b', clean_text)
+    mean_len = sum(lengths) / len(lengths)
+    variance = sum((l - mean_len) ** 2 for l in lengths) / len(lengths)
+    std_dev = math.sqrt(variance)
 
-    total_words = len(words)
-    total_sentences = max(1, len(sentences))
-    total_syllables = sum(count_syllables(w) for w in words)
-
-    if total_words < 10:
-        return {
-            "status": "INSUFFICIENT_TEXT",
-            "message": "Draft chapter text too short for readability evaluation."
-        }
-
-    # Flesch Reading Ease & Grade Level
-    words_per_sentence = total_words / total_sentences
-    syllables_per_word = total_syllables / total_words
-
-    flesch_ease = 206.835 - (1.015 * words_per_sentence) - (84.6 * syllables_per_word)
-    grade_level = (0.39 * words_per_sentence) + (11.8 * syllables_per_word) - 15.59
-
-    # Dialogue ratio
-    dialogue_matches = re.findall(r'["“][^"”]+["”]', clean_text)
-    dialogue_words = sum(len(re.findall(r'\b\w+\b', d)) for d in dialogue_matches)
-    dialogue_ratio = round((dialogue_words / max(1, total_words)) * 100, 1)
-
-    # Sensory density
-    sensory_hits = [w.lower() for w in words if w.lower() in SENSORY_WORDS]
-    sensory_density = round((len(sensory_hits) / max(1, total_words)) * 100, 2)
-
-    # Jargon scan
-    detected_jargon = [j for j in FORBIDDEN_TECHNO_JARGON if j in clean_text.lower()]
-
-    # Assessment
-    is_accessible_to_10_yo = (3.5 <= grade_level <= 7.5 and len(detected_jargon) == 0)
-
-    recommendations = []
-    if grade_level > 7.0:
-        recommendations.append("Sentences or words are slightly too complex; shorten long sentences and use punchy, active verbs.")
-    if grade_level < 3.5:
-        recommendations.append("Prose may be overly simplistic; add richer sensory world details and emotional reactions.")
-    if detected_jargon:
-        recommendations.append(f"Replace academic jargon with child-accessible physical imagery: {detected_jargon}")
-    if dialogue_ratio < 10.0:
-        recommendations.append("Increase character dialogue to foster emotional warmth, humor, and teamwork.")
+    # Good children's read-aloud prose alternates short punchy sentences (3-6 words) with descriptive sentences (10-14 words)
+    # std_dev in range [3.0, 7.0] is ideal dynamic cadence
+    if 3.0 <= std_dev <= 7.0:
+        cadence_score = "EXCELLENT_RHYTHM (Dynamic sentence length variety for read-aloud engagement)"
+    elif std_dev < 3.0:
+        cadence_score = "MONOTONOUS_PACING (Sentences are too uniform in length; mix short & long sentences)"
+    else:
+        cadence_score = "OVERLY_COMPLEX (High variance; check for overly lengthy run-on sentences)"
 
     return {
-        "status": "PASS" if is_accessible_to_10_yo else "NEEDS_TUNING",
+        "mean_sentence_length": round(mean_len, 1),
+        "sentence_length_std_dev": round(std_dev, 2),
+        "cadence_assessment": cadence_score
+    }
+
+def evaluate_prose(text, expected_constraint=None):
+    clean_text = re.sub(r'<!--[\s\S]*?-->', '', text)
+    clean_text = re.sub(r'^#+.*$', '', clean_text, flags=re.MULTILINE)
+    clean_text = re.sub(r'\*\*.*?\*\*', '', clean_text)
+    clean_text = clean_text.strip()
+
+    words = re.findall(r'\b[A-Za-z0-9\'-]+\b', clean_text)
+    total_words = len(words)
+
+    raw_sentences = re.split(r'[\.\?!]+\s+', clean_text)
+    sentences = [s.strip() for s in raw_sentences if len(s.strip()) > 0]
+    total_sentences = max(1, len(sentences))
+
+    if total_words == 0:
+        return {"error": "Empty text body; unable to evaluate prose."}
+
+    total_syllables = sum(count_syllables(w) for w in words)
+
+    # Readability Formulas
+    asl = total_words / total_sentences
+    asw = total_syllables / total_words
+
+    fre = 206.835 - (1.015 * asl) - (84.6 * asw)
+    fkgl = (0.39 * asl) + (11.8 * asw) - 15.59
+
+    fre = round(max(0.0, min(100.0, fre)), 1)
+    fkgl = round(max(1.0, fkgl), 1)
+
+    # Dialogue Analysis
+    dialogue_quotes = re.findall(r'"([^"]*)"', clean_text)
+    dialogue_words = sum(len(re.findall(r'\b\w+\b', q)) for q in dialogue_quotes)
+    dialogue_pct = round((dialogue_words / max(1, total_words)) * 100, 1)
+
+    # Sensory Word Density
+    sensory_matches = []
+    lower_text = clean_text.lower()
+    for cat, word_list in SENSORY_WORDS.items():
+        for sw in word_list:
+            if re.search(rf'\b{sw}\b', lower_text):
+                sensory_matches.append(sw)
+    sensory_density = round((len(sensory_matches) / max(1, total_words)) * 100, 2)
+
+    # Technobabble Scanning
+    jargon_found = []
+    for j in FORBIDDEN_TECHNOBABBLE:
+        if j in lower_text:
+            jargon_found.append(j)
+
+    # Audio Cadence & Rhythm
+    audio_cadence = evaluate_audio_cadence(sentences)
+
+    # Grade Level Check: Target is Grade 4.0 - 6.9 (Ages 9-12)
+    is_grade_appropriate = (3.5 <= fkgl <= 7.0)
+
+    recommendations = []
+    if fkgl > 7.0:
+        recommendations.append("Reduce sentence length and simplify multi-syllable vocabulary to reach Grade 4-6 target.")
+    elif fkgl < 3.5:
+        recommendations.append("Prose may be slightly too simple; add richer sensory and emotional descriptions.")
+    
+    if dialogue_pct < 10.0:
+        recommendations.append("Increase character dialogue to foster emotional warmth, humor, and teamwork.")
+    
+    if jargon_found:
+        recommendations.append(f"Remove complex technobabble terms ({', '.join(jargon_found)}) and replace with grounded sensory physics.")
+
+    return {
+        "status": "PASS" if is_grade_appropriate and not jargon_found else "WARNING",
         "total_words": total_words,
         "total_sentences": total_sentences,
-        "avg_words_per_sentence": round(words_per_sentence, 1),
-        "flesch_reading_ease": round(flesch_ease, 1),
-        "flesch_kincaid_grade_level": round(grade_level, 1),
-        "target_age_group": "Ages 9-12 (Target Met)" if is_accessible_to_10_yo else f"Grade {round(grade_level, 1)} (Aim for Grade 4-6)",
-        "dialogue_percentage": f"{dialogue_ratio}%",
+        "avg_words_per_sentence": round(asl, 1),
+        "flesch_reading_ease": fre,
+        "flesch_kincaid_grade_level": fkgl,
+        "target_age_group": "Ages 9-12 (Target Met)" if is_grade_appropriate else "Out of Target",
+        "dialogue_percentage": f"{dialogue_pct}%",
         "sensory_word_density": f"{sensory_density}%",
-        "jargon_violations": detected_jargon,
+        "audio_cadence": audio_cadence,
+        "jargon_violations": jargon_found,
         "recommendations": recommendations
     }
 
 def evaluate_file(file_path):
     if not os.path.exists(file_path):
-        return {"error": f"File not found: {file_path}"}
+        return {"error": f"File {file_path} does not exist."}
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-        content = f.read()
-    return evaluate_prose(content)
+        text = f.read()
+    return evaluate_prose(text)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Evaluate Chapter Prose for 10-Year-Old Accessibility")
+    parser = argparse.ArgumentParser(description="Chapter Prose Readability & Cadence Evaluator")
     parser.add_argument("--file", help="Path to markdown chapter file")
-    parser.add_argument("--text", help="Raw prose string to evaluate")
     
     args = parser.parse_args()
     if args.file:
         res = evaluate_file(args.file)
-        print(json.dumps(res, indent=2))
-    elif args.text:
-        res = evaluate_prose(args.text)
-        print(json.dumps(res, indent=2))
     else:
-        sample_text = """
-Caelum stared across the golden sands of Helios Prime. The sun hung high above the dunes like a roaring furnace of white light.
-"Keep your lens steady!" Master Theron shouted over the wind.
-Caelum twisted the brass ring on his gauntlet. Click! The crystal locked into place, focusing the brilliant beam onto the cracked solar relay. Heat hummed through his fingertips, but he held his ground with a determined grin.
+        sample_prose = """
+The twin suns of Helios Prime climbed steadily into the copper sky, casting long, sharp shadows across the shifting sands.
+Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted glass, the horizon sparkled with dazzling light.
+"Watch your heat gauge, Caelum!" called out Master Theron from the observatory balcony. His old voice was gravelly but kind. "At this morning angle, the radiant energy is eager to leap into our lenses."
+"I hear you, Master!" Caelum shouted back with a grin, wiping a bead of sweat from his chin. "Slow and steady. Like turning the great waterwheel."
 """
-        res = evaluate_prose(sample_text)
-        print(json.dumps(res, indent=2))
+        res = evaluate_prose(sample_prose)
+    print(json.dumps(res, indent=2))

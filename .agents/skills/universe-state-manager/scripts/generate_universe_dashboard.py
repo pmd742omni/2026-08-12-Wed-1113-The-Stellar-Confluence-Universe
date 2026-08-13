@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Interactive Galactic Dashboard & Visual Universe Radar Generator for The Stellar Confluence Universe
-Generates a standalone, zero-dependency visual HTML/SVG galactic radar map, faction hierarchy,
-active cosmic ripple hazard overlays, and real-time round-robin queue visualizer.
+Interactive Galactic Studio, Dashboard & Chapter Reader Web App Generator
+Generates a standalone, responsive, high-aesthetic HTML/SVG galactic radar visualizer,
+live broadcast wire, chapter reader modal, and faction tech inspector for The Stellar Confluence Universe.
 """
 
 import os
@@ -27,6 +27,11 @@ def find_project_root():
 PROJECT_ROOT = find_project_root()
 SYSTEM_STATE_DIR = os.path.join(PROJECT_ROOT, "00_System_State")
 DASHBOARD_HTML = os.path.join(SYSTEM_STATE_DIR, "universe_dashboard.html")
+SKILLS_DIR = os.path.join(PROJECT_ROOT, ".agents", "skills")
+
+sys.path.insert(0, os.path.join(SKILLS_DIR, "universe-state-manager", "scripts"))
+sys.path.insert(0, os.path.join(SKILLS_DIR, "confluence-chapter-authoring", "scripts"))
+import galactic_broadcast_feed
 
 def parse_sector(sector_str):
     nums = [float(n) for n in re.findall(r"[-+]?\d*\.\d+|\d+", str(sector_str))]
@@ -76,7 +81,7 @@ def generate_dashboard():
                     "capability": cap
                 })
 
-    # 3. Read Events
+    # 3. Read Events & Broadcast Wire
     events_p = os.path.join(SYSTEM_STATE_DIR, "cosmic_events.json")
     events = []
     if os.path.exists(events_p):
@@ -86,8 +91,10 @@ def generate_dashboard():
         except Exception:
             pass
 
+    feed_data = galactic_broadcast_feed.get_broadcast_feed()
+    bulletins = feed_data.get("bulletins", [])
+
     # 4. Generate SVG Radar Elements
-    # Coordinate mapping: sector coords range roughly -35 to +35 -> map to SVG 800x800 viewBox (-40 to +40)
     def map_x(x): return 400 + (x * 9.0)
     def map_y(y): return 400 - (y * 9.0)
 
@@ -96,29 +103,24 @@ def generate_dashboard():
         cx = map_x(c["x"])
         cy = map_y(c["y"])
         
-        # Color coding by faction
         b_num_match = re.search(r"(\d+)", c["book"])
         b_num = int(b_num_match.group(1)) if b_num_match else 1
         
         if 1 <= b_num <= 10:
-            fill_color = "#f59e0b" # Radiant Amber/Gold
-            glow_class = "sun-forged"
+            fill_color = "#f59e0b" # Radiant Gold
         elif 11 <= b_num <= 20:
-            fill_color = "#8b5cf6" # Void Violet
-            glow_class = "void-bound"
+            fill_color = "#8b5cf6" # Void Indigo
         elif 21 <= b_num <= 30:
             fill_color = "#10b981" # Astrolabe Emerald
-            glow_class = "astrolabe"
         else:
             fill_color = "#06b6d4" # Expansion Cyan
-            glow_class = "expansion"
 
         is_active = (b_num == active_book)
         radius = 7 if is_active else 4
         stroke = "#ffffff" if is_active else "none"
         stroke_w = "2" if is_active else "0"
 
-        svg_points += f"""<circle cx="{cx}" cy="{cy}" r="{radius}" fill="{fill_color}" stroke="{stroke}" stroke-width="{stroke_w}" class="radar-dot {glow_class}">
+        svg_points += f"""<circle cx="{cx}" cy="{cy}" r="{radius}" fill="{fill_color}" stroke="{stroke}" stroke-width="{stroke_w}" class="radar-dot" onclick="alert('{c['book']}: {c['character']} on {c['loc_type']}\\nSector {c['sector']}\\nResonance: {c['resonance']} ({c['facing']})')">
             <title>{c['book']}: {c['character']} | Sector {c['sector']} | {c['resonance']} ({c['facing']})</title>
         </circle>
         <text x="{cx+6}" y="{cy+3}" font-size="8" fill="#94a3b8" font-family="monospace">{c['book']}</text>
@@ -136,11 +138,19 @@ def generate_dashboard():
                 <title>HAZARD {ev['id']}: {ev['event_type']} ({ev['source_book']})</title>
             </circle>"""
 
+    # Broadcast ticker items
+    ticker_html = ""
+    for b in bulletins[:4]:
+        ticker_html += f"""<div class="news-item">
+          <span class="news-tag {b['type'].lower()}">{b['type']}</span>
+          <strong>{b['headline']}</strong> — {b['body']}
+        </div>"""
+
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>The Stellar Confluence Universe Dashboard</title>
+<title>The Stellar Confluence Universe Studio</title>
 <style>
   :root {{
     --bg: #0b0f19;
@@ -152,6 +162,7 @@ def generate_dashboard():
     --void: #8b5cf6;
     --astro: #10b981;
     --exp: #06b6d4;
+    --alert: #ef4444;
   }}
   body {{
     margin: 0;
@@ -166,13 +177,10 @@ def generate_dashboard():
     align-items: center;
     border-bottom: 1px solid var(--border);
     padding-bottom: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }}
   h1 {{ margin: 0; font-size: 24px; font-weight: 700; }}
-  .metrics {{
-    display: flex;
-    gap: 16px;
-  }}
+  .metrics {{ display: flex; gap: 16px; }}
   .metric-badge {{
     background: var(--card);
     border: 1px solid var(--border);
@@ -181,6 +189,30 @@ def generate_dashboard():
     font-size: 13px;
   }}
   .metric-val {{ font-size: 18px; font-weight: bold; color: var(--sun); display: block; }}
+  .broadcast-wire {{
+    background: rgba(19, 27, 46, 0.8);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }}
+  .news-item {{ display: flex; align-items: center; gap: 10px; }}
+  .news-tag {{
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }}
+  .news-tag.cosmic_weather_alert {{ background: rgba(239, 68, 68, 0.2); color: var(--alert); border: 1px solid var(--alert); }}
+  .news-tag.galactic_news_wire {{ background: rgba(245, 158, 11, 0.2); color: var(--sun); border: 1px solid var(--sun); }}
+  .news-tag.commerce_dispatch {{ background: rgba(16, 185, 129, 0.2); color: var(--astro); border: 1px solid var(--astro); }}
+  .news-tag.radio_intercept {{ background: rgba(6, 182, 212, 0.2); color: var(--exp); border: 1px solid var(--exp); }}
+
   .main-layout {{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -234,8 +266,8 @@ def generate_dashboard():
 
 <div class="header">
   <div>
-    <h1>The Stellar Confluence Universe</h1>
-    <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">74-Book Interconnected Series State Engine</div>
+    <h1>The Stellar Confluence Universe Studio</h1>
+    <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">74-Book Interconnected Story Operating System</div>
   </div>
   <div class="metrics">
     <div class="metric-badge">
@@ -253,12 +285,17 @@ def generate_dashboard():
   </div>
 </div>
 
+<!-- Galactic Subspace Broadcast Wire -->
+<div class="broadcast-wire">
+  {ticker_html}
+</div>
+
 <div class="main-layout">
   <!-- Left: Galactic Radar Map -->
   <div class="card">
     <h2>Galactic Spatial Radar (Sector X / Y Projection)</h2>
     <svg class="radar" viewBox="0 0 800 800">
-      <!-- Grid & Rings -->
+      <!-- Grid & Concentric Epicycle Rings -->
       <circle cx="400" cy="400" r="360" fill="none" stroke="#1e293b" stroke-width="1" />
       <circle cx="400" cy="400" r="270" fill="none" stroke="#1e293b" stroke-width="1" />
       <circle cx="400" cy="400" r="180" fill="none" stroke="#1e293b" stroke-width="1" />
@@ -327,6 +364,7 @@ def generate_dashboard():
 </body>
 </html>"""
 
+    os.makedirs(SYSTEM_STATE_DIR, exist_ok=True)
     with open(DASHBOARD_HTML, "w", encoding="utf-8") as f:
         f.write(html_content)
 
@@ -334,7 +372,7 @@ def generate_dashboard():
         "status": "generated",
         "file_path": DASHBOARD_HTML,
         "total_characters_rendered": len(characters),
-        "active_hazards_rendered": len(events)
+        "total_bulletins_streamed": len(bulletins)
     }
 
 if __name__ == "__main__":
