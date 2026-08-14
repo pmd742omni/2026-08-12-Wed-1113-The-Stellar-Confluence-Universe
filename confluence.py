@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 Confluence Master CLI Dispatcher for The Stellar Confluence Universe
-Unified command-line interface orchestrating chapter authoring, prose drafting, universe simulation loops,
-3D transit vector propagation, dual-hero encounters, artifact ledgers, wave physics, broadcasts, and tests.
+Unified command-line interface orchestrating chapter authoring, prose drafting, universe simulations,
+audiobook performance directing, 74-world planetary ecologies, continuity audits, 3D transit vectors,
+dual-hero cross encounters, artifact ledgers, wave physics, and 35-point regression diagnostics.
 """
 
 import os
@@ -40,7 +41,7 @@ def main():
     sim_p.add_argument("--dry-run", action="store_true", help="Simulate without writing files")
 
     # 2. CHAPTER SUBPARSER
-    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, prose drafting, encounter simulation, compilation & evaluation")
+    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, prose drafting, encounter simulation, audio directing & compilation")
     chap_sub = chap_p.add_subparsers(dest="subcommand")
 
     # chapter prepare
@@ -51,6 +52,11 @@ def main():
     draft_p.add_argument("--book", type=int, default=1)
     draft_p.add_argument("--chapter", type=int, default=1)
     draft_p.add_argument("--save", action="store_true")
+
+    # chapter audio
+    aud_p = chap_sub.add_parser("audio", help="Generate studio-ready audiobook voice acting & sound design script")
+    aud_p.add_argument("--file", required=True)
+    aud_p.add_argument("--book", type=int, default=1)
 
     # chapter encounter
     enc_p = chap_sub.add_parser("encounter", help="Simulate dual-hero cross-book dialogue encounter")
@@ -76,12 +82,16 @@ def main():
     eval_p = chap_sub.add_parser("evaluate", help="Evaluate chapter prose for 10-year-old child readability & cadence")
     eval_p.add_argument("--file", required=True, help="Path to markdown chapter file")
 
+    # chapter continuity
+    cont_p = chap_sub.add_parser("continuity", help="Audit chapter prose against character coordinates & lore continuity")
+    cont_p.add_argument("--file", required=True)
+
     # chapter beats
     beat_p = chap_sub.add_parser("beats", help="Generate 3-act narrative scene beats for current character")
     beat_p.add_argument("--book", type=int, default=1, help="Book ID number (1-74)")
 
     # 3. UNIVERSE SUBPARSER
-    uni_p = subparsers.add_parser("universe", help="Universe state, 3D transit vectors, artifacts, wave physics, broadcasts & dashboard")
+    uni_p = subparsers.add_parser("universe", help="Universe state, 74-world ecologies, 3D transit vectors, artifacts, wave physics & dashboard")
     uni_sub = uni_p.add_subparsers(dest="subcommand")
 
     # universe status
@@ -89,6 +99,10 @@ def main():
 
     # universe dashboard
     uni_sub.add_parser("dashboard", help="Generate interactive HTML/SVG galactic studio dashboard")
+
+    # universe planet
+    plan_p = uni_sub.add_parser("planet", help="Query 74-world planetary astrophysics, gravity & resource exports")
+    plan_p.add_argument("--world", required=True, help="World name or Book ID number")
 
     # universe transit
     tr_p = uni_sub.add_parser("transit", help="Manage 3D deep space transit vector flights")
@@ -173,7 +187,7 @@ def main():
     chk_p.add_argument("--codename", required=True)
 
     # 6. TEST SUBPARSER
-    subparsers.add_parser("test", help="Run automated 30-point agent sanity regression suite")
+    subparsers.add_parser("test", help="Run automated 35-point agent sanity regression suite")
 
     args = parser.parse_args()
 
@@ -191,6 +205,9 @@ def main():
         elif args.subcommand == "draft":
             import story_generator
             print(json.dumps(story_generator.generate_full_chapter_prose(args.book, args.chapter, save=args.save), indent=2))
+        elif args.subcommand == "audio":
+            import audiobook_director
+            print(json.dumps(audiobook_director.process_file_to_audio_script(args.file, args.book), indent=2))
         elif args.subcommand == "encounter":
             import cross_encounter_engine
             print(json.dumps(cross_encounter_engine.simulate_cross_encounter(args.book_a, args.book_b, args.type), indent=2))
@@ -206,6 +223,9 @@ def main():
         elif args.subcommand == "evaluate":
             import chapter_prose_evaluator
             print(json.dumps(chapter_prose_evaluator.evaluate_file(args.file), indent=2))
+        elif args.subcommand == "continuity":
+            import chapter_continuity_validator
+            print(json.dumps(chapter_continuity_validator.validate_chapter_continuity(args.file), indent=2))
         elif args.subcommand == "beats":
             import chapter_engine, narrative_beat_architect
             char = chapter_engine.get_character_info(args.book)
@@ -222,6 +242,9 @@ def main():
         elif args.subcommand == "dashboard":
             import generate_universe_dashboard
             print(json.dumps(generate_universe_dashboard.generate_dashboard(), indent=2))
+        elif args.subcommand == "planet":
+            import planetary_ecology_matrix
+            print(json.dumps(planetary_ecology_matrix.get_planetary_profile(args.world), indent=2))
         elif args.subcommand == "transit":
             import interstellar_transit_engine
             if args.transit_cmd == "start":
