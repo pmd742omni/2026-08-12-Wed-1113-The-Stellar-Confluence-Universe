@@ -29,6 +29,10 @@
       {
         "name": "Photonic Prism Lens",
         "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
       }
     ],
     "condition": "PEAK_HEALTH",

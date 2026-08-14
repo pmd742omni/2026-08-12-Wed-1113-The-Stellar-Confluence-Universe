@@ -1,0 +1,34 @@
+{
+  "1": {
+    "book_id": 1,
+    "status": "ARRIVED_ORBITAL_DOCK",
+    "origin_world": "Sector [10.0, 5.0, 0.0]",
+    "origin_coords": [
+      10.0,
+      5.0,
+      0.0
+    ],
+    "current_coords": [
+      16.0,
+      5.0,
+      0.0
+    ],
+    "dest_world": "Aethelgard Hub",
+    "dest_coords": [
+      16.0,
+      5.0,
+      0.0
+    ],
+    "speed_units_per_gut": 2.0,
+    "velocity_vector": [
+      2.0,
+      0.0,
+      0.0
+    ],
+    "total_distance_units": 6.0,
+    "distance_traveled": 6.0,
+    "start_gut": 100,
+    "estimated_arrival_gut": 103,
+    "progress_percent": 100.0
+  }
+}

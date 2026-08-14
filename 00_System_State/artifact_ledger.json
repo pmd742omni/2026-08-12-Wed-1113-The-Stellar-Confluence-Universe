@@ -1,0 +1,82 @@
+{
+  "Sol-Core Prism Lens": {
+    "name": "Sol-Core Prism Lens",
+    "origin_world": "Helios Prime (Sun-Forged Foundries)",
+    "energy_type": "Focused Photonic Coherence",
+    "harmonic_freq": "144.2 MHz",
+    "current_bearer_book": 21,
+    "current_bearer_hero": "Tobias Cogsmith",
+    "custody_chain": [
+      {
+        "gut": 0,
+        "event": "Forged in the Great Solar Foundry of Helios Prime"
+      },
+      {
+        "gut": 95,
+        "event": "Bestowed to Apprentice Caelum Dawnrunner by Master Theron"
+      },
+      {
+        "gut": 102,
+        "event": "Transferred from Caelum Dawnrunner (Book 1) to Tobias Cogsmith (Book 21): Emergency relay calibration"
+      }
+    ],
+    "tactical_power": "Focuses incoming Confluence Wavefront into high-intensity solar cutting beams."
+  },
+  "Umbral Keystone": {
+    "name": "Umbral Keystone",
+    "origin_world": "Umbra Chasm (Shadow Moon)",
+    "energy_type": "Eclipse Phase Resonance",
+    "harmonic_freq": "128.5 MHz",
+    "current_bearer_book": 11,
+    "current_bearer_hero": "Vespera Ray",
+    "custody_chain": [
+      {
+        "gut": 0,
+        "event": "Discovered in the basalt rift caves of Nadir Prime"
+      },
+      {
+        "gut": 80,
+        "event": "Entrusted to Vespera Ray by Elder Nyx for twilight reconnaissance"
+      }
+    ],
+    "tactical_power": "Enables temporary matter phase-shifting through dense stone and hull armor."
+  },
+  "Master Chrono-Astrolabe": {
+    "name": "Master Chrono-Astrolabe",
+    "origin_world": "Aethelgard Gear-City",
+    "energy_type": "Precision Mechanical Kinetics",
+    "harmonic_freq": "160.0 MHz",
+    "current_bearer_book": 21,
+    "current_bearer_hero": "Tobias Cogsmith",
+    "custody_chain": [
+      {
+        "gut": 10,
+        "event": "Assembled by the Chief Gearwright Guild"
+      },
+      {
+        "gut": 90,
+        "event": "Awarded to Tobias Cogsmith at the Annual Chrono-Exposition"
+      }
+    ],
+    "tactical_power": "Synchronizes orbital flywheels with zero friction during twilight transit."
+  },
+  "Cryo-Harpoon of Boreas": {
+    "name": "Cryo-Harpoon of Boreas",
+    "origin_world": "Comet Tail Perihelion",
+    "energy_type": "Cryogenic Sublimation Thrust",
+    "harmonic_freq": "152.4 MHz",
+    "current_bearer_book": 31,
+    "current_bearer_hero": "Orin Frostfang",
+    "custody_chain": [
+      {
+        "gut": 25,
+        "event": "Carved from high-density interstellar comet ice core"
+      },
+      {
+        "gut": 92,
+        "event": "Claimed by Orin Frostfang during the Great Regatta"
+      }
+    ],
+    "tactical_power": "Anchors star-gliders to high-speed cometary dust plumes."
+  }
+}

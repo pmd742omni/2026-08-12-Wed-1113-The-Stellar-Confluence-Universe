@@ -2,7 +2,7 @@
 """
 Confluence Master CLI Dispatcher for The Stellar Confluence Universe
 Unified command-line interface orchestrating chapter authoring, prose drafting, universe simulation loops,
-manuscript compilation, celestial ephemerides, wave physics, broadcasts, faction diplomacy, encounters, artifacts, sensory audio, and tests.
+3D transit vector propagation, dual-hero encounters, artifact ledgers, wave physics, broadcasts, and tests.
 """
 
 import os
@@ -33,72 +33,116 @@ def main():
     )
     subparsers = parser.add_subparsers(dest="command")
 
-    # 1. SIMULATE SUBPARSER
+    # 1. SIMULATE SUBPARSER (Multi-chapter autonomous loop)
     sim_p = subparsers.add_parser("simulate", help="Run autonomous multi-chapter universe simulation loop")
     sim_p.add_argument("--steps", type=int, default=1, help="Number of sequential chapters to simulate")
     sim_p.add_argument("--gut-delta", type=int, default=1, help="GUT ticks to advance per chapter")
     sim_p.add_argument("--dry-run", action="store_true", help="Simulate without writing files")
 
     # 2. CHAPTER SUBPARSER
-    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, prose drafting, compilation & quality evaluation")
+    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, prose drafting, encounter simulation, compilation & evaluation")
     chap_sub = chap_p.add_subparsers(dest="subcommand")
 
+    # chapter prepare
     chap_sub.add_parser("prepare", help="Prepare next round-robin chapter stub & audit constraints")
 
+    # chapter draft
     draft_p = chap_sub.add_parser("draft", help="Autonomous prose drafting co-pilot for high-quality chapter text")
     draft_p.add_argument("--book", type=int, default=1)
     draft_p.add_argument("--chapter", type=int, default=1)
     draft_p.add_argument("--save", action="store_true")
 
+    # chapter encounter
+    enc_p = chap_sub.add_parser("encounter", help="Simulate dual-hero cross-book dialogue encounter")
+    enc_p.add_argument("--book-a", type=int, default=1)
+    enc_p.add_argument("--book-b", type=int, default=11)
+    enc_p.add_argument("--type", default="SUBSPACE_COMMS")
+
+    # chapter polish
+    pol_p = chap_sub.add_parser("polish", help="Polish chapter prose for sensory colors and read-aloud cadence")
+    pol_p.add_argument("--file", required=True)
+    pol_p.add_argument("--save", action="store_true")
+
+    # chapter compile
     comp_book_p = chap_sub.add_parser("compile", help="Compile individual book chapters into unified publishing manuscript")
     comp_book_p.add_argument("--book", type=int, default=1)
 
+    # chapter complete
     comp_p = chap_sub.add_parser("complete", help="Complete chapter, log diary, propagate ephemeris & advance queue")
     comp_p.add_argument("--synopsis", required=True, help="1-2 sentence synopsis of completed chapter")
     comp_p.add_argument("--gut-delta", type=int, default=1, help="GUT ticks to advance (default: 1)")
 
+    # chapter evaluate
     eval_p = chap_sub.add_parser("evaluate", help="Evaluate chapter prose for 10-year-old child readability & cadence")
     eval_p.add_argument("--file", required=True, help="Path to markdown chapter file")
 
-    sensory_p = chap_sub.add_parser("sensory", help="Analyze chapter prose for soundscapes, color palettes & audio cues")
-    sensory_p.add_argument("--file", required=True, help="Path to markdown chapter file")
-
+    # chapter beats
     beat_p = chap_sub.add_parser("beats", help="Generate 3-act narrative scene beats for current character")
     beat_p.add_argument("--book", type=int, default=1, help="Book ID number (1-74)")
 
-    art_p = chap_sub.add_parser("artifact", help="Calculate artifact performance, overheat risk & power consumption")
-    art_p.add_argument("--type", default="SOLAR_LENS", help="SOLAR_LENS, VOID_CLOAK, ASTROLABE_FLYWHEEL, GRAVITY_BOARD")
-    art_p.add_argument("--angle", type=float, default=15.0, help="Facing angle in degrees (0-180)")
-
     # 3. UNIVERSE SUBPARSER
-    uni_p = subparsers.add_parser("universe", help="Universe state, wave physics, broadcasts, ephemeris & dashboard")
+    uni_p = subparsers.add_parser("universe", help="Universe state, 3D transit vectors, artifacts, wave physics, broadcasts & dashboard")
     uni_sub = uni_p.add_subparsers(dest="subcommand")
 
+    # universe status
     uni_sub.add_parser("status", help="Display current round-robin queue & universe status")
+
+    # universe dashboard
     uni_sub.add_parser("dashboard", help="Generate interactive HTML/SVG galactic studio dashboard")
 
-    enc_p = uni_sub.add_parser("encounters", help="Scan for spatial cross-book encounters, proximity & joint engagements")
-    enc_p.add_argument("--distance", type=float, default=15.0, help="Max distance threshold in light-AU units")
+    # universe transit
+    tr_p = uni_sub.add_parser("transit", help="Manage 3D deep space transit vector flights")
+    tr_sub = tr_p.add_subparsers(dest="transit_cmd")
+    tr_start = tr_sub.add_parser("start", help="Start deep space transit mission")
+    tr_start.add_argument("--book", type=int, required=True)
+    tr_start.add_argument("--dest", required=True)
+    tr_start.add_argument("--dest-name", default="Target World")
+    tr_start.add_argument("--origin", default="[10, 5, 0]")
+    tr_start.add_argument("--speed", type=float, default=2.0)
+    tr_start.add_argument("--gut", type=int, default=100)
+    tr_prop = tr_sub.add_parser("propagate", help="Advance active transit vectors")
+    tr_prop.add_argument("--gut-delta", type=int, default=1)
+    tr_stat = tr_sub.add_parser("status", help="Get transit progress")
+    tr_stat.add_argument("--book", type=int, required=True)
 
+    # universe artifacts
+    art_p = uni_sub.add_parser("artifacts", help="Query galactic master relic ledger & lineages")
+    art_sub = art_p.add_subparsers(dest="art_cmd")
+    art_sub.add_parser("list", help="List all master relics")
+    art_ins = art_sub.add_parser("inspect", help="Inspect relic lineage")
+    art_ins.add_argument("--name", required=True)
+    art_trans = art_sub.add_parser("transfer", help="Transfer relic custody")
+    art_trans.add_argument("--name", required=True)
+    art_trans.add_argument("--to-book", type=int, required=True)
+    art_trans.add_argument("--to-hero", required=True)
+    art_trans.add_argument("--gut", type=int, default=100)
+    art_trans.add_argument("--reason", required=True)
+
+    # universe broadcast
     bc_p = uni_sub.add_parser("broadcast", help="Query live galactic news wire and subspace radio intercepts")
     bc_p.add_argument("--radio-book", type=int, help="Optional book ID for cockpit radio intercept")
 
+    # universe wave
     wave_p = uni_sub.add_parser("wave", help="Compute 3D Confluence Wavefront wave phase & Doppler shift")
     wave_p.add_argument("--sector", default="[10, 5, 0]")
     wave_p.add_argument("--gut", type=float, default=100.0)
     wave_p.add_argument("--velocity", default="[0, 0, 0]")
 
+    # universe mesh
     mesh_p = uni_sub.add_parser("mesh", help="Inspect character relationship mesh, mentors & comms call-sign")
     mesh_p.add_argument("--book", type=int, default=1)
 
+    # universe ephemeris
     eph_p = uni_sub.add_parser("ephemeris", help="Propagate celestial ephemeris across GUT ticks")
     eph_p.add_argument("--advance-by", type=int, default=1)
     eph_p.add_argument("--save", action="store_true")
 
+    # universe route
     route_p = uni_sub.add_parser("route", help="Plan 3D interstellar route & Gateway conduits")
     route_p.add_argument("--origin", required=True)
     route_p.add_argument("--dest", required=True)
 
+    # universe lore
     lore_p = uni_sub.add_parser("lore", help="Search universe lore, chapters & callbacks")
     lore_p.add_argument("--search", required=True)
 
@@ -106,9 +150,11 @@ def main():
     fac_p = subparsers.add_parser("faction", help="Faction physics matrix & diplomacy engine")
     fac_sub = fac_p.add_subparsers(dest="subcommand")
 
+    # faction info
     info_p = fac_sub.add_parser("info", help="Get faction physics, signature equipment & fighting style")
     info_p.add_argument("--name", required=True)
 
+    # faction diplomacy
     dip_p = fac_sub.add_parser("diplomacy", help="Query inter-faction tension, treaties & conflict hooks")
     dip_p.add_argument("--a", required=True)
     dip_p.add_argument("--b", required=True)
@@ -117,15 +163,17 @@ def main():
     doc_p = subparsers.add_parser("document", help="Progress tracking & Ndebele version registry")
     doc_sub = doc_p.add_subparsers(dest="subcommand")
 
+    # document suggest
     sugg_p = doc_sub.add_parser("suggest", help="Suggest Ndebele codenames from 100+ lexicon")
     sugg_p.add_argument("--category", help="Category: Foundation, Cosmos, Energy, Engineering, Movement, Security, Harmony, Wisdom")
     sugg_p.add_argument("--count", type=int, default=5)
 
+    # document check
     chk_p = doc_sub.add_parser("check", help="Check codename uniqueness")
     chk_p.add_argument("--codename", required=True)
 
     # 6. TEST SUBPARSER
-    subparsers.add_parser("test", help="Run master automated agent sanity regression suite")
+    subparsers.add_parser("test", help="Run automated 30-point agent sanity regression suite")
 
     args = parser.parse_args()
 
@@ -143,6 +191,12 @@ def main():
         elif args.subcommand == "draft":
             import story_generator
             print(json.dumps(story_generator.generate_full_chapter_prose(args.book, args.chapter, save=args.save), indent=2))
+        elif args.subcommand == "encounter":
+            import cross_encounter_engine
+            print(json.dumps(cross_encounter_engine.simulate_cross_encounter(args.book_a, args.book_b, args.type), indent=2))
+        elif args.subcommand == "polish":
+            import prose_polisher
+            print(json.dumps(prose_polisher.polish_chapter_file(args.file, save=args.save), indent=2))
         elif args.subcommand == "compile":
             import anthology_compiler
             print(json.dumps(anthology_compiler.compile_book_manuscript(args.book), indent=2))
@@ -152,14 +206,6 @@ def main():
         elif args.subcommand == "evaluate":
             import chapter_prose_evaluator
             print(json.dumps(chapter_prose_evaluator.evaluate_file(args.file), indent=2))
-        elif args.subcommand == "sensory":
-            import sensory_audio_director
-            with open(args.file, "r", encoding="utf-8", errors="ignore") as f:
-                text = f.read()
-            print(json.dumps(sensory_audio_director.analyze_soundscape(text), indent=2))
-        elif args.subcommand == "artifact":
-            import resonance_artifact_engine
-            print(json.dumps(resonance_artifact_engine.calculate_artifact_performance(args.type, args.angle), indent=2))
         elif args.subcommand == "beats":
             import chapter_engine, narrative_beat_architect
             char = chapter_engine.get_character_info(args.book)
@@ -176,9 +222,24 @@ def main():
         elif args.subcommand == "dashboard":
             import generate_universe_dashboard
             print(json.dumps(generate_universe_dashboard.generate_dashboard(), indent=2))
-        elif args.subcommand == "encounters":
-            import multi_book_sync_engine
-            print(json.dumps(multi_book_sync_engine.detect_encounters(args.distance), indent=2))
+        elif args.subcommand == "transit":
+            import interstellar_transit_engine
+            if args.transit_cmd == "start":
+                print(json.dumps(interstellar_transit_engine.start_transit_mission(args.book, args.origin, args.dest, args.dest_name, args.speed, args.gut), indent=2))
+            elif args.transit_cmd == "propagate":
+                print(json.dumps(interstellar_transit_engine.propagate_transits(args.gut_delta), indent=2))
+            elif args.transit_cmd == "status":
+                print(json.dumps(interstellar_transit_engine.get_transit_status(args.book), indent=2))
+            else:
+                print(json.dumps(interstellar_transit_engine.propagate_transits(1), indent=2))
+        elif args.subcommand == "artifacts":
+            import artifact_ledger_engine
+            if args.art_cmd == "inspect":
+                print(json.dumps(artifact_ledger_engine.inspect_artifact(args.name), indent=2))
+            elif args.art_cmd == "transfer":
+                print(json.dumps(artifact_ledger_engine.transfer_artifact(args.name, args.to_book, args.to_hero, args.gut, args.reason), indent=2))
+            else:
+                print(json.dumps(artifact_ledger_engine.list_artifacts(), indent=2))
         elif args.subcommand == "broadcast":
             import galactic_broadcast_feed
             if args.radio_book:
