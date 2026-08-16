@@ -1,0 +1,77 @@
+{
+  "1": {
+    "book_id": 1,
+    "hero_name": "Caelum Dawnrunner",
+    "faction": "Sun-Forged Hegemony",
+    "rank": "Adept",
+    "level": 6,
+    "mastery_points": 570,
+    "stamina_pool": 175,
+    "unlocked_techniques": [
+      "Solar Beam Focusing",
+      "Photonic Prism Refraction"
+    ],
+    "milestones": [
+      {
+        "chapter": 1,
+        "gut": 100,
+        "event": "Calibrated the High Helios Solar Observatory Lens"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: Apprentice)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: Adept)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: Adept)"
+      }
+    ]
+  },
+  "11": {
+    "book_id": 11,
+    "hero_name": "Vespera Ray",
+    "faction": "Void-Bound Monks",
+    "rank": "Apprentice",
+    "level": 1,
+    "mastery_points": 110,
+    "stamina_pool": 100,
+    "unlocked_techniques": [
+      "Shadow Canopy Blending",
+      "Basalt Phase-Stepping"
+    ],
+    "milestones": [
+      {
+        "chapter": 1,
+        "gut": 100,
+        "event": "Navigated the Umbra Basalt Rift during Eclipse Nadir"
+      }
+    ]
+  },
+  "21": {
+    "book_id": 21,
+    "hero_name": "Tobias Cogsmith",
+    "faction": "Astrolabe Engineers",
+    "rank": "Apprentice",
+    "level": 1,
+    "mastery_points": 115,
+    "stamina_pool": 100,
+    "unlocked_techniques": [
+      "Gear Train Synchronization",
+      "Centrifugal Flywheel Balancing"
+    ],
+    "milestones": [
+      {
+        "chapter": 1,
+        "gut": 100,
+        "event": "Balanced the Master Flywheel on Aethelgard Equatorial Ring"
+      }
+    ]
+  }
+}

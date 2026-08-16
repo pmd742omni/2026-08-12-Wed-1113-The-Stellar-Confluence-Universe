@@ -3,7 +3,8 @@
 Confluence Master CLI Dispatcher for The Stellar Confluence Universe
 Unified command-line interface orchestrating chapter authoring, prose drafting, universe simulations,
 audiobook performance directing, 74-world planetary ecologies, continuity audits, 3D transit vectors,
-dual-hero cross encounters, artifact ledgers, wave physics, and 35-point regression diagnostics.
+dual-hero cross encounters, dynamic galactic tension tracking, character mastery progression,
+subspace relay routing, artifact ledgers, wave physics, and 40-point regression diagnostics.
 """
 
 import os
@@ -91,7 +92,7 @@ def main():
     beat_p.add_argument("--book", type=int, default=1, help="Book ID number (1-74)")
 
     # 3. UNIVERSE SUBPARSER
-    uni_p = subparsers.add_parser("universe", help="Universe state, 74-world ecologies, 3D transit vectors, artifacts, wave physics & dashboard")
+    uni_p = subparsers.add_parser("universe", help="Universe state, dynamic tension, mastery tree, relay routing, 74 worlds & dashboard")
     uni_sub = uni_p.add_subparsers(dest="subcommand")
 
     # universe status
@@ -99,6 +100,42 @@ def main():
 
     # universe dashboard
     uni_sub.add_parser("dashboard", help="Generate interactive HTML/SVG galactic studio dashboard")
+
+    # universe tension
+    ten_p = uni_sub.add_parser("tension", help="Dynamic galactic tension & war/peace state tracking")
+    ten_sub = ten_p.add_subparsers(dest="ten_cmd")
+    ten_sub.add_parser("list", help="List all tracked faction tensions")
+    ten_get = ten_sub.add_parser("get", help="Get tension between two factions")
+    ten_get.add_argument("--a", required=True)
+    ten_get.add_argument("--b", required=True)
+    ten_adj = ten_sub.add_parser("adjust", help="Adjust tension between factions")
+    ten_adj.add_argument("--a", required=True)
+    ten_adj.add_argument("--b", required=True)
+    ten_adj.add_argument("--delta", type=int, required=True)
+    ten_adj.add_argument("--reason", required=True)
+    ten_adj.add_argument("--gut", type=int, default=100)
+
+    # universe mastery
+    mas_p = uni_sub.add_parser("mastery", help="Character progression & skill mastery tree")
+    mas_sub = mas_p.add_subparsers(dest="mas_cmd")
+    mas_get = mas_sub.add_parser("get", help="Get character mastery profile")
+    mas_get.add_argument("--book", type=int, required=True)
+    mas_award = mas_sub.add_parser("award", help="Award XP points to protagonist")
+    mas_award.add_argument("--book", type=int, required=True)
+    mas_award.add_argument("--xp", type=int, required=True)
+    mas_award.add_argument("--reason", required=True)
+    mas_award.add_argument("--chap", type=int, default=1)
+    mas_award.add_argument("--gut", type=int, default=100)
+    mas_unl = mas_sub.add_parser("unlock", help="Unlock new resonance ability")
+    mas_unl.add_argument("--book", type=int, required=True)
+    mas_unl.add_argument("--tech", required=True)
+
+    # universe relay
+    rel_p = uni_sub.add_parser("relay", help="3D Subspace multi-hop signal routing & latency simulator")
+    rel_p.add_argument("--origin", default="[10, 5, 0]")
+    rel_p.add_argument("--dest", default="[-12, 4, 2]")
+    rel_p.add_argument("--freq", type=float, default=144.2)
+    rel_p.add_argument("--ion-storm", action="store_true")
 
     # universe planet
     plan_p = uni_sub.add_parser("planet", help="Query 74-world planetary astrophysics, gravity & resource exports")
@@ -187,7 +224,7 @@ def main():
     chk_p.add_argument("--codename", required=True)
 
     # 6. TEST SUBPARSER
-    subparsers.add_parser("test", help="Run automated 35-point agent sanity regression suite")
+    subparsers.add_parser("test", help="Run automated 40-point agent sanity regression suite")
 
     args = parser.parse_args()
 
@@ -242,6 +279,25 @@ def main():
         elif args.subcommand == "dashboard":
             import generate_universe_dashboard
             print(json.dumps(generate_universe_dashboard.generate_dashboard(), indent=2))
+        elif args.subcommand == "tension":
+            import galactic_tension_tracker
+            if args.ten_cmd == "get":
+                print(json.dumps(galactic_tension_tracker.get_tension(args.a, args.b), indent=2))
+            elif args.ten_cmd == "adjust":
+                print(json.dumps(galactic_tension_tracker.adjust_tension(args.a, args.b, args.delta, args.reason, args.gut), indent=2))
+            else:
+                print(json.dumps(galactic_tension_tracker.list_all_tensions(), indent=2))
+        elif args.subcommand == "mastery":
+            import character_mastery_engine
+            if args.mas_cmd == "award":
+                print(json.dumps(character_mastery_engine.award_experience(args.book, args.xp, args.reason, args.chap, args.gut), indent=2))
+            elif args.mas_cmd == "unlock":
+                print(json.dumps(character_mastery_engine.unlock_technique(args.book, args.tech), indent=2))
+            else:
+                print(json.dumps(character_mastery_engine.get_character_mastery(args.book), indent=2))
+        elif args.subcommand == "relay":
+            import subspace_relay_router
+            print(json.dumps(subspace_relay_router.route_transmission(args.origin, args.dest, args.freq, args.ion_storm), indent=2))
         elif args.subcommand == "planet":
             import planetary_ecology_matrix
             print(json.dumps(planetary_ecology_matrix.get_planetary_profile(args.world), indent=2))

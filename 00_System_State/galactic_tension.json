@@ -1,0 +1,79 @@
+{
+  "Sun-Forged Hegemony::Void-Bound Monks": {
+    "faction_a": "Sun-Forged Hegemony",
+    "faction_b": "Void-Bound Monks",
+    "tension_index": 94,
+    "diplomatic_state": "BORDER_MOBILIZATION",
+    "history": [
+      {
+        "gut": 0,
+        "delta": 0,
+        "state": "OPEN_RIVALRY",
+        "reason": "Historic Twilight Border Disputed Sector Treaty"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 90,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 92,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 94,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      }
+    ]
+  },
+  "Sun-Forged Hegemony::Astrolabe Engineers": {
+    "faction_a": "Sun-Forged Hegemony",
+    "faction_b": "Astrolabe Engineers",
+    "tension_index": 35,
+    "diplomatic_state": "TRADE_PACT_STABLE",
+    "history": [
+      {
+        "gut": 0,
+        "delta": 0,
+        "state": "TRADE_PACT_STABLE",
+        "reason": "Solar Furnace Precision Brass Trade Agreement"
+      }
+    ]
+  },
+  "Void-Bound Monks::Astrolabe Engineers": {
+    "faction_a": "Void-Bound Monks",
+    "faction_b": "Astrolabe Engineers",
+    "tension_index": 48,
+    "diplomatic_state": "COLD_WAR_FRICTION",
+    "history": [
+      {
+        "gut": 0,
+        "delta": 0,
+        "state": "COLD_WAR_FRICTION",
+        "reason": "Phase-Resonant Basalt Export Disputes"
+      }
+    ]
+  },
+  "Astrolabe Engineers::Comet-Riders": {
+    "faction_a": "Astrolabe Engineers",
+    "faction_b": "Comet-Riders",
+    "tension_index": 20,
+    "diplomatic_state": "ALLIANCE_HARMONY",
+    "history": [
+      {
+        "gut": 0,
+        "delta": 0,
+        "state": "ALLIANCE_HARMONY",
+        "reason": "Cryo-Coolant Supply Pact for Orbital Flywheels"
+      }
+    ]
+  }
+}
