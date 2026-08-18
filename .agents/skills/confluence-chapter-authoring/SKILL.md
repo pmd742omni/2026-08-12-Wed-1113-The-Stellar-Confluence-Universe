@@ -15,16 +15,20 @@ $$\text{[Book 01, Ch 1]} \to \text{[Book 02, Ch 1]} \to \dots \to \text{[Book 74
 Execute every authoring step directly via the master CLI hub (`.agents/hub.py`):
 
 ```bash
+# ONE-SHOT MASTER CYCLE (Prepare -> Draft -> Evaluate -> Polish -> Complete):
+python .agents/hub.py author cycle --book-id 1
+
+# Or execute step-by-step:
 # 1. Prepare next chapter stub, audit physical constraints & generate 3-act scene blueprint
 python .agents/hub.py author prepare
 
 # 2. Generate co-pilot draft prose (Grade 4-6 readability, sensory richness)
 python .agents/hub.py author draft --book-id 1 --chapter 1
 
-# 3. Evaluate prose readability (Grade 4-6 target), rhythm cadence & technobabble compliance
+# 3. Evaluate prose readability (Grade 4-6 target), rhythm cadence, technobabble & synonyms
 python .agents/hub.py author evaluate --file "01_Books_Library/Book_01_The_Solar_Crucible/Book_01_Chapter_01.md"
 
-# 4. Polish sensory details & soundscape
+# 4. Polish sensory details & simplify complex vocabulary
 python .agents/hub.py author polish --text "Caelum adjusted the hot metal dial."
 python .agents/hub.py author soundscape --text "The golden lens hummed with a dazzling beam."
 
@@ -37,8 +41,8 @@ python .agents/hub.py author complete --synopsis "Caelum calibrates the solar le
 ## 2. Complete Creative & Technical Toolchain Catalog
 
 ### A. Core Engine, Physics & Rotation
-1. **`chapter_engine.py` / `hub.py author prepare` / `hub.py author complete`**:
-   - Master orchestrator. Scaffolds chapter stubs, evaluates prose, awards mastery XP, updates diary, propagates ephemeris, and advances rotation.
+1. **`chapter_engine.py` / `hub.py author cycle` / `hub.py author prepare` / `hub.py author complete`**:
+   - Master orchestrator. Scaffolds chapter stubs, executes one-shot authoring cycles, evaluates prose, awards mastery XP, updates diary, propagates ephemeris, and advances rotation.
 2. **`story_generator.py` / `hub.py author draft`**:
    - Composes complete Grade 4–6 chapter drafts synthesizing ephemeris, resonance limitations, character voices, and 3-act beats.
 3. **`confluence_wave_physics.py` / `hub.py author physics`**:

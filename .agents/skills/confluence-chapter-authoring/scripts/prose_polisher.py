@@ -25,7 +25,7 @@ SENSORY_ENHANCERS = {
     r"\bshadow\b": "cool umbral shadow"
 }
 
-def polish_prose_text(text):
+def polish_prose_text(text, simplify_vocabulary=True):
     # 1. Clean and evaluate original
     orig_eval = chapter_prose_evaluator.evaluate_prose(text)
     
@@ -35,7 +35,16 @@ def polish_prose_text(text):
         # Replace only a few occurrences to avoid purple prose
         polished = re.sub(pat, repl, polished, count=2, flags=re.IGNORECASE)
 
-    # 3. Re-evaluate polished prose
+    # 3. Simplify complex academic/adult words for young readers (Grade 4-6)
+    replacements_made = []
+    if simplify_vocabulary and hasattr(chapter_prose_evaluator, "CHILD_FRIENDLY_SYNONYMS"):
+        for complex_word, simple_synonym in chapter_prose_evaluator.CHILD_FRIENDLY_SYNONYMS.items():
+            pattern = rf"\b{complex_word}\b"
+            if re.search(pattern, polished, re.IGNORECASE):
+                polished = re.sub(pattern, simple_synonym, polished, flags=re.IGNORECASE)
+                replacements_made.append(f"{complex_word} -> {simple_synonym}")
+
+    # 4. Re-evaluate polished prose
     new_eval = chapter_prose_evaluator.evaluate_prose(polished)
 
     return {
@@ -44,6 +53,7 @@ def polish_prose_text(text):
         "polished_words": new_eval.get("total_words", 0),
         "original_grade": orig_eval.get("flesch_kincaid_grade_level", 0.0),
         "polished_grade": new_eval.get("flesch_kincaid_grade_level", 0.0),
+        "vocabulary_replacements": replacements_made,
         "polished_cadence": new_eval.get("audio_cadence", {}),
         "polished_text": polished
     }

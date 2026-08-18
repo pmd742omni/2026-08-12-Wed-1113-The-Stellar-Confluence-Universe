@@ -121,6 +121,7 @@ Somewhere out there across the dark sectors, the next beacon was waiting to awak
         "title": title,
         "total_words": len(full_prose.split()),
         "saved_to_file": file_path,
+        "chapter_prose": full_prose,
         "prose_preview": full_prose[:400] + "..."
     }
 

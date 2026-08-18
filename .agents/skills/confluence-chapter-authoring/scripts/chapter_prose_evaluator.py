@@ -19,12 +19,58 @@ FORBIDDEN_TECHNOBABBLE = [
     "superposition collapse", "differential tensor", "gravitational singularity"
 ]
 
+CHILD_FRIENDLY_SYNONYMS = {
+    "demonstrated": "showed",
+    "extraordinary": "amazing",
+    "velocity": "speed",
+    "colossal": "huge",
+    "illumination": "glow",
+    "utilize": "use",
+    "commence": "begin",
+    "terminate": "end",
+    "manipulate": "steer",
+    "substantial": "heavy",
+    "diminish": "fade",
+    "approximate": "nearly",
+    "simultaneously": "at once",
+    "consequently": "so",
+    "implement": "build",
+    "fluctuation": "shift",
+    "configuration": "setup",
+    "mechanism": "device",
+    "malfunction": "glitch",
+    "navigational": "steering",
+    "equilibrium": "balance",
+    "magnitude": "force",
+    "catastrophic": "ruinous",
+    "deteriorate": "decay",
+    "oscillate": "swing",
+    "synchronize": "match",
+    "accelerate": "speed up",
+    "decelerate": "slow down",
+    "calculate": "work out",
+    "investigate": "check"
+}
+
 SENSORY_WORDS = {
     "visual": ["gleamed", "glared", "sparkled", "bronze", "shadow", "amber", "golden", "copper", "flicker", "blaze", "radiant", "dim", "crimson", "shimmer"],
     "auditory": ["hummed", "groaned", "chimed", "hissed", "clicked", "whistled", "clang", "roared", "thumped", "whispered", "crackled"],
     "tactile": ["warmth", "chill", "heavy", "smooth", "sharp", "insulated", "vibrating", "rough", "freezing", "searing", "grip"],
     "action": ["leaped", "ducked", "cranked", "pulled", "twisted", "soared", "glided", "darted", "braced"]
 }
+
+def suggest_child_friendly_alternatives(text):
+    """Scans text and returns simpler Grade 4-6 synonyms for overly complex words."""
+    clean = text.lower()
+    suggestions = []
+    for complex_word, simple_synonym in CHILD_FRIENDLY_SYNONYMS.items():
+        if re.search(rf'\b{complex_word}\b', clean):
+            suggestions.append({
+                "complex_word": complex_word,
+                "child_friendly_alternative": simple_synonym,
+                "tip": f"Replace '{complex_word}' with '{simple_synonym}' for clearer Grade 4-6 cadence"
+            })
+    return suggestions
 
 def count_syllables(word):
     word = word.lower().strip(".:;?!'\",")
@@ -118,6 +164,9 @@ def evaluate_prose(text, expected_constraint=None):
     # Grade Level Check: Target is Grade 4.0 - 6.9 (Ages 9-12)
     is_grade_appropriate = (3.5 <= fkgl <= 7.0)
 
+    # Child-friendly synonym recommendations for complex vocabulary
+    synonym_suggestions = suggest_child_friendly_alternatives(clean_text)
+
     recommendations = []
     if fkgl > 7.0:
         recommendations.append("Reduce sentence length and simplify multi-syllable vocabulary to reach Grade 4-6 target.")
@@ -129,6 +178,9 @@ def evaluate_prose(text, expected_constraint=None):
     
     if jargon_found:
         recommendations.append(f"Remove complex technobabble terms ({', '.join(jargon_found)}) and replace with grounded sensory physics.")
+
+    if synonym_suggestions:
+        recommendations.append(f"Consider simplifying {len(synonym_suggestions)} complex word(s) using Grade 4-6 alternatives.")
 
     return {
         "status": "PASS" if is_grade_appropriate and not jargon_found else "WARNING",
@@ -142,6 +194,7 @@ def evaluate_prose(text, expected_constraint=None):
         "sensory_word_density": f"{sensory_density}%",
         "audio_cadence": audio_cadence,
         "jargon_violations": jargon_found,
+        "synonym_suggestions": synonym_suggestions,
         "recommendations": recommendations
     }
 

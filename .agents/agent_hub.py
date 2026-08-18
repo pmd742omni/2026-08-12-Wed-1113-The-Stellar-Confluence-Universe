@@ -35,7 +35,11 @@ from core.agent_core import (
     colorize,
     ensure_sys_path,
     generate_terminal_overview,
-    get_rotation_state
+    get_rotation_state,
+    get_all_characters,
+    generate_book_dossier,
+    format_book_dossier_terminal,
+    search_universe
 )
 
 ensure_sys_path()
@@ -95,7 +99,11 @@ def run_doctor_diagnostic():
 
 def handle_author(args):
     """Dispatches authoring actions."""
-    if args.action == "prepare":
+    if args.action == "cycle":
+        import chapter_engine
+        res = chapter_engine.run_full_authoring_cycle(args.book_id, args.chapter, args.synopsis, args.gut_delta, args.dry_run)
+        print(json.dumps(res, indent=2))
+    elif args.action == "prepare":
         import chapter_engine
         res = chapter_engine.prepare_next_chapter_stub()
         print(json.dumps(res, indent=2))
@@ -375,6 +383,76 @@ def handle_flow(args):
     else:
         print(json.dumps({"error": f"Unknown flow action: {args.action}"}, indent=2))
 
+def handle_book(args):
+    """Dispatches storyline dossier display."""
+    if args.json:
+        dossier = generate_book_dossier(args.book_id)
+        print(json.dumps(dossier, indent=2))
+    else:
+        print(format_book_dossier_terminal(args.book_id))
+
+def handle_search(args):
+    """Dispatches galactic global search."""
+    res = search_universe(args.query)
+    if args.json:
+        print(json.dumps(res, indent=2))
+    else:
+        w = 78
+        sep = colorize("=" * w, TermColor.BRIGHT_CYAN)
+        sub_sep = colorize("-" * w, TermColor.DIM)
+        print("\n" + sep)
+        print(colorize(f"   *  GALACTIC SEARCH RESULTS: '{args.query}'  *   ({res['total_results']} Matches Found)", TermColor.BOLD, TermColor.BRIGHT_YELLOW))
+        print(sep)
+        if res["matched_storylines"]:
+            print(f" {colorize('MATCHED STORYLINES & CHARACTERS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for b in res["matched_storylines"][:5]:
+                print(f"   |-- Book {b['book_id']:02d}: {colorize(b['title'], TermColor.BRIGHT_YELLOW)} | {b['hero']} ({b['faction']}) @ {b['world']}")
+        if res["matched_relics"]:
+            print(sub_sep)
+            print(f" {colorize('MATCHED MASTER RELICS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for r in res["matched_relics"][:3]:
+                r_type = r.get("relic_type") or r.get("energy_type") or "Master Relic"
+                r_cust = r.get("current_custody") or (f"Book {r.get('current_bearer_book')} ({r.get('current_bearer_hero')})" if r.get("current_bearer_book") else "Unknown")
+                print(f"   |-- {colorize(r.get('name', 'Relic'), TermColor.BRIGHT_YELLOW)} [{r_type}] in custody of {r_cust}")
+        if res["matched_transits"]:
+            print(sub_sep)
+            print(f" {colorize('MATCHED TRANSIT MISSIONS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for t in res["matched_transits"][:3]:
+                print(f"   |-- Book {t.get('book_id'):02d} to {t.get('waypoint_name')} (ETA: GUT {t.get('eta_gut')})")
+        if res["matched_inventory_items"]:
+            print(sub_sep)
+            print(f" {colorize('MATCHED CHARACTER INVENTORY:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for itm in res["matched_inventory_items"][:3]:
+                itm_obj = itm.get("item", {})
+                itm_label = itm_obj.get("name", itm_obj.get("item", str(itm_obj))) if isinstance(itm_obj, dict) else str(itm_obj)
+                print(f"   |-- {itm.get('book')}: {itm_label}")
+        if res["total_results"] == 0:
+            print(colorize("   No matching storylines, relics, or active missions found.", TermColor.DIM))
+        print(sep + "\n")
+
+def handle_quickstart(args=None):
+    """Displays an interactive quickstart guide with clear action suggestions."""
+    w = 78
+    sep = colorize("=" * w, TermColor.BRIGHT_CYAN)
+    sub_sep = colorize("-" * w, TermColor.DIM)
+    rot = get_rotation_state()
+    active_b = rot["active_book_index"]
+    active_c = rot["active_chapter_number"]
+
+    print("\n" + sep)
+    print(colorize("   *  THE STELLAR CONFLUENCE UNIVERSE: QUICKSTART GUIDE  *", TermColor.BOLD, TermColor.BRIGHT_YELLOW))
+    print(sep)
+    print(f" Current Active Rotation: {colorize(f'Book {active_b:02d}, Chapter {active_c:02d}', TermColor.BRIGHT_GREEN)}")
+    print(sub_sep)
+    print(colorize(" RECOMMENDED AGENT WORKFLOWS:", TermColor.BOLD, TermColor.BRIGHT_WHITE))
+    print(f"   1. {colorize('One-Shot Chapter Cycle:', TermColor.BRIGHT_CYAN)}   python .agents/hub.py author cycle")
+    print(f"   2. {colorize('Inspect Storyline Dossier:', TermColor.BRIGHT_CYAN)}  python .agents/hub.py book {active_b}")
+    print(f"   3. {colorize('Global Galactic Search:', TermColor.BRIGHT_CYAN)}    python .agents/hub.py search <term>")
+    print(f"   4. {colorize('Full System Health Check:', TermColor.BRIGHT_CYAN)}  python .agents/hub.py doctor")
+    print(f"   5. {colorize('Sanity & Regression Suite:', TermColor.BRIGHT_CYAN)} python .agents/hub.py test")
+    print(f"   6. {colorize('Document Progress (Now):', TermColor.BRIGHT_CYAN)}  python .agents/hub.py document timestamp")
+    print(sep + "\n")
+
 def build_parser():
     parser = argparse.ArgumentParser(
         prog="agent_hub",
@@ -390,17 +468,30 @@ def build_parser():
     subparsers.add_parser("doctor", help="Execute complete system diagnostic health sweep")
 
     # 3. test
-    subparsers.add_parser("test", help="Execute complete 65+ sanity & regression test suite")
+    subparsers.add_parser("test", help="Execute complete 75+ sanity & regression test suite")
 
-    # 4. author
+    # 4. quickstart
+    subparsers.add_parser("quickstart", help="Display interactive quickstart guide and recommended agent actions")
+
+    # 5. book (Dossier)
+    p_book = subparsers.add_parser("book", help="Display complete 360-degree storyline dossier card")
+    p_book.add_argument("book_id", type=int, help="Book index (1-74)")
+    p_book.add_argument("--json", action="store_true", help="Output dossier as JSON")
+
+    # 6. search (Global Search)
+    p_search = subparsers.add_parser("search", help="Galactic global search across all 74 storylines, relics, transits & inventory")
+    p_search.add_argument("query", help="Search keyword or term")
+    p_search.add_argument("--json", action="store_true", help="Output results as JSON")
+
+    # 7. author
     p_author = subparsers.add_parser("author", help="Confluence Chapter Authoring commands")
     p_author.add_argument("action", choices=[
-        "prepare", "complete", "evaluate", "polish", "storyboard", "audiobook", "compile",
+        "cycle", "prepare", "complete", "evaluate", "polish", "storyboard", "audiobook", "compile",
         "simulate", "resonance", "voice", "encounter", "physics", "faction", "diplomacy",
         "relic", "soundscape", "draft"
     ], help="Authoring action")
-    p_author.add_argument("--synopsis", help="Chapter synopsis for 'complete'")
-    p_author.add_argument("--gut-delta", type=int, default=1, help="GUT delta for 'complete'")
+    p_author.add_argument("--synopsis", help="Chapter synopsis for 'complete' or 'cycle'")
+    p_author.add_argument("--gut-delta", type=int, default=1, help="GUT delta for 'complete' or 'cycle'")
     p_author.add_argument("--file", help="File path for evaluation/continuity")
     p_author.add_argument("--text", help="Text payload for analysis/polishing")
     p_author.add_argument("--book-id", type=int, help="Book index (1-74)")
@@ -418,9 +509,9 @@ def build_parser():
     p_author.add_argument("--freq", type=float, default=144.0, help="Frequency in MHz")
     p_author.add_argument("--loc", help="Location type (SURFACE, ORBITAL, DEEP_SPACE_TRANSIT, GATEWAY_SUBSPACE)")
     p_author.add_argument("--steps", type=int, default=1, help="Simulation steps")
-    p_author.add_argument("--dry-run", action="store_true", help="Dry run simulation")
+    p_author.add_argument("--dry-run", action="store_true", help="Dry run simulation or cycle")
 
-    # 5. state
+    # 8. state
     p_state = subparsers.add_parser("state", help="Universe State Manager commands")
     p_state.add_argument("action", choices=[
         "audit", "dashboard", "ephemeris", "hazards", "tension", "trade", "mastery",
@@ -455,12 +546,12 @@ def build_parser():
     p_state.add_argument("--add-item", help="Item name to add to character inventory")
     p_state.add_argument("--desc", help="Item description for character inventory")
 
-    # 6. audit
+    # 9. audit
     p_audit = subparsers.add_parser("audit", help="World Engine Audit commands")
     p_audit.add_argument("action", choices=["test", "continuity", "paradox", "physics", "all"], help="Audit action")
     p_audit.add_argument("--file", help="Chapter markdown file path")
 
-    # 7. document
+    # 10. document
     p_doc = subparsers.add_parser("document", help="Document-Now workflow commands")
     p_doc.add_argument("action", choices=["bootstrap", "suggest", "check", "next-version", "timestamp", "register"], help="Document action")
     p_doc.add_argument("--codename", help="Proposed Ndebele codename")
@@ -472,7 +563,7 @@ def build_parser():
     p_doc.add_argument("--date-time", help="Formatted human date time for register")
     p_doc.add_argument("--file", help="Progress filename for register")
 
-    # 8. flow
+    # 11. flow
     p_flow = subparsers.add_parser("flow", help="Prompt-Response Flow journal commands")
     p_flow.add_argument("action", choices=["log", "active", "summary", "new"], help="Flow action")
     p_flow.add_argument("--prompt", help="Developer prompt text")
@@ -498,6 +589,12 @@ def main():
     elif args.command == "test":
         success = run_test_suite()
         sys.exit(0 if success else 1)
+    elif args.command == "quickstart":
+        handle_quickstart(args)
+    elif args.command == "book":
+        handle_book(args)
+    elif args.command == "search":
+        handle_search(args)
     elif args.command == "author":
         handle_author(args)
     elif args.command == "state":

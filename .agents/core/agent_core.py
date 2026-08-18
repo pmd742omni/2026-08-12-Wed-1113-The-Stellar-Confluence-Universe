@@ -152,25 +152,41 @@ def get_rotation_state() -> Dict[str, Any]:
     if m_next_c: state["next_chapter_number"] = int(m_next_c.group(1))
     return state
 
-def get_character_info(book_index: int) -> Optional[Dict[str, Any]]:
-    """Retrieves character info from character_registry.md."""
+# Memory Cache for Fast State Lookups
+_STATE_CACHE: Dict[str, Any] = {}
+
+def get_all_characters(reload: bool = False) -> List[Dict[str, Any]]:
+    """Retrieves all 74 characters from character_registry.md with caching."""
+    if not reload and "all_characters" in _STATE_CACHE:
+        return _STATE_CACHE["all_characters"]
+    
     if not os.path.exists(CHARACTER_REGISTRY_MD):
-        return None
+        return []
     with open(CHARACTER_REGISTRY_MD, "r", encoding="utf-8", errors="ignore") as f:
         content = f.read()
-    pattern = rf"\|\s*\*\*Book\s+{book_index:02d}\*\*\s*\|\s*([^\|]+)\s*\|\s*`?([^\|`]+)`?\s*\|\s*([^\|]+)\s*\|\s*([^\|]+)\s*\|\s*`?([^\|`]+)`?\s*\|\s*`?([^\|`]+)`?\s*\|"
-    match = re.search(pattern, content, re.IGNORECASE)
-    if not match:
-        return None
-    return {
-        "book_id": book_index,
-        "title": match.group(1).strip(),
-        "hero": match.group(2).strip(),
-        "faction": match.group(3).strip(),
-        "world": match.group(4).strip(),
-        "loc_type": match.group(5).strip().upper(),
-        "sector": match.group(6).strip()
-    }
+    
+    characters = []
+    pattern = r"\|\s*\*\*Book\s+(\d+)\*\*\s*\|\s*([^\|]+)\s*\|\s*`?([^\|`]+)`?\s*\|\s*([^\|]+)\s*\|\s*([^\|]+)\s*\|\s*`?([^\|`]+)`?\s*\|\s*`?([^\|`]+)`?\s*\|"
+    for match in re.finditer(pattern, content):
+        characters.append({
+            "book_id": int(match.group(1)),
+            "title": match.group(2).strip(),
+            "hero": match.group(3).strip(),
+            "faction": match.group(4).strip(),
+            "world": match.group(5).strip(),
+            "loc_type": match.group(6).strip().upper(),
+            "sector": match.group(7).strip()
+        })
+    _STATE_CACHE["all_characters"] = characters
+    return characters
+
+def get_character_info(book_index: int) -> Optional[Dict[str, Any]]:
+    """Retrieves character info from character_registry.md."""
+    chars = get_all_characters()
+    for c in chars:
+        if c["book_id"] == book_index:
+            return c
+    return None
 
 def get_clockwork_info(book_index: int) -> Optional[Dict[str, Any]]:
     """Retrieves clockwork facing and resonance info from cosmic_clockwork.md."""
@@ -190,6 +206,191 @@ def get_clockwork_info(book_index: int) -> Optional[Dict[str, Any]]:
         "facing_angle": float(match.group(5)),
         "resonance_state": match.group(6).strip(),
         "power_limit_desc": match.group(7).strip()
+    }
+
+def generate_book_dossier(book_id: int) -> Dict[str, Any]:
+    """Generates a complete 360-degree dossier for any book storyline (1-74)."""
+    char = get_character_info(book_id) or {
+        "book_id": book_id,
+        "title": f"Storyline {book_id:02d}",
+        "hero": f"Hero {book_id:02d}",
+        "faction": "Independent Star-Farer",
+        "world": "Deep Space Station",
+        "loc_type": "SURFACE",
+        "sector": "[0, 0, 0]"
+    }
+    clock = get_clockwork_info(book_id) or {
+        "gut": 100,
+        "facing_angle": 0.0,
+        "resonance_state": "PEAK_FACING",
+        "power_limit_desc": "Standard output"
+    }
+
+    # Character Arc data
+    arcs_raw = read_json_safe(CHARACTER_ARCS_JSON, {})
+    arc_data = arcs_raw.get(f"Book_{book_id:02d}", arcs_raw.get(str(book_id), {}))
+    inventory = arc_data.get("inventory", [])
+    wounds = arc_data.get("wounds_or_conditions", arc_data.get("conditions", []))
+    milestones = arc_data.get("milestones", [])
+
+    # Mastery data
+    mastery_raw = read_json_safe(CHARACTER_MASTERY_JSON, {})
+    m_data = mastery_raw.get(f"Book_{book_id:02d}", mastery_raw.get(str(book_id), {}))
+    mastery_rank = m_data.get("rank", "Novice")
+    mastery_xp = m_data.get("xp", 0)
+    mastery_level = m_data.get("level", 1)
+    skills = m_data.get("unlocked_skills", [])
+
+    # Active Transits
+    transit_raw = read_json_safe(TRANSIT_MISSIONS_JSON, {})
+    transit_list = list(transit_raw.values()) if isinstance(transit_raw, dict) else (transit_raw if isinstance(transit_raw, list) else [])
+    active_transit = next((t for t in transit_list if isinstance(t, dict) and t.get("book_id") == book_id and t.get("status") == "IN_TRANSIT"), None)
+
+    # Relics
+    art_raw = read_json_safe(ARTIFACT_LEDGER_JSON, {})
+    art_list = art_raw.get("master_artifacts", list(art_raw.values()) if isinstance(art_raw, dict) else (art_raw if isinstance(art_raw, list) else []))
+    held_relics = [
+        a for a in art_list if isinstance(a, dict) and (
+            a.get("current_custody") == f"Book {book_id:02d}" or
+            a.get("current_bearer_book") == book_id
+        )
+    ]
+
+    # Chapter Manuscript status
+    book_slug = f"Book_{book_id:02d}_{slugify(char['title'])}"
+    book_dir = os.path.join(BOOKS_LIB_DIR, book_slug)
+    chapters_written = 0
+    if os.path.exists(book_dir):
+        chapters_written = len([f for f in os.listdir(book_dir) if f.startswith("Book_") and f.endswith(".md")])
+
+    return {
+        "book_id": book_id,
+        "title": char["title"],
+        "hero": char["hero"],
+        "faction": char["faction"],
+        "homeworld": char["world"],
+        "location_type": char["loc_type"],
+        "sector_coords": char["sector"],
+        "facing_angle": clock.get("facing_angle", 0.0),
+        "resonance_state": clock.get("resonance_state", "PEAK_FACING"),
+        "power_dynamics": clock.get("power_limit_desc", "Standard"),
+        "mastery": {
+            "rank": mastery_rank,
+            "level": mastery_level,
+            "xp": mastery_xp,
+            "unlocked_skills": skills
+        },
+        "arc": {
+            "inventory": inventory,
+            "wounds_or_conditions": wounds,
+            "milestones": milestones
+        },
+        "active_transit": active_transit,
+        "relics": held_relics,
+        "chapters_written_count": chapters_written
+    }
+
+def format_book_dossier_terminal(book_id: int) -> str:
+    """Renders a styled ASCII dossier card for a storyline."""
+    dossier = generate_book_dossier(book_id)
+    w = 78
+    sep = colorize("=" * w, TermColor.BRIGHT_CYAN)
+    sub_sep = colorize("-" * w, TermColor.DIM)
+
+    lines = [
+        "",
+        sep,
+        colorize(f"   *  STORYLINE DOSSIER: BOOK {dossier['book_id']:02d}  *   {dossier['title'].upper()}", TermColor.BOLD, TermColor.BRIGHT_YELLOW),
+        sep,
+        f" {colorize('Protagonist:', TermColor.BOLD)} {colorize(dossier['hero'], TermColor.BRIGHT_WHITE)}   |   {colorize('Faction:', TermColor.BOLD)} {dossier['faction']}",
+        f" {colorize('Homeworld:', TermColor.BOLD)} {dossier['homeworld']} ({dossier['location_type']} | Sector {dossier['sector_coords']})",
+        f" {colorize('Wavefront State:', TermColor.BOLD)} {colorize(dossier['resonance_state'], TermColor.BRIGHT_MAGENTA)} ({dossier['facing_angle']:.1f}° Facing)",
+        f" {colorize('Power Dynamics:', TermColor.DIM)} {dossier['power_dynamics']}",
+        sub_sep,
+        f" {colorize('CHARACTER PROGRESSION & MASTERY:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}",
+        f"   - {colorize('Mastery Rank:', TermColor.DIM)} {colorize(dossier['mastery']['rank'], TermColor.BRIGHT_GREEN)} (Lvl {dossier['mastery']['level']} | {dossier['mastery']['xp']} XP)",
+        f"   - {colorize('Unlocked Skills:', TermColor.DIM)} {', '.join(dossier['mastery']['unlocked_skills']) if dossier['mastery']['unlocked_skills'] else 'None unlocked'}",
+        f"   - {colorize('Inventory Items:', TermColor.DIM)} {len(dossier['arc']['inventory'])} items ({', '.join([i.get('name', i.get('item', str(i))) if isinstance(i, dict) else str(i) for i in dossier['arc']['inventory'][:3]]) if dossier['arc']['inventory'] else 'Standard Kit'})",
+        f"   - {colorize('Active Wounds/Conditions:', TermColor.DIM)} {', '.join(dossier['arc']['wounds_or_conditions']) if dossier['arc']['wounds_or_conditions'] else 'In peak physical health'}",
+        sub_sep,
+        f" {colorize('SPACEFLIGHT & RELIC STATUS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}"
+    ]
+
+    if dossier["active_transit"]:
+        tr = dossier["active_transit"]
+        lines.append(f"   - {colorize('Starship Flight:', TermColor.DIM)} {colorize('IN TRANSIT', TermColor.BRIGHT_YELLOW)} from {tr.get('origin_coords')} to {tr.get('dest_coords')} (ETA: GUT {tr.get('eta_gut')})")
+    else:
+        lines.append(f"   - {colorize('Starship Flight:', TermColor.DIM)} Stationed at {dossier['homeworld']}")
+
+    if dossier["relics"]:
+        for r in dossier["relics"]:
+            lines.append(f"   - {colorize('Held Master Relic:', TermColor.DIM)} {colorize(r.get('name'), TermColor.BRIGHT_YELLOW)} ({r.get('relic_type')})")
+    else:
+        lines.append(f"   - {colorize('Held Master Relic:', TermColor.DIM)} No legendary relic registered in active custody")
+
+    lines.extend([
+        f"   - {colorize('Manuscript Chapters Written:', TermColor.DIM)} {dossier['chapters_written_count']} chapter(s)",
+        sep,
+        ""
+    ])
+    return "\n".join(lines)
+
+def search_universe(query: str) -> Dict[str, Any]:
+    """Performs a global search across all 74 storylines, characters, factions, worlds, relics, and items."""
+    q = query.lower().strip()
+    chars = get_all_characters()
+    
+    matched_books = []
+    for c in chars:
+        if (q in str(c["book_id"]) or 
+            q in c["title"].lower() or 
+            q in c["hero"].lower() or 
+            q in c["faction"].lower() or 
+            q in c["world"].lower() or 
+            q in c["sector"].lower()):
+            matched_books.append(c)
+
+    # Search Relics
+    art_raw = read_json_safe(ARTIFACT_LEDGER_JSON, {})
+    art_list = art_raw.get("master_artifacts", list(art_raw.values()) if isinstance(art_raw, dict) else (art_raw if isinstance(art_raw, list) else []))
+    matched_relics = [
+        r for r in art_list
+        if isinstance(r, dict) and (
+            q in r.get("name", "").lower() or
+            q in r.get("relic_type", "").lower() or
+            q in r.get("current_custody", "").lower() or
+            q in r.get("current_bearer_hero", "").lower() or
+            q in r.get("origin_world", "").lower() or
+            q in r.get("energy_type", "").lower() or
+            q in r.get("power_effect", "").lower()
+        )
+    ]
+
+    # Search Active Transits
+    transit_raw = read_json_safe(TRANSIT_MISSIONS_JSON, {})
+    transit_list = list(transit_raw.values()) if isinstance(transit_raw, dict) else (transit_raw if isinstance(transit_raw, list) else [])
+    matched_transits = [
+        t for t in transit_list
+        if isinstance(t, dict) and (q in str(t.get("book_id", "")) or q in str(t.get("waypoint_name", "")).lower() or q in str(t.get("origin_coords", "")) or q in str(t.get("dest_coords", "")))
+    ]
+
+    # Search Character Inventories
+    arcs_raw = read_json_safe(CHARACTER_ARCS_JSON, {})
+    matched_items = []
+    for b_key, b_arc in arcs_raw.items():
+        if isinstance(b_arc, dict):
+            for itm in b_arc.get("inventory", []):
+                itm_name = itm.get("name", itm.get("item", str(itm))) if isinstance(itm, dict) else str(itm)
+                if q in itm_name.lower():
+                    matched_items.append({"book": b_key, "item": itm})
+
+    return {
+        "query": query,
+        "total_results": len(matched_books) + len(matched_relics) + len(matched_transits) + len(matched_items),
+        "matched_storylines": matched_books,
+        "matched_relics": matched_relics,
+        "matched_transits": matched_transits,
+        "matched_inventory_items": matched_items
     }
 
 # Ensure standard output uses UTF-8 if available

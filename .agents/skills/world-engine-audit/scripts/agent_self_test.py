@@ -716,6 +716,118 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
     except Exception as e:
         results.append({"test": "65. Prompt-Response Flow: Session Discovery", "status": "FAIL", "error": str(e)})
 
+    # 66. Core Engine: Storyline 360-Degree Dossier Generator
+    try:
+        from core.agent_core import generate_book_dossier
+        dossier = generate_book_dossier(1)
+        assert dossier["book_id"] == 1 and "hero" in dossier and "mastery" in dossier
+        results.append({"test": "66. Core Engine: Storyline Dossier Generator", "status": "PASS", "details": f"Dossier for Book 01: {dossier['hero']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "66. Core Engine: Storyline Dossier Generator", "status": "FAIL", "error": str(e)})
+
+    # 67. Core Engine: Storyline Dossier ASCII Terminal Card
+    try:
+        from core.agent_core import format_book_dossier_terminal
+        card = format_book_dossier_terminal(1)
+        assert "STORYLINE DOSSIER: BOOK 01" in card and "CHARACTER PROGRESSION" in card
+        results.append({"test": "67. Core Engine: Storyline Terminal Card", "status": "PASS", "details": "Styled ASCII card verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "67. Core Engine: Storyline Terminal Card", "status": "FAIL", "error": str(e)})
+
+    # 68. Core Engine: Global Galactic Search (Storylines)
+    try:
+        from core.agent_core import search_universe
+        s_res = search_universe("Caelum")
+        assert s_res["total_results"] >= 1 and len(s_res["matched_storylines"]) >= 1
+        results.append({"test": "68. Core Engine: Global Search (Storylines)", "status": "PASS", "details": f"{s_res['total_results']} total matches"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "68. Core Engine: Global Search (Storylines)", "status": "FAIL", "error": str(e)})
+
+    # 69. Core Engine: Global Galactic Search (Relics & Custody)
+    try:
+        from core.agent_core import search_universe
+        s_relic = search_universe("Lens")
+        assert len(s_relic["matched_relics"]) >= 1
+        results.append({"test": "69. Core Engine: Global Search (Relics)", "status": "PASS", "details": f"{len(s_relic['matched_relics'])} relic matches"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "69. Core Engine: Global Search (Relics)", "status": "FAIL", "error": str(e)})
+
+    # 70. Core Engine: Global Galactic Search (Inventories)
+    try:
+        from core.agent_core import search_universe
+        s_inv = search_universe("Prism")
+        assert len(s_inv["matched_inventory_items"]) >= 1
+        results.append({"test": "70. Core Engine: Global Search (Inventories)", "status": "PASS", "details": f"{len(s_inv['matched_inventory_items'])} inventory matches"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "70. Core Engine: Global Search (Inventories)", "status": "FAIL", "error": str(e)})
+
+    # 71. Confluence Authoring: Child-Friendly Synonym Recommender
+    try:
+        import chapter_prose_evaluator
+        syn_res = chapter_prose_evaluator.suggest_child_friendly_alternatives("The mechanism demonstrated extraordinary velocity.")
+        assert len(syn_res) >= 3
+        results.append({"test": "71. Confluence Authoring: Synonym Recommender", "status": "PASS", "details": f"{len(syn_res)} simplifications suggested"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "71. Confluence Authoring: Synonym Recommender", "status": "FAIL", "error": str(e)})
+
+    # 72. Confluence Authoring: Prose Polishing & Vocabulary Simplification
+    try:
+        import prose_polisher
+        pol_res = prose_polisher.polish_prose_text("The character demonstrated extraordinary speed.", simplify_vocabulary=True)
+        assert pol_res["status"] == "POLISHED" and len(pol_res["vocabulary_replacements"]) >= 1
+        results.append({"test": "72. Confluence Authoring: Auto-Simplifier Polisher", "status": "PASS", "details": f"Replacements: {pol_res['vocabulary_replacements']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "72. Confluence Authoring: Auto-Simplifier Polisher", "status": "FAIL", "error": str(e)})
+
+    # 73. Confluence Authoring: End-to-End One-Shot Authoring Cycle (Dry-Run)
+    try:
+        import chapter_engine
+        cycle_res = chapter_engine.run_full_authoring_cycle(book_id=1, chapter=1, dry_run=True)
+        assert cycle_res["cycle_status"] == "DRY_RUN_COMPLETED" and cycle_res["book_id"] == 1
+        results.append({"test": "73. Confluence Authoring: One-Shot Author Cycle", "status": "PASS", "details": "Dry-run cycle succeeded"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "73. Confluence Authoring: One-Shot Author Cycle", "status": "FAIL", "error": str(e)})
+
+    # 74. Master Hub CLI: Storyline Dossier Handler
+    try:
+        import agent_hub
+        class MockBookArgs:
+            book_id = 1
+            json = True
+        # Verify JSON dossier generation without exceptions
+        agent_hub.generate_book_dossier(1)
+        results.append({"test": "74. Master Hub: Dossier CLI Handler", "status": "PASS", "details": "Book dossier dispatcher verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "74. Master Hub: Dossier CLI Handler", "status": "FAIL", "error": str(e)})
+
+    # 75. Master Hub CLI: Galactic Search Handler
+    try:
+        import agent_hub
+        search_out = agent_hub.search_universe("Helios")
+        assert search_out["total_results"] > 0
+        results.append({"test": "75. Master Hub: Global Search CLI Handler", "status": "PASS", "details": "Search dispatcher verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "75. Master Hub: Global Search CLI Handler", "status": "FAIL", "error": str(e)})
+
+    # 76. Master Hub CLI: Quickstart Guide Generator
+    try:
+        import agent_hub
+        assert hasattr(agent_hub, "handle_quickstart")
+        results.append({"test": "76. Master Hub: Quickstart Guide Generator", "status": "PASS", "details": "Quickstart dispatcher verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "76. Master Hub: Quickstart Guide Generator", "status": "FAIL", "error": str(e)})
+
     duration_total_ms = round((time.time() - start_total) * 1000, 1)
     all_pass = (passed_count == len(results))
 

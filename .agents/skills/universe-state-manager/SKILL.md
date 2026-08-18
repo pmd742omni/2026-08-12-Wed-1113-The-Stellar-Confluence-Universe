@@ -14,10 +14,16 @@ This skill provides the comprehensive backend state engine, celestial physics si
 Manage universe state directly via the unified master CLI hub (`.agents/hub.py`):
 
 ```bash
-# 1. Full universe state, continuity, and physics audit
+# 1. Inspect complete 360-degree storyline dossier card
+python .agents/hub.py book 1
+
+# 2. Global galactic search across all storylines, relics, transits & inventory
+python .agents/hub.py search "Prism"
+
+# 3. Full universe state, continuity, and physics audit
 python .agents/hub.py state audit
 
-# 2. Plan 3D interstellar routes & gateway conduits
+# 4. Plan 3D interstellar routes & gateway conduits
 python .agents/hub.py state route --origin "[10, 5, 0]" --destination "[-12, 4, 2]"
 
 # 3. Query character relationships, mentors, rivals & comms mesh

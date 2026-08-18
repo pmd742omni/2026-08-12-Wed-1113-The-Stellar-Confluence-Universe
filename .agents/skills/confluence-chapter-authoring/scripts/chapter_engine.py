@@ -255,12 +255,83 @@ def complete_chapter_generation(synopsis, gut_increment=1):
         "ephemeris_propagated": True
     }
 
+def run_full_authoring_cycle(book_id=None, chapter=None, custom_synopsis=None, gut_delta=1, dry_run=False):
+    """Executes the full end-to-end authoring cycle in a single automated pass:
+    1. Prepare chapter stub & 3-act narrative blueprint
+    2. Draft Grade 4-6 accessible chapter prose
+    3. Evaluate readability, cadence & technobabble compliance
+    4. Polish sensory details & vocabulary
+    5. Complete chapter, award mastery XP, update diary, propagate ephemeris, and advance rotation.
+    """
+    import story_generator
+    import prose_polisher
+
+    rot = read_rotation_tracker()
+    target_book = book_id or rot["active_book_index"]
+    target_chap = chapter or rot["active_chapter_number"]
+
+    # Step 1: Prepare Stub & Constraints
+    prep = prepare_next_chapter_stub()
+
+    # Step 2: Draft Prose
+    draft = story_generator.generate_full_chapter_prose(target_book, target_chap)
+    draft_text = draft.get("chapter_prose", "")
+
+    # Step 3: Polish Prose
+    polished = prose_polisher.polish_prose_text(draft_text, simplify_vocabulary=True)
+    final_text = polished.get("polished_text", draft_text)
+
+    # Step 4: Evaluate Final Prose
+    eval_res = chapter_prose_evaluator.evaluate_prose(final_text)
+
+    # Step 5: Save Manuscript
+    char_info = get_character_info(target_book)
+    title_slug = slugify(char_info["title"] if char_info else f"Book_{target_book}")
+    book_folder = os.path.join(BOOKS_LIB_DIR, f"Book_{target_book:02d}_{title_slug}")
+    chapter_file = os.path.join(book_folder, f"Book_{target_book:02d}_Chapter_{target_chap:02d}.md")
+    os.makedirs(book_folder, exist_ok=True)
+
+    if not dry_run:
+        with open(chapter_file, "w", encoding="utf-8") as f:
+            f.write(final_text)
+
+    # Step 6: Complete & Propagate State
+    synopsis = custom_synopsis or f"{char_info['hero']} navigates {prep.get('resonance_state', 'harmonic resonance')} on {char_info['world']}."
+    completion = None
+    if not dry_run:
+        completion = complete_chapter_generation(synopsis, gut_increment=gut_delta)
+
+    return {
+        "cycle_status": "CYCLE_COMPLETED" if not dry_run else "DRY_RUN_COMPLETED",
+        "book_id": target_book,
+        "chapter_number": target_chap,
+        "title": char_info["title"] if char_info else f"Book {target_book}",
+        "hero": char_info["hero"] if char_info else "Hero",
+        "chapter_file": chapter_file,
+        "readability_score": {
+            "grade_level": eval_res.get("flesch_kincaid_grade_level"),
+            "target_age_group": eval_res.get("target_age_group"),
+            "status": eval_res.get("status")
+        },
+        "audio_cadence": eval_res.get("audio_cadence"),
+        "synopsis": synopsis,
+        "state_completion": completion
+    }
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Unified Chapter Authoring Engine")
     subparsers = parser.add_subparsers(dest="command")
 
     # Prepare command
     subparsers.add_parser("prepare", help="Prepare chapter stub and audit physical constraints")
+
+    # Cycle command
+    cyc_p = subparsers.add_parser("cycle", help="Run full authoring cycle (prepare -> draft -> polish -> evaluate -> complete)")
+    cyc_p.add_argument("--book-id", type=int, help="Book index (1-74)")
+    cyc_p.add_argument("--chapter", type=int, help="Chapter number")
+    cyc_p.add_argument("--synopsis", help="Custom chapter synopsis")
+    cyc_p.add_argument("--gut-delta", type=int, default=1, help="GUT ticks to advance")
+    cyc_p.add_argument("--dry-run", action="store_true", help="Run full cycle without modifying state files")
 
     # Complete command
     comp_p = subparsers.add_parser("complete", help="Complete chapter, log diary, propagate ephemeris, and advance queue")
@@ -271,6 +342,9 @@ if __name__ == "__main__":
 
     if args.command == "prepare":
         res = prepare_next_chapter_stub()
+        print(json.dumps(res, indent=2))
+    elif args.command == "cycle":
+        res = run_full_authoring_cycle(args.book_id, args.chapter, args.synopsis, args.gut_delta, args.dry_run)
         print(json.dumps(res, indent=2))
     elif args.command == "complete":
         res = complete_chapter_generation(args.synopsis, args.gut_delta)
