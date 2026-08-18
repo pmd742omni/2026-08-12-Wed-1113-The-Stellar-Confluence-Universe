@@ -4,9 +4,9 @@
     "hero_name": "Caelum Dawnrunner",
     "faction": "Sun-Forged Hegemony",
     "rank": "High Artificer",
-    "level": 30,
-    "mastery_points": 2970,
-    "stamina_pool": 535,
+    "level": 41,
+    "mastery_points": 4020,
+    "stamina_pool": 700,
     "unlocked_techniques": [
       "Solar Beam Focusing",
       "Photonic Prism Refraction"
@@ -41,6 +41,41 @@
         "chapter": 1,
         "gut": 102,
         "event": "+150 XP: Calibrated Ancient Solar Array (Rank: Journey-Master)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
       },
       {
         "chapter": 1,
@@ -151,6 +186,25 @@
         "chapter": 1,
         "gut": 100,
         "event": "Balanced the Master Flywheel on Aethelgard Equatorial Ring"
+      }
+    ]
+  },
+  "42": {
+    "book_id": 42,
+    "hero_name": "Tesla Sparkchaser",
+    "faction": "Magnetar-Leapers",
+    "rank": "Apprentice",
+    "level": 1,
+    "mastery_points": 100,
+    "stamina_pool": 100,
+    "unlocked_techniques": [
+      "Magnetar-Leapers Resonance Technique"
+    ],
+    "milestones": [
+      {
+        "chapter": 1,
+        "gut": 100,
+        "event": "Initiated Journey across Magnetar-Leapers"
       }
     ]
   }

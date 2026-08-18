@@ -828,6 +828,107 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
     except Exception as e:
         results.append({"test": "76. Master Hub: Quickstart Guide Generator", "status": "FAIL", "error": str(e)})
 
+    # 77. Dynamic Multi-Faction Story Generator (Void-Bound Monks)
+    try:
+        import story_generator
+        draft_v = story_generator.generate_full_chapter_prose(11, 1, save=False)
+        assert draft_v["hero"] == "Kage Silentstep" and "twilight" in draft_v["chapter_prose"].lower()
+        results.append({"test": "77. Dynamic Story: Void-Bound Monks (Book 11)", "status": "PASS", "details": f"{draft_v['hero']} on {draft_v['world']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "77. Dynamic Story: Void-Bound Monks (Book 11)", "status": "FAIL", "error": str(e)})
+
+    # 78. Dynamic Multi-Faction Story Generator (Astrolabe Engineers)
+    try:
+        import story_generator
+        draft_a = story_generator.generate_full_chapter_prose(21, 1, save=False)
+        assert draft_a["hero"] == "Tobias Cogsmith" and "flywheel" in draft_a["chapter_prose"].lower()
+        results.append({"test": "78. Dynamic Story: Astrolabe Engineers (Book 21)", "status": "PASS", "details": f"{draft_a['hero']} on {draft_a['world']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "78. Dynamic Story: Astrolabe Engineers (Book 21)", "status": "FAIL", "error": str(e)})
+
+    # 79. Dynamic Multi-Faction Story Generator (Comet-Riders)
+    try:
+        import story_generator
+        draft_c = story_generator.generate_full_chapter_prose(31, 1, save=False)
+        assert draft_c["hero"] == "Talon Frostskimmer" and "vapor" in draft_c["chapter_prose"].lower()
+        results.append({"test": "79. Dynamic Story: Comet-Riders (Book 31)", "status": "PASS", "details": f"{draft_c['hero']} on {draft_c['world']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "79. Dynamic Story: Comet-Riders (Book 31)", "status": "FAIL", "error": str(e)})
+
+    # 80. Galactic Adventure & Tactical Quest Engine
+    try:
+        import galactic_adventure_engine
+        q_res = galactic_adventure_engine.generate_adventure_quest(1, 100)
+        assert q_res["status"] == "QUEST_GENERATED" and "quest_details" in q_res
+        results.append({"test": "80. Galactic Adventure: Quest Engine", "status": "PASS", "details": q_res["quest_details"]["title"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "80. Galactic Adventure: Quest Engine", "status": "FAIL", "error": str(e)})
+
+    # 81. Expanded Faction Voice Dialect Profiles
+    try:
+        import character_voice_profiler
+        prof_neb = character_voice_profiler.get_faction_voice_profile("Nebula-Weavers")
+        assert "filament" in prof_neb["keywords"]
+        results.append({"test": "81. Dialect Profiler: Expanded Factions", "status": "PASS", "details": f"{len(character_voice_profiler.FACTION_VOCABULARY_BANKS)} dialect banks indexed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "81. Dialect Profiler: Expanded Factions", "status": "FAIL", "error": str(e)})
+
+    # 82. Expanded Planetary Ecology Biomes
+    try:
+        import planetary_ecology_matrix
+        prof_core = planetary_ecology_matrix.get_planetary_profile("Cimmerian Core")
+        assert prof_core["astrophysics"]["surface_gravity_g"] == 1.45
+        results.append({"test": "82. Planetary Ecology: Expanded Biomes", "status": "PASS", "details": f"{prof_core['world_name']} (g={prof_core['astrophysics']['surface_gravity_g']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "82. Planetary Ecology: Expanded Biomes", "status": "FAIL", "error": str(e)})
+
+    # 83. Dynamic Cross-Book Encounter Simulator across arbitrary factions
+    try:
+        import cross_encounter_engine
+        enc_ab = cross_encounter_engine.simulate_cross_encounter(1, 21)
+        assert len(enc_ab["dialogue_script"]) >= 4
+        results.append({"test": "83. Cross Encounter: Arbitrary Factions (Book 01 & 21)", "status": "PASS", "details": f"{len(enc_ab['dialogue_script'])} dialogue lines"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "83. Cross Encounter: Arbitrary Factions (Book 01 & 21)", "status": "FAIL", "error": str(e)})
+
+    # 84. Faction-Aware Sensory Prose Polisher
+    try:
+        import prose_polisher
+        pol_void = prose_polisher.polish_prose_text("The shadow and dark stone were quiet.", faction="Void-Bound Monks")
+        assert "umbral" in pol_void["polished_text"] or "basalt" in pol_void["polished_text"]
+        results.append({"test": "84. Prose Polisher: Faction-Aware Sensory Enrichment", "status": "PASS", "details": "Void sensory palette applied"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "84. Prose Polisher: Faction-Aware Sensory Enrichment", "status": "FAIL", "error": str(e)})
+
+    # 85. Character Mastery Automatic Registry Resolution
+    try:
+        import character_mastery_engine
+        m_42 = character_mastery_engine.get_character_mastery(42)
+        assert m_42["book_id"] == 42 and "hero_name" in m_42
+        results.append({"test": "85. Character Mastery: Dynamic Registry Resolution", "status": "PASS", "details": f"Book 42: {m_42['hero_name']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "85. Character Mastery: Dynamic Registry Resolution", "status": "FAIL", "error": str(e)})
+
+    # 86. Master Hub CLI: Quest Command Dispatch
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args = p.parse_args(["author", "quest", "--book-id", "1"])
+        assert args.action == "quest"
+        results.append({"test": "86. Master Hub: Quest Command Dispatch", "status": "PASS", "details": "author quest parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "86. Master Hub: Quest Command Dispatch", "status": "FAIL", "error": str(e)})
+
     duration_total_ms = round((time.time() - start_total) * 1000, 1)
     all_pass = (passed_count == len(results))
 

@@ -88,6 +88,11 @@ python .agents/hub.py author complete --synopsis "Caelum calibrates the solar le
     ```bash
     python .agents/hub.py author encounter --book1 1 --book2 11 --medium SUBSPACE_COMMS
     ```
+12. **`galactic_adventure_engine.py` / `hub.py author quest`**:
+    - Generates high-stakes, child-friendly cosmic exploration quests, celestial anomalies, and physical problem-solving challenges tailored to character location and facing angle.
+    ```bash
+    python .agents/hub.py author quest --book-id 1 --gut 100
+    ```
 
 ---
 

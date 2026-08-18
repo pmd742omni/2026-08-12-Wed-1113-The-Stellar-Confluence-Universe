@@ -90,17 +90,31 @@ def get_character_mastery(book_id):
     if bid in records:
         return records[bid]
     
+    # Resolve canonical character info from registry
+    hero_name = f"Protagonist #{int(book_id):02d}"
+    faction_name = "Sector Faction"
+    char_reg = os.path.join(SYSTEM_STATE_DIR, "character_registry.md")
+    if os.path.exists(char_reg):
+        with open(char_reg, "r", encoding="utf-8", errors="ignore") as f:
+            for line in f:
+                if f"Book {int(book_id):02d}" in line:
+                    parts = [p.strip() for p in line.split("|")[1:-1]]
+                    if len(parts) >= 6:
+                        hero_name = parts[2].replace("`", "")
+                        faction_name = parts[3]
+                    break
+
     # Generate baseline record for uninitialized book
     new_rec = {
         "book_id": int(book_id),
-        "hero_name": f"Protagonist #{int(book_id):02d}",
-        "faction": "Sector Faction",
+        "hero_name": hero_name,
+        "faction": faction_name,
         "rank": "Apprentice",
         "level": 1,
         "mastery_points": 100,
         "stamina_pool": 100,
-        "unlocked_techniques": ["Elemental Resonance Baseline"],
-        "milestones": [{"chapter": 1, "gut": 100, "event": "Initiated Sector Journey"}]
+        "unlocked_techniques": [f"{faction_name.split()[0]} Resonance Technique"],
+        "milestones": [{"chapter": 1, "gut": 100, "event": f"Initiated Journey across {faction_name}"}]
     }
     records[bid] = new_rec
     save_mastery_records(records)

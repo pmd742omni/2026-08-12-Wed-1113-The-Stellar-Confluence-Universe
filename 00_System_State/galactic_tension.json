@@ -143,6 +143,55 @@
         "new_tension": 100,
         "state": "BORDER_MOBILIZATION",
         "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
       }
     ]
   },

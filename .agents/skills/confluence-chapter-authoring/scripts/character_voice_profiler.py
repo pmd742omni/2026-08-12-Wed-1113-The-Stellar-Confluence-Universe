@@ -36,24 +36,69 @@ import chapter_engine
 
 FACTION_VOCABULARY_BANKS = {
     "Sun-Forged": {
-        "keywords": ["lens", "solar", "horizon", "focus", "light", "bronze", "mirror", "furnace", "radiant", "beam", "dawn"],
+        "keywords": ["lens", "solar", "horizon", "focus", "light", "bronze", "mirror", "furnace", "radiant", "beam", "dawn", "flare", "photonic", "sun"],
         "tone": "Direct, confident, radiant, warm, bold optimism",
         "example_idiom": "Keep your lens clear and hold the focus."
     },
     "Void-Bound": {
-        "keywords": ["shadow", "twilight", "silence", "basalt", "listen", "whisper", "eclipse", "drift", "cool", "nadir", "phase"],
+        "keywords": ["shadow", "twilight", "silence", "basalt", "listen", "whisper", "eclipse", "drift", "cool", "nadir", "phase", "umbral", "shroud", "chasm"],
         "tone": "Soft-spoken, contemplative, quiet wisdom, observant",
         "example_idiom": "Step softly in the twilight shadow."
     },
     "Astrolabe": {
-        "keywords": ["gear", "balance", "flywheel", "ratio", "torque", "precision", "tolerance", "steam", "crank", "pinion", "clockwork"],
+        "keywords": ["gear", "balance", "flywheel", "ratio", "torque", "precision", "tolerance", "steam", "crank", "pinion", "clockwork", "escapement", "brass", "dial"],
         "tone": "Analytical, measured, rhythmic, engineering focus",
         "example_idiom": "Check the gear ratio before applying torque."
     },
     "Comet-Riders": {
-        "keywords": ["glide", "wake", "vapor", "plume", "speed", "ice", "drift", "crest", "thruster", "sail", "harpoon"],
+        "keywords": ["glide", "wake", "vapor", "plume", "speed", "ice", "drift", "crest", "thruster", "sail", "harpoon", "sublimation", "frost", "slingshot"],
         "tone": "Spirited, adventurous, swift, dynamic energy",
         "example_idiom": "Catch the high vapor wake and ride the plume."
+    },
+    "Nebula-Weavers": {
+        "keywords": ["weave", "filament", "loom", "strand", "magnetic", "silk", "gas", "glow", "tangle", "spindle", "plasma", "tapestry"],
+        "tone": "Artistic, patient, interconnected, perceptive",
+        "example_idiom": "Every strand in the nebula carries the tension of the whole web."
+    },
+    "Deep-Core Miners": {
+        "keywords": ["core", "drill", "seismic", "basalt", "pressure", "piston", "tremor", "hydraulic", "forge", "fault", "strata", "heft"],
+        "tone": "Grounded, resolute, steady, indomitable grit",
+        "example_idiom": "Trust the bedrock under your boots and respect the pressure valve."
+    },
+    "Gravity-Surfers": {
+        "keywords": ["singularity", "orbit", "dive", "graviton", "vector", "tide", "well", "freefall", "anchor", "curve", "momentum", "slant"],
+        "tone": "Fearless, intuitive, kinetic, thrill of discovery",
+        "example_idiom": "Lean into the gravitational curve and let the well slingshot you home."
+    },
+    "Plasma-Shepherds": {
+        "keywords": ["herd", "plasma", "crook", "flare", "coronal", "lasso", "containment", "magnetic", "sparks", "field", "current", "ember"],
+        "tone": "Protective, vigilant, lively, spirited stewardship",
+        "example_idiom": "Keep the magnetic crook high and guide the coronal herd with a light touch."
+    },
+    "Chrono-Navigators": {
+        "keywords": ["chronometer", "tick", "temporal", "sextant", "drift", "path", "probability", "cadence", "interval", "horizon", "course", "tachyon"],
+        "tone": "Precise, visionary, calm, contemplative foresight",
+        "example_idiom": "Watch the second hand align before charting the warp course."
+    },
+    "Bio-Alchemists": {
+        "keywords": ["spore", "bloom", "chitin", "photosynthesis", "sap", "canopy", "vine", "root", "bioluminescent", "symbiosis", "nectar", "seed"],
+        "tone": "Nurturing, inquisitive, organic, harmonious",
+        "example_idiom": "Feed the seedling before you ask it to hold the storm wall."
+    },
+    "Crystal-Singers": {
+        "keywords": ["chime", "harmonic", "quartz", "resonance", "pitch", "vibration", "clarity", "facet", "echo", "tuning", "sonance", "prism"],
+        "tone": "Melodic, empathetic, luminous, resonant",
+        "example_idiom": "When the crystal chimes true, the path opens clear."
+    },
+    "Tide-Wardens": {
+        "keywords": ["tide", "swell", "current", "hydro", "depth", "beacon", "crest", "surge", "wake", "channel", "reef", "buoy"],
+        "tone": "Vigilant, adaptable, rhythmic, oceanic focus",
+        "example_idiom": "Read the rising swell before setting your rudder."
+    },
+    "Magnetar-Leapers": {
+        "keywords": ["charge", "pole", "flux", "pulse", "arc", "leap", "polar", "repulsion", "circuit", "spark", "field", "lightning"],
+        "tone": "Electrifying, brisk, daring, fast-paced",
+        "example_idiom": "Match polarities on the leap, or the field will throw you into orbit."
     }
 }
 

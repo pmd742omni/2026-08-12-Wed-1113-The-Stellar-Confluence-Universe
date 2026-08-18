@@ -63,8 +63,9 @@ python .agents/hub.py search "Prism"
 # 3. One-Shot Authoring Cycle (prepare -> draft -> evaluate -> polish -> complete)
 python .agents/hub.py author cycle --book-id 1
 
-# Or Step-by-Step Manual Authoring:
+# Or Step-by-Step Manual Authoring & Adventure Generation:
 python .agents/hub.py author prepare
+python .agents/hub.py author quest --book-id 1
 python .agents/hub.py author draft --book-id 1 --chapter 1
 python .agents/hub.py author evaluate --file "01_Books_Library/Book_01_The_Solar_Crucible/Book_01_Chapter_01.md"
 python .agents/hub.py author complete --synopsis "<1-2 sentence summary>" --gut-delta 1
@@ -109,9 +110,9 @@ The Stellar Confluence Universe/
     │   ├── agent_core.py          <-- Centralized shared foundation: paths, safe IO, ANSI styling, terminal dossiers, global search
     │   └── __init__.py
     └── skills/
-        ├── confluence-chapter-authoring/ (18 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics)
+        ├── confluence-chapter-authoring/ (19 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics, quest)
         ├── universe-state-manager/       (18 scripts: ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
-        ├── world-engine-audit/           (4 scripts: 76+ test regression suite, continuity, paradox, physics, doctor)
+        ├── world-engine-audit/           (4 scripts: 86+ test regression suite, continuity, paradox, physics, doctor)
         ├── document-now/                 (2 scripts: version registry & 100+ Ndebele lexicon)
         └── prompt-response-flow/         (1 script: interaction journal logging)
 ```
@@ -134,10 +135,10 @@ Whenever the developer states **"document now"**, **"document progress"**, or re
 
 Whenever testing system health or before major release commits:
 ```bash
-# Instant in-process regression suite (76+ sanity checks in <1s)
+# Instant in-process regression suite (86+ sanity checks in <1s)
 python .agents/hub.py test
 
 # Full system diagnostic sweep (State + Physics + Paradoxes + Tests)
 python .agents/hub.py doctor
 ```
-*(Runs **76+ automated sanity checks** across all skills in <1 second with 100% PASS verification)*
+*(Runs **86+ automated sanity checks** across all skills in <1 second with 100% PASS verification)*

@@ -191,6 +191,11 @@ def handle_author(args):
         import story_generator
         res = story_generator.generate_full_chapter_prose(args.book_id or 1, args.chapter or 1)
         print(json.dumps(res, indent=2))
+    elif args.action == "quest":
+        import galactic_adventure_engine
+        gut_val = getattr(args, "gut", 100) or 100
+        res = galactic_adventure_engine.generate_adventure_quest(args.book_id or 1, gut_val)
+        print(json.dumps(res, indent=2))
     else:
         print(json.dumps({"error": f"Unknown author action: {args.action}"}, indent=2))
 
@@ -488,10 +493,11 @@ def build_parser():
     p_author.add_argument("action", choices=[
         "cycle", "prepare", "complete", "evaluate", "polish", "storyboard", "audiobook", "compile",
         "simulate", "resonance", "voice", "encounter", "physics", "faction", "diplomacy",
-        "relic", "soundscape", "draft"
+        "relic", "soundscape", "draft", "quest"
     ], help="Authoring action")
     p_author.add_argument("--synopsis", help="Chapter synopsis for 'complete' or 'cycle'")
     p_author.add_argument("--gut-delta", type=int, default=1, help="GUT delta for 'complete' or 'cycle'")
+    p_author.add_argument("--gut", type=int, default=100, help="GUT reference timestamp")
     p_author.add_argument("--file", help="File path for evaluation/continuity")
     p_author.add_argument("--text", help="Text payload for analysis/polishing")
     p_author.add_argument("--book-id", type=int, help="Book index (1-74)")

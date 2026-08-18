@@ -15,24 +15,73 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
 import chapter_prose_evaluator
 
-SENSORY_ENHANCERS = {
-    r"\bsun\b": "blazing twin suns",
-    r"\bmetal\b": "polished brass alloy",
-    r"\bmachine\b": "precision clockwork mechanism",
-    r"\bhot\b": "searing radiant warmth",
-    r"\bcold\b": "crisp twilight chill",
-    r"\blight\b": "luminous solar beam",
-    r"\bshadow\b": "cool umbral shadow"
+FACTION_SENSORY_ENHANCERS = {
+    "Sun-Forged": {
+        r"\bsun\b": "blazing twin suns",
+        r"\bmetal\b": "polished bronze alloy",
+        r"\bmachine\b": "precision solar array",
+        r"\bhot\b": "searing radiant warmth",
+        r"\blight\b": "luminous solar beam"
+    },
+    "Void-Bound": {
+        r"\bshadow\b": "cool umbral shadow",
+        r"\bstone\b": "phase-resonant basalt",
+        r"\bcold\b": "crisp twilight chill",
+        r"\bsilence\b": "deep eclipse silence",
+        r"\bdark\b": "soft velvet twilight"
+    },
+    "Astrolabe": {
+        r"\bmachine\b": "precision clockwork mechanism",
+        r"\bmetal\b": "balanced brass gear-train",
+        r"\bturn\b": "crank the precision escapement",
+        r"\bwheel\b": "balanced inertial flywheel",
+        r"\bnoise\b": "rhythmic clockwork tick"
+    },
+    "Comet-Riders": {
+        r"\bice\b": "glistening cryogenic ice",
+        r"\bspeed\b": "swift sublimation thrust",
+        r"\bcloud\b": "luminous cometary vapor plume",
+        r"\bglide\b": "glide across the icy crest",
+        r"\bcold\b": "exhilarating sub-zero rush"
+    },
+    "Deep-Core": {
+        r"\brock\b": "dense subterranean basalt",
+        r"\btool\b": "pneumatic seismic drill",
+        r"\bheat\b": "geothermal mantle pressure",
+        r"\bdeep\b": "deep tectonic bedrock"
+    },
+    "Bio-Alchemists": {
+        r"\bplant\b": "bioluminescent spore canopy",
+        r"\barmor\b": "photosynthetic chitin carapace",
+        r"\bgrow\b": "rapid photosynthetic bloom",
+        r"\bforest\b": "glowing symbiotic canopy"
+    }
 }
 
-def polish_prose_text(text, simplify_vocabulary=True):
+DEFAULT_SENSORY_ENHANCERS = {
+    r"\bsun\b": "blazing sun",
+    r"\bmetal\b": "polished alloy",
+    r"\bmachine\b": "precision mechanism",
+    r"\bhot\b": "radiant warmth",
+    r"\bcold\b": "crisp chill",
+    r"\blight\b": "luminous beam",
+    r"\bshadow\b": "cool shadow"
+}
+
+def polish_prose_text(text, faction="Sun-Forged", simplify_vocabulary=True):
     # 1. Clean and evaluate original
     orig_eval = chapter_prose_evaluator.evaluate_prose(text)
     
-    # 2. Apply sensory enrichment where appropriate
+    # 2. Select appropriate sensory enhancer set
+    matched_enhancers = DEFAULT_SENSORY_ENHANCERS
+    for fac_key, enh_map in FACTION_SENSORY_ENHANCERS.items():
+        if fac_key.lower() in str(faction).lower():
+            matched_enhancers = enh_map
+            break
+
+    # Apply sensory enrichment where appropriate (max 2 replacements per term to avoid purple prose)
     polished = text
-    for pat, repl in SENSORY_ENHANCERS.items():
-        # Replace only a few occurrences to avoid purple prose
+    for pat, repl in matched_enhancers.items():
         polished = re.sub(pat, repl, polished, count=2, flags=re.IGNORECASE)
 
     # 3. Simplify complex academic/adult words for young readers (Grade 4-6)
@@ -54,6 +103,7 @@ def polish_prose_text(text, simplify_vocabulary=True):
         "original_grade": orig_eval.get("flesch_kincaid_grade_level", 0.0),
         "polished_grade": new_eval.get("flesch_kincaid_grade_level", 0.0),
         "vocabulary_replacements": replacements_made,
+        "sensory_faction": faction,
         "polished_cadence": new_eval.get("audio_cadence", {}),
         "polished_text": polished
     }

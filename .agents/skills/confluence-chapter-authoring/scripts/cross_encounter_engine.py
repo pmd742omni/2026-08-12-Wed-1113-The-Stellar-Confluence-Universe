@@ -49,24 +49,51 @@ def simulate_cross_encounter(book_a, book_b, encounter_type="SUBSPACE_COMMS"):
     stance = dip["stance"]
     tension = dip["tension_index"]
 
-    # Dialogue Scripting based on Faction Chemistry
+    # Dynamic Dialogue Generation based on Faction Mechanics & Archetypes
+    import faction_matrix
+    import character_voice_profiler
+
+    prof_a = faction_matrix.get_faction_profile(fac_a)["profile"]
+    prof_b = faction_matrix.get_faction_profile(fac_b)["profile"]
+    voice_a = character_voice_profiler.get_faction_voice_profile(fac_a)
+    voice_b = character_voice_profiler.get_faction_voice_profile(fac_b)
+
+    gear_a = prof_a.get("signature_gear", "Resonant Gear").split(",")[0]
+    gear_b = prof_b.get("signature_gear", "Resonant Gear").split(",")[0]
+    idiom_a = voice_a.get("typical_idioms", ["Hold the focus."])[0]
+    idiom_b = voice_b.get("typical_idioms", ["Check the balance."])[0]
+
     if "Sun" in fac_a and "Void" in fac_b:
         dialogue = [
-            {"speaker": hero_a, "text": f"Helios Relay station online! Vespera, are you receiving my light-pulse across the twilight gap?"},
-            {"speaker": hero_b, "text": f"Loud and clear, Caelum. But dim that beam down half a notch. You are dazzling every sensor in my shadow canopy."},
+            {"speaker": hero_a, "text": f"{world_a} relay station online! {hero_b}, are you receiving my light-pulse across the twilight gap?"},
+            {"speaker": hero_b, "text": f"Loud and clear, {hero_a}. But dim that beam down half a notch. You are dazzling every sensor in my shadow canopy."},
             {"speaker": hero_a, "text": f"Sorry! The Confluence Wavefront is peaking at high zenith today. Everything in the solar array wants to run at full blast."},
             {"speaker": hero_b, "text": f"And over here in the eclipse shadow, my basalt phase-rings are dead quiet. If we link our frequencies, your heat can warm my power cells while my cold buffers your thermal vents."},
             {"speaker": hero_a, "text": f"A balanced bridge. Brilliant! Locking in frequency 144.2 MHz right now."}
         ]
-        narrative_summary = f"Caelum ({hero_a}) and Vespera ({hero_b}) balance their opposing radiant and shadow extremes through a shared subspace relay link, achieving stable harmonic equilibrium."
+        narrative_summary = f"{hero_a} and {hero_b} balance their opposing radiant and shadow extremes through a shared subspace relay link, achieving stable harmonic equilibrium."
+    elif "Astrolabe" in fac_a or "Astrolabe" in fac_b:
+        eng_hero = hero_a if "Astrolabe" in fac_a else hero_b
+        oth_hero = hero_b if "Astrolabe" in fac_a else hero_a
+        eng_fac = fac_a if "Astrolabe" in fac_a else fac_b
+        oth_fac = fac_b if "Astrolabe" in fac_a else fac_a
+        dialogue = [
+            {"speaker": eng_hero, "text": f"Telemetry incoming from {oth_hero}. Your sector signal has an uncalibrated harmonic wobble."},
+            {"speaker": oth_hero, "text": f"That's our {gear_a if oth_hero == hero_a else gear_b} adjusting to the local wavefront turbulence."},
+            {"speaker": eng_hero, "text": f"Hold torque! {idiom_a if eng_hero == hero_a else idiom_b} Let me tune our clockwork escapement to dampen your vibrational drag."},
+            {"speaker": oth_hero, "text": f"Dampers locked. The wobble vanished instantly. Clean readings across the whole array!"},
+            {"speaker": eng_hero, "text": f"Clockwork precision never fails. Relay channels synchronized."}
+        ]
+        narrative_summary = f"{eng_hero} ({eng_fac}) uses precision gear alignment to stabilize the fluctuating transmission from {oth_hero} ({oth_fac}), ensuring safe sector synchronization."
     else:
         dialogue = [
-            {"speaker": hero_a, "text": f"Relay channel established. Greetings from {world_a}."},
-            {"speaker": hero_b, "text": f"Receiving your carrier wave on {world_b}. All telemetry coordinates align with the Confluence Wavefront."},
-            {"speaker": hero_a, "text": f"Let's synchronize our sector clocks before the next orbital transit window closes."},
-            {"speaker": hero_b, "text": f"Agreed. Transmitting telemetry burst now."}
+            {"speaker": hero_a, "text": f"Calling Sector station {world_b}, this is {hero_a} transmitting from {world_a}."},
+            {"speaker": hero_b, "text": f"Carrier wave received, {hero_a}. Our {gear_b} picked up your beacon pulse over the ambient noise."},
+            {"speaker": hero_a, "text": f"We are tracking incoming wavefront oscillations in this sector. As our elders say, '{idiom_a}'"},
+            {"speaker": hero_b, "text": f"Acknowledged. We're matching your frequency. Together our arrays can maintain a stable navigational corridor."},
+            {"speaker": hero_a, "text": f"All telemetry locked and verified. Safe travels across the star lanes, {hero_b}!"}
         ]
-        narrative_summary = f"{hero_a} and {hero_b} coordinate cross-sector telemetry, bridging faction boundaries through practical cooperation."
+        narrative_summary = f"{hero_a} ({fac_a}) and {hero_b} ({fac_b}) coordinate cross-sector telemetry and align equipment, bridging faction boundaries through practical cooperation."
 
     return {
         "encounter_type": encounter_type,
