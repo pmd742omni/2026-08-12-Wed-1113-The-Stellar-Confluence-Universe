@@ -10,10 +10,23 @@ import sys
 import json
 import re
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT_DIR)))
+def find_project_root():
+    cwd = os.getcwd()
+    curr = cwd
+    while True:
+        if os.path.exists(os.path.join(curr, "00_System_State")) or os.path.exists(os.path.join(curr, ".git")):
+            return curr
+        parent = os.path.dirname(curr)
+        if parent == curr:
+            break
+        curr = parent
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(script_dir))))
+
+PROJECT_ROOT = find_project_root()
 SYSTEM_STATE_DIR = os.path.join(PROJECT_ROOT, "00_System_State")
 DASHBOARD_HTML = os.path.join(SYSTEM_STATE_DIR, "universe_dashboard.html")
+
 
 def generate_dashboard():
     # 1. Read Rotation Tracker
@@ -36,15 +49,18 @@ def generate_dashboard():
         with open(reg_file, "r", encoding="utf-8") as f:
             for line in f:
                 parts = [p.strip() for p in line.split("|")]
-                if len(parts) >= 6 and parts[1].isdigit():
-                    bid = int(parts[1])
-                    characters.append({
-                        "book": bid,
-                        "title": parts[2],
-                        "hero": parts[3],
-                        "faction": parts[4],
-                        "world": parts[5]
-                    })
+                if len(parts) >= 6:
+                    m_bid = re.search(r"Book\s+(\d+)", parts[1], re.IGNORECASE)
+                    if m_bid:
+                        bid = int(m_bid.group(1))
+                        characters.append({
+                            "book": bid,
+                            "title": parts[2].replace("**", "").strip(),
+                            "hero": parts[3].replace("`", "").strip(),
+                            "faction": parts[4].replace("`", "").strip(),
+                            "world": parts[5].replace("`", "").strip()
+                        })
+
 
     # Build SVG Points
     svg_points = []

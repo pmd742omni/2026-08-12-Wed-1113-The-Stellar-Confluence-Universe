@@ -1,45 +1,48 @@
 ---
 name: world-engine-audit
-description: Audits celestial mechanics, wavefront alignment vectors, power constraint compliance, and faction balance across all 74 storylines in The Stellar Confluence Universe.
+description: Audits celestial mechanics, wavefront alignment vectors, power constraint compliance, multi-book continuity, narrative paradox detection, runs the master 65+ sanity regression test suite, and executes the system doctor across all 74 storylines in The Stellar Confluence Universe.
 ---
 
 # World Engine Audit Skill
 
-This skill performs physical, astronomical, and lore consistency checks across **The Stellar Confluence Universe** to ensure that all 74 storylines adhere strictly to celestial mechanics and power limitation laws.
+This skill performs physical, astronomical, multi-book lore continuity, and comprehensive system regression sanity testing for **The Stellar Confluence Universe**.
 
 ---
 
-## 1. Trigger Conditions
+## 1. Quick Master Hub Commands
 
-Activate this skill when:
-- `"audit lore"` or `"audit physics"`
-- `"validate celestial mechanics"`
-- `"check faction balance"` or `"verify wavefront vectors"`
-- Reviewing cross-book storyline consistency before major releases.
-
----
-
-## 2. Core Physics & Lore Constraints
-
-1. **Angular Alignment Bounds**:
-   - Facing angle $\theta$ relative to the incoming Confluence Wavefront vector MUST fall strictly within $0^\circ \le \theta \le 180^\circ$.
-2. **Resonance State Consistency**:
-   - $0^\circ \le \theta \le 30^\circ \implies$ `PEAK_FACING`
-   - $31^\circ \le \theta \le 149^\circ \implies$ `TRANSIT_FACING`
-   - $150^\circ \le \theta \le 180^\circ \implies$ `SHADOW_FACING`
-   - `GATEWAY_SUBSPACE` $\implies$ Disconnected neutral baseline ($Re = 0.5$)
-3. **Environmental Volatility**:
-   - Characters in `DEEP_SPACE_TRANSIT` (outside planetary atmospheres) MUST experience **2x Amplified Power** and **2x Difficulty in Control**.
-4. **Faction Distribution**:
-   - Core 30 Books: Exactly 10 Sun-Forged Hegemony, 10 Void-Bound Monks, 10 Astrolabe Engineers.
-   - Expansion 44 Books: Comet-Riders, Nebula-Weavers, Deep-Core Miners, Gravity-Surfers, etc.
-
----
-
-## 3. Automation Scripts & Tools
-
-### Run Physics Diagnostics
 ```bash
-python .agents/skills/world-engine-audit/scripts/audit_lore_physics.py
+# 1. Execute full 65+ in-process regression and sanity test suite (<1s)
+python .agents/hub.py test
+
+# 2. Execute comprehensive system doctor (State + Physics + Paradoxes + Tests)
+python .agents/hub.py doctor
+# or
+python .agents/hub.py audit all
+
+# 3. Audit chapter continuity & physical constraint adherence
+python .agents/hub.py audit continuity --file "01_Books_Library/Book_01_The_Solar_Crucible/Book_01_Chapter_01.md"
+
+# 4. Audit cross-story paradoxes and timeline integrity
+python .agents/hub.py audit paradox
+
+# 5. Audit celestial physics, ephemeris bounds, and resonance compliance
+python .agents/hub.py audit physics
 ```
-Outputs validation status, record counts, and any detected anomalies in angle bounds, location types, or resonance definitions.
+
+---
+
+## 2. Complete Audit Toolchain Catalog
+
+1. **`agent_self_test.py` / `hub.py test`**:
+   - Master in-process regression suite executing **65+ automated sanity checks** across all skills in under 1 second.
+   - Tests timestamps, Ndebele lexicon, ephemeris propagation, event bus hazards, 3D navigation, character arcs, dashboard generation, lore callbacks, character mesh, broadcast feeds, cockpit radio, interstellar transits, relic transfers, planetary ecologies, tension tracker, mastery progression, subspace routing, trade economy, wave physics, Doppler shift, faction matrix, diplomacy, 3-act narrative blueprints, dual-hero encounters, resonance calculations, autonomous drafting, prose polishing, audiobook director scripts, storyboards, dialect profiler, manuscript compilation, prose readability (FKGL & cadence), chapter continuity, simulation loop, multi-book paradoxes, master hub dispatcher, core path bindings, safe JSON IO, ANSI styling, terminal overview generator, doctor diagnostic sweep, and full physics validation.
+
+2. **`chapter_continuity_validator.py` / `hub.py audit continuity`**:
+   - Deep chapter continuity auditor. Verifies that written prose matches metadata headers, protagonist names, homeworld settings, current resonance states, inventory items, active hazards, and power limitations.
+
+3. **`multi_book_consistency_auditor.py` / `hub.py audit paradox`**:
+   - Macro cross-story paradox auditor. Cross-references all 74 book timelines, ensuring no character occupies two locations simultaneously, verifying artifact ownership chains, checking waypoint transit timelines, and detecting timeline paradoxes.
+
+4. **`audit_lore_physics.py` / `hub.py audit physics`**:
+   - Astronomical and physics law auditor. Validates that facing angles $\theta \in [0^\circ, 180^\circ]$, rotation speeds $\omega_{rot} = 15^\circ / GUT$, orbital speeds $\omega_{orb} = 60^\circ / GUT$, resonance definitions match angular zones, and deep-space power multipliers are strictly enforced.

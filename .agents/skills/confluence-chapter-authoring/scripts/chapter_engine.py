@@ -41,6 +41,10 @@ from calculate_resonance import calculate_resonance
 from cosmic_event_bus import check_hazards
 from cosmic_ephemeris_engine import propagate_ephemeris
 from narrative_beat_architect import generate_scene_beats
+import character_voice_profiler
+import chapter_prose_evaluator
+import character_mastery_engine
+import galactic_tension_tracker
 
 def slugify(text):
     clean = re.sub(r"[^\w\s-]", "", text).strip()
@@ -89,7 +93,7 @@ def get_clockwork_state(book_index):
     }
 
 def prepare_next_chapter_stub():
-    """Audits system state, generates 3-act scene blueprint, and scaffolds chapter stub."""
+    """Audits system state, generates 3-act scene blueprint, retrieves dialect guidelines, and scaffolds chapter stub."""
     rot = read_rotation_tracker()
     active_book = rot["active_book_index"]
     active_chap = rot["active_chapter_number"]
@@ -116,13 +120,16 @@ def prepare_next_chapter_stub():
         loc_type, facing_angle, res["resonance_state"], res["power_capability"], res["active_limitation"], hazards["hazards"]
     )
 
+    # Dialect and Cultural Voice Profile
+    voice_profile = character_voice_profiler.get_faction_voice_profile(char_info["faction"])
+
     # Format paths
     title_slug = slugify(char_info["title"])
     book_folder = os.path.join(BOOKS_LIB_DIR, f"Book_{active_book:02d}_{title_slug}")
     chapter_file = os.path.join(book_folder, f"Book_{active_book:02d}_Chapter_{active_chap:02d}.md")
     os.makedirs(book_folder, exist_ok=True)
 
-    # Generate Chapter Stub Markdown with Scene Blueprint
+    # Generate Chapter Stub Markdown with Scene Blueprint & Voice Guidelines
     hazard_section = ""
     if hazards["active_hazard_count"] > 0:
         hazard_section = "\n**Active Environmental Anomalies**:\n"
@@ -144,6 +151,13 @@ def prepare_next_chapter_stub():
 Act 1 (Sensory Opening): {beats['narrative_blueprint']['act_1_opening_grounding']}
 Act 2 (Physical Dilemma): {beats['narrative_blueprint']['act_2_escalating_dilemma']}
 Act 3 (Climax & Rotation Hand-off): {beats['narrative_blueprint']['act_3_climax_discovery']}
+-->
+
+<!-- FACTION DIALECT & VOCAL CADENCE GUIDELINES -->
+<!--
+Dialect: {voice_profile.get('dialect_name', char_info['faction'])}
+Tone / Rhythm: {voice_profile.get('cadence', 'Balanced read-aloud pacing')}
+Idiom Tendencies: {', '.join(voice_profile.get('typical_idioms', []))}
 -->
 
 ---
@@ -173,13 +187,14 @@ Act 3 (Climax & Rotation Hand-off): {beats['narrative_blueprint']['act_3_climax_
         "power_capability": res["power_capability"],
         "active_limitation": res["active_limitation"],
         "scene_blueprint": beats["narrative_blueprint"],
+        "voice_guidelines": voice_profile,
         "active_hazards": hazards["hazards"],
         "chapter_file_path": chapter_file,
         "chapter_stub_created": created
     }
 
 def complete_chapter_generation(synopsis, gut_increment=1):
-    """Marks current chapter complete, appends to diary, propagates ephemeris, and advances rotation."""
+    """Marks current chapter complete, evaluates prose, awards mastery XP, appends to diary, propagates ephemeris, and advances rotation."""
     rot = read_rotation_tracker()
     active_book = rot["active_book_index"]
     active_chap = rot["active_chapter_number"]
@@ -188,6 +203,26 @@ def complete_chapter_generation(synopsis, gut_increment=1):
     char_info = get_character_info(active_book)
     title = char_info["title"] if char_info else f"Book {active_book}"
     hero = char_info["hero"] if char_info else "Hero"
+
+    title_slug = slugify(title)
+    chapter_file = os.path.join(BOOKS_LIB_DIR, f"Book_{active_book:02d}_{title_slug}", f"Book_{active_book:02d}_Chapter_{active_chap:02d}.md")
+    
+    prose_eval = None
+    if os.path.exists(chapter_file):
+        try:
+            prose_eval = chapter_prose_evaluator.evaluate_file(chapter_file)
+        except Exception:
+            pass
+
+    # Award character experience
+    xp_award = None
+    try:
+        xp_award = character_mastery_engine.award_experience(
+            active_book, 100, f"Completed Book {active_book} Chapter {active_chap}: {synopsis[:40]}",
+            active_chap, curr_gut
+        )
+    except Exception:
+        pass
 
     # 1. Append to diary
     os.makedirs(SYSTEM_STATE_DIR, exist_ok=True)
@@ -213,6 +248,8 @@ def complete_chapter_generation(synopsis, gut_increment=1):
         "completed_chapter": active_chap,
         "completed_gut": curr_gut,
         "synopsis": synopsis,
+        "prose_evaluation": prose_eval,
+        "mastery_xp_award": xp_award,
         "next_rotation_state": next_rot["new_state"],
         "diary_logged": True,
         "ephemeris_propagated": True
@@ -241,3 +278,4 @@ if __name__ == "__main__":
     else:
         res = prepare_next_chapter_stub()
         print(json.dumps(res, indent=2))
+

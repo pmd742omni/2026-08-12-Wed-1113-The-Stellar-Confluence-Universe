@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Confluence Master CLI Dispatcher for The Stellar Confluence Universe
-Unified command-line interface orchestrating chapter authoring, prose drafting, universe simulations,
-audiobook performance directing, 74-world planetary ecologies, continuity audits, 3D transit vectors,
-dual-hero cross encounters, dynamic galactic tension tracking, character mastery progression,
-subspace relay routing, artifact ledgers, wave physics, and 40-point regression diagnostics.
+Unified command-line interface orchestrating chapter authoring, visual storyboarding,
+prose drafting, universe simulations, trade economics, dialect profiling, paradox audits,
+audiobook directing, planetary ecologies, continuity, 3D transit vectors, dynamic tensions,
+mastery trees, subspace relay routing, artifact ledgers, wave physics, and 45-point regression diagnostics.
 """
 
 import os
@@ -42,7 +42,7 @@ def main():
     sim_p.add_argument("--dry-run", action="store_true", help="Simulate without writing files")
 
     # 2. CHAPTER SUBPARSER
-    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, prose drafting, encounter simulation, audio directing & compilation")
+    chap_p = subparsers.add_parser("chapter", help="Chapter authoring, storyboards, prose drafting, encounters, dialects, audio & compilation")
     chap_sub = chap_p.add_subparsers(dest="subcommand")
 
     # chapter prepare
@@ -53,6 +53,16 @@ def main():
     draft_p.add_argument("--book", type=int, default=1)
     draft_p.add_argument("--chapter", type=int, default=1)
     draft_p.add_argument("--save", action="store_true")
+
+    # chapter storyboard
+    sb_p = chap_sub.add_parser("storyboard", help="Generate 3-Act visual keyframe storyboard with camera & color palettes")
+    sb_p.add_argument("--file", required=True)
+    sb_p.add_argument("--book", type=int, default=1)
+
+    # chapter dialect
+    dial_p = chap_sub.add_parser("dialect", help="Audit dialogue against faction cultural speech patterns & idioms")
+    dial_p.add_argument("--file", required=True)
+    dial_p.add_argument("--book", type=int, default=1)
 
     # chapter audio
     aud_p = chap_sub.add_parser("audio", help="Generate studio-ready audiobook voice acting & sound design script")
@@ -92,7 +102,7 @@ def main():
     beat_p.add_argument("--book", type=int, default=1, help="Book ID number (1-74)")
 
     # 3. UNIVERSE SUBPARSER
-    uni_p = subparsers.add_parser("universe", help="Universe state, dynamic tension, mastery tree, relay routing, 74 worlds & dashboard")
+    uni_p = subparsers.add_parser("universe", help="Universe state, trade economy, tension, mastery, relay routing, 74 worlds & dashboard")
     uni_sub = uni_p.add_subparsers(dest="subcommand")
 
     # universe status
@@ -100,6 +110,19 @@ def main():
 
     # universe dashboard
     uni_sub.add_parser("dashboard", help="Generate interactive HTML/SVG galactic studio dashboard")
+
+    # universe economy
+    eco_p = uni_sub.add_parser("economy", help="Interplanetary trade commodity markets & cargo freighters")
+    eco_sub = eco_p.add_subparsers(dest="eco_cmd")
+    eco_sub.add_parser("prices", help="Get live commodity prices")
+    eco_disp = eco_sub.add_parser("dispatch", help="Dispatch cargo convoy")
+    eco_disp.add_argument("--origin", required=True)
+    eco_disp.add_argument("--dest", required=True)
+    eco_disp.add_argument("--cargo", required=True)
+    eco_disp.add_argument("--tonnage", type=int, default=500)
+    eco_disp.add_argument("--gut", type=int, default=100)
+    eco_stock = eco_sub.add_parser("stockpile", help="Get world resource stockpile")
+    eco_stock.add_argument("--world", required=True)
 
     # universe tension
     ten_p = uni_sub.add_parser("tension", help="Dynamic galactic tension & war/peace state tracking")
@@ -197,7 +220,12 @@ def main():
     lore_p = uni_sub.add_parser("lore", help="Search universe lore, chapters & callbacks")
     lore_p.add_argument("--search", required=True)
 
-    # 4. FACTION SUBPARSER
+    # 4. WORLD SUBPARSER
+    wld_p = subparsers.add_parser("world", help="World engine audits, paradox detectors & lore checkers")
+    wld_sub = wld_p.add_subparsers(dest="subcommand")
+    wld_sub.add_parser("paradox", help="Cross-audit all 74 storylines for chronological paradoxes")
+
+    # 5. FACTION SUBPARSER
     fac_p = subparsers.add_parser("faction", help="Faction physics matrix & diplomacy engine")
     fac_sub = fac_p.add_subparsers(dest="subcommand")
 
@@ -210,7 +238,7 @@ def main():
     dip_p.add_argument("--a", required=True)
     dip_p.add_argument("--b", required=True)
 
-    # 5. DOCUMENT SUBPARSER
+    # 6. DOCUMENT SUBPARSER
     doc_p = subparsers.add_parser("document", help="Progress tracking & Ndebele version registry")
     doc_sub = doc_p.add_subparsers(dest="subcommand")
 
@@ -223,8 +251,8 @@ def main():
     chk_p = doc_sub.add_parser("check", help="Check codename uniqueness")
     chk_p.add_argument("--codename", required=True)
 
-    # 6. TEST SUBPARSER
-    subparsers.add_parser("test", help="Run automated 40-point agent sanity regression suite")
+    # 7. TEST SUBPARSER
+    subparsers.add_parser("test", help="Run automated 45-point agent sanity regression suite")
 
     args = parser.parse_args()
 
@@ -235,6 +263,11 @@ def main():
         import universe_simulation_loop
         print(json.dumps(universe_simulation_loop.run_simulation(steps=args.steps, gut_delta=args.gut_delta, dry_run=args.dry_run), indent=2))
 
+    elif args.command == "world":
+        if args.subcommand == "paradox":
+            import multi_book_consistency_auditor
+            print(json.dumps(multi_book_consistency_auditor.audit_multi_book_consistency(), indent=2))
+
     elif args.command == "chapter":
         if args.subcommand == "prepare":
             import chapter_engine
@@ -242,6 +275,12 @@ def main():
         elif args.subcommand == "draft":
             import story_generator
             print(json.dumps(story_generator.generate_full_chapter_prose(args.book, args.chapter, save=args.save), indent=2))
+        elif args.subcommand == "storyboard":
+            import scene_storyboard_generator
+            print(json.dumps(scene_storyboard_generator.process_file_to_storyboard(args.file, args.book), indent=2))
+        elif args.subcommand == "dialect":
+            import character_voice_profiler
+            print(json.dumps(character_voice_profiler.analyze_chapter_file(args.file, args.book), indent=2))
         elif args.subcommand == "audio":
             import audiobook_director
             print(json.dumps(audiobook_director.process_file_to_audio_script(args.file, args.book), indent=2))
@@ -279,6 +318,14 @@ def main():
         elif args.subcommand == "dashboard":
             import generate_universe_dashboard
             print(json.dumps(generate_universe_dashboard.generate_dashboard(), indent=2))
+        elif args.subcommand == "economy":
+            import galactic_trade_economy
+            if args.eco_cmd == "dispatch":
+                print(json.dumps(galactic_trade_economy.dispatch_convoy(args.origin, args.dest, args.cargo, args.tonnage, args.gut), indent=2))
+            elif args.eco_cmd == "stockpile":
+                print(json.dumps(galactic_trade_economy.get_planetary_stockpile(args.world), indent=2))
+            else:
+                print(json.dumps(galactic_trade_economy.get_market_prices(), indent=2))
         elif args.subcommand == "tension":
             import galactic_tension_tracker
             if args.ten_cmd == "get":

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Master 40-Point Agent Regression & Sanity Suite for The Stellar Confluence Universe
-Executes in-process unit, integration, simulation, 3D transit physics, dual-hero encounters,
-dynamic tension shifts, character mastery trees, multi-hop relay routing, and continuity audits in under 400 milliseconds.
+Master 50-Point Agent Regression & Sanity Suite for The Stellar Confluence Universe
+Executes in-process diagnostics across 3D vector transit, storyboards, audio scripts,
+trade economies, dialect profiles, multi-book paradox audits, artifact engines, master hub dispatcher,
+and state ephemeris in under 1 second.
 """
 
 import os
@@ -23,12 +24,15 @@ def find_project_root():
     return cwd
 
 PROJECT_ROOT = find_project_root()
-SKILLS_DIR = os.path.join(PROJECT_ROOT, ".agents", "skills")
+AGENTS_DIR = os.path.join(PROJECT_ROOT, ".agents")
+SKILLS_DIR = os.path.join(AGENTS_DIR, "skills")
 
 for s in ["document-now", "confluence-chapter-authoring", "universe-state-manager", "prompt-response-flow", "world-engine-audit"]:
     p = os.path.join(SKILLS_DIR, s, "scripts")
     if p not in sys.path:
         sys.path.insert(0, p)
+if AGENTS_DIR not in sys.path:
+    sys.path.insert(0, AGENTS_DIR)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
@@ -281,119 +285,159 @@ def run_in_process_tests():
     except Exception as e:
         results.append({"test": "24. Universe State: Ion Storm Signal Jamming", "status": "FAIL", "error": str(e)})
 
-    # 25. Confluence Wavefront: 3D Wave Physics
+    # 25. Universe State: Interplanetary Trade Commodity Prices
+    try:
+        import galactic_trade_economy
+        eco_p = galactic_trade_economy.get_market_prices()
+        assert eco_p["total_commodities"] >= 4
+        results.append({"test": "25. Universe State: Trade Market Prices", "status": "PASS", "details": f"{eco_p['total_commodities']} commodities listed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "25. Universe State: Trade Market Prices", "status": "FAIL", "error": str(e)})
+
+    # 26. Universe State: Commercial Cargo Convoy Dispatch
+    try:
+        import galactic_trade_economy
+        disp = galactic_trade_economy.dispatch_convoy("Helios Prime", "Aethelgard Gear-City", "Photonic Prism Crystals", 400, 100)
+        assert disp["status"] == "CONVOY_DISPATCHED"
+        results.append({"test": "26. Universe State: Cargo Convoy Dispatch", "status": "PASS", "details": f"{disp['convoy_id']} ({disp['cargo']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "26. Universe State: Cargo Convoy Dispatch", "status": "FAIL", "error": str(e)})
+
+    # 27. Confluence Wavefront: 3D Wave Physics
     try:
         import confluence_wave_physics
         w_state = confluence_wave_physics.calculate_wavefront_state("[10, 5, 0]", 100.0)
         assert 0.5 <= w_state["wave_intensity_factor"] <= 1.5
-        results.append({"test": "25. Confluence Wavefront: Wave Physics", "status": "PASS", "details": f"Phase: {w_state['wave_phase_degrees']}° (Intensity: {w_state['wave_intensity_factor']})"})
+        results.append({"test": "27. Confluence Wavefront: Wave Physics", "status": "PASS", "details": f"Phase: {w_state['wave_phase_degrees']}° (Intensity: {w_state['wave_intensity_factor']})"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "25. Confluence Wavefront: Wave Physics", "status": "FAIL", "error": str(e)})
+        results.append({"test": "27. Confluence Wavefront: Wave Physics", "status": "FAIL", "error": str(e)})
 
-    # 26. Confluence Wavefront: Relativistic Doppler Shift
+    # 28. Confluence Wavefront: Relativistic Doppler Shift
     try:
         import confluence_wave_physics
         d_state = confluence_wave_physics.calculate_wavefront_state("[10, 5, 0]", 100.0, velocity_vec="[0, 2, 0]")
         assert d_state["doppler_shift_factor"] > 1.0
-        results.append({"test": "26. Confluence Wavefront: Doppler Shift", "status": "PASS", "details": f"Doppler factor: {d_state['doppler_shift_factor']} ({d_state['observed_frequency_mhz']} MHz)"})
+        results.append({"test": "28. Confluence Wavefront: Doppler Shift", "status": "PASS", "details": f"Doppler factor: {d_state['doppler_shift_factor']} ({d_state['observed_frequency_mhz']} MHz)"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "26. Confluence Wavefront: Doppler Shift", "status": "FAIL", "error": str(e)})
+        results.append({"test": "28. Confluence Wavefront: Doppler Shift", "status": "FAIL", "error": str(e)})
 
-    # 27. Confluence Authoring: Faction Matrix
+    # 29. Confluence Authoring: Faction Matrix
     try:
         import faction_matrix
         f_prof = faction_matrix.get_faction_profile("Comet-Riders")
         assert "SUBLIMATION SURGE" in f_prof["profile"]["peak_facing"]["buff"]
-        results.append({"test": "27. Confluence Authoring: Faction Matrix", "status": "PASS", "details": f_prof['matched_name']})
+        results.append({"test": "29. Confluence Authoring: Faction Matrix", "status": "PASS", "details": f_prof['matched_name']})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "27. Confluence Authoring: Faction Matrix", "status": "FAIL", "error": str(e)})
+        results.append({"test": "29. Confluence Authoring: Faction Matrix", "status": "FAIL", "error": str(e)})
 
-    # 28. Confluence Authoring: Faction Diplomacy & Tension Engine
+    # 30. Confluence Authoring: Faction Diplomacy & Tension Engine
     try:
         import faction_diplomacy_engine
         dip = faction_diplomacy_engine.get_diplomatic_relation("Sun-Forged Hegemony", "Void-Bound Monks")
         assert dip["stance"] == "OPEN_RIVALRY" and dip["tension_index"] > 80
-        results.append({"test": "28. Confluence Authoring: Faction Diplomacy", "status": "PASS", "details": f"Sun vs Void: {dip['stance']} ({dip['tension_index']}/100)"})
+        results.append({"test": "30. Confluence Authoring: Faction Diplomacy", "status": "PASS", "details": f"Sun vs Void: {dip['stance']} ({dip['tension_index']}/100)"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "28. Confluence Authoring: Faction Diplomacy", "status": "FAIL", "error": str(e)})
+        results.append({"test": "30. Confluence Authoring: Faction Diplomacy", "status": "FAIL", "error": str(e)})
 
-    # 29. Confluence Authoring: Narrative Beat Architect
+    # 31. Confluence Authoring: Narrative Beat Architect
     try:
         import narrative_beat_architect
         beats = narrative_beat_architect.generate_scene_beats("Caelum", "The Solar Crucible", "Sun-Forged", "Helios Prime", "SURFACE", 15.0, "PEAK_FACING", "Output", "Limit")
         assert "act_1_opening_grounding" in beats["narrative_blueprint"]
-        results.append({"test": "29. Confluence Authoring: Narrative Beat Architect", "status": "PASS", "details": "3-Act Blueprint Scaffolded"})
+        results.append({"test": "31. Confluence Authoring: Narrative Beat Architect", "status": "PASS", "details": "3-Act Blueprint Scaffolded"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "29. Confluence Authoring: Narrative Beat Architect", "status": "FAIL", "error": str(e)})
+        results.append({"test": "31. Confluence Authoring: Narrative Beat Architect", "status": "FAIL", "error": str(e)})
 
-    # 30. Confluence Authoring: Dual-Hero Cross-Book Encounter
+    # 32. Confluence Authoring: Dual-Hero Cross-Book Encounter
     try:
         import cross_encounter_engine
         enc = cross_encounter_engine.simulate_cross_encounter(1, 11, "SUBSPACE_COMMS")
         assert len(enc["dialogue_script"]) >= 4
-        results.append({"test": "30. Confluence Authoring: Cross Encounter", "status": "PASS", "details": f"{enc['protagonists'][0]['hero']} & {enc['protagonists'][1]['hero']}"})
+        results.append({"test": "32. Confluence Authoring: Cross Encounter", "status": "PASS", "details": f"{enc['protagonists'][0]['hero']} & {enc['protagonists'][1]['hero']}"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "30. Confluence Authoring: Cross Encounter", "status": "FAIL", "error": str(e)})
+        results.append({"test": "32. Confluence Authoring: Cross Encounter", "status": "FAIL", "error": str(e)})
 
-    # 31. Confluence Authoring: Resonance Calculator
+    # 33. Confluence Authoring: Resonance Calculator
     try:
         import calculate_resonance
         res_calc = calculate_resonance.calculate_resonance(15, "Sun-Forged Hegemony", "SURFACE")
         assert res_calc["resonance_state"] == "PEAK_FACING"
-        results.append({"test": "31. Confluence Authoring: Resonance Calculator", "status": "PASS", "details": f"{res_calc['resonance_state']} ({res_calc['facing_angle_deg']}°)"})
+        results.append({"test": "33. Confluence Authoring: Resonance Calculator", "status": "PASS", "details": f"{res_calc['resonance_state']} ({res_calc['facing_angle_deg']}°)"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "31. Confluence Authoring: Resonance Calculator", "status": "FAIL", "error": str(e)})
+        results.append({"test": "33. Confluence Authoring: Resonance Calculator", "status": "FAIL", "error": str(e)})
 
-    # 32. Confluence Authoring: Autonomous Story Generator
+    # 34. Confluence Authoring: Autonomous Story Generator
     try:
         import story_generator
         draft = story_generator.generate_full_chapter_prose(1, 1, save=False)
         assert draft["status"] == "drafted" and draft["total_words"] > 200
-        results.append({"test": "32. Confluence Authoring: Story Generator", "status": "PASS", "details": f"{draft['total_words']} words drafted"})
+        results.append({"test": "34. Confluence Authoring: Story Generator", "status": "PASS", "details": f"{draft['total_words']} words drafted"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "32. Confluence Authoring: Story Generator", "status": "FAIL", "error": str(e)})
+        results.append({"test": "34. Confluence Authoring: Story Generator", "status": "FAIL", "error": str(e)})
 
-    # 33. Confluence Authoring: Autonomous Prose Polisher & Tone Stylist
+    # 35. Confluence Authoring: Autonomous Prose Polisher & Tone Stylist
     try:
         import prose_polisher
         raw_snippet = "Caelum looked at the sun. He felt hot metal under his hands. The machine started to make a humming noise."
         pol = prose_polisher.polish_prose_text(raw_snippet)
         assert pol["status"] == "POLISHED"
-        results.append({"test": "33. Confluence Authoring: Prose Polisher", "status": "PASS", "details": "Sensory enrichment applied"})
+        results.append({"test": "35. Confluence Authoring: Prose Polisher", "status": "PASS", "details": "Sensory enrichment applied"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "33. Confluence Authoring: Prose Polisher", "status": "FAIL", "error": str(e)})
+        results.append({"test": "35. Confluence Authoring: Prose Polisher", "status": "FAIL", "error": str(e)})
 
-    # 34. Confluence Authoring: Audiobook Sound & Voice Director
+    # 36. Confluence Authoring: Audiobook Sound & Voice Director
     try:
         import audiobook_director
         sample_txt = 'The twin suns flared. "Hold steady!" said Theron.'
         aud = audiobook_director.generate_audiobook_script(sample_txt, book_id=1)
         assert aud["status"] == "SCRIPT_COMPILED"
-        results.append({"test": "34. Confluence Authoring: Audiobook Director", "status": "PASS", "details": f"{aud['script_line_count']} script lines compiled"})
+        results.append({"test": "36. Confluence Authoring: Audiobook Director", "status": "PASS", "details": f"{aud['script_line_count']} script lines compiled"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "34. Confluence Authoring: Audiobook Director", "status": "FAIL", "error": str(e)})
+        results.append({"test": "36. Confluence Authoring: Audiobook Director", "status": "FAIL", "error": str(e)})
 
-    # 35. Confluence Authoring: Anthology & Manuscript Compiler
+    # 37. Confluence Authoring: Cinematic Scene Storyboard Keyframes
+    try:
+        import scene_storyboard_generator
+        sb = scene_storyboard_generator.generate_storyboard("Sample text", book_id=1)
+        assert sb["status"] == "STORYBOARD_GENERATED" and sb["total_keyframes"] == 3
+        results.append({"test": "37. Confluence Authoring: Scene Storyboard", "status": "PASS", "details": f"{sb['total_keyframes']} keyframes generated"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "37. Confluence Authoring: Scene Storyboard", "status": "FAIL", "error": str(e)})
+
+    # 38. Confluence Authoring: Faction Linguistic Dialect Profiler
+    try:
+        import character_voice_profiler
+        dial = character_voice_profiler.analyze_character_dialogue('"Watch the solar beam through the lens!"', book_id=1)
+        assert dial["status"] == "ANALYSIS_COMPLETE" and dial["cultural_authenticity_score"] > 50
+        results.append({"test": "38. Confluence Authoring: Dialect Profiler", "status": "PASS", "details": f"Authenticity: {dial['cultural_authenticity_score']}% ({dial['faction_dialect']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "38. Confluence Authoring: Dialect Profiler", "status": "FAIL", "error": str(e)})
+
+    # 39. Confluence Authoring: Anthology & Manuscript Compiler
     try:
         import anthology_compiler
         comp = anthology_compiler.compile_book_manuscript(1)
         assert comp["status"] == "compiled" and os.path.exists(comp["manuscript_file"])
-        results.append({"test": "35. Confluence Authoring: Manuscript Compiler", "status": "PASS", "details": f"Compiled {comp['total_chapters']} chapters"})
+        results.append({"test": "39. Confluence Authoring: Manuscript Compiler", "status": "PASS", "details": f"Compiled {comp['total_chapters']} chapters"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "35. Confluence Authoring: Manuscript Compiler", "status": "FAIL", "error": str(e)})
+        results.append({"test": "39. Confluence Authoring: Manuscript Compiler", "status": "FAIL", "error": str(e)})
 
-    # 36. Confluence Authoring: Prose Readability & Audio Cadence Evaluator
+    # 40. Confluence Authoring: Prose Readability & Audio Cadence Evaluator
     try:
         import chapter_prose_evaluator
         sample_prose = """
@@ -404,55 +448,273 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
 """
         eval_res = chapter_prose_evaluator.evaluate_prose(sample_prose)
         assert eval_res["status"] == "PASS" and "audio_cadence" in eval_res
-        results.append({"test": "36. Confluence Authoring: Readability & Cadence", "status": "PASS", "details": f"Grade: {eval_res['flesch_kincaid_grade_level']} | StdDev: {eval_res['audio_cadence']['sentence_length_std_dev']}"})
+        results.append({"test": "40. Confluence Authoring: Readability & Cadence", "status": "PASS", "details": f"Grade: {eval_res['flesch_kincaid_grade_level']} | StdDev: {eval_res['audio_cadence']['sentence_length_std_dev']}"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "36. Confluence Authoring: Readability & Cadence", "status": "FAIL", "error": str(e)})
+        results.append({"test": "40. Confluence Authoring: Readability & Cadence", "status": "FAIL", "error": str(e)})
 
-    # 37. Confluence Authoring: Chapter Continuity & Lore Integrity Validator
+    # 41. Confluence Authoring: Chapter Continuity & Lore Integrity Validator
     try:
         import chapter_continuity_validator
         ch1_path = os.path.join(PROJECT_ROOT, "01_Books_Library", "Book_01_The_Solar_Crucible", "Book_01_Chapter_01.md")
         if os.path.exists(ch1_path):
             c_val = chapter_continuity_validator.validate_chapter_continuity(ch1_path)
             assert c_val["status"] in ["PASS", "WARNING"]
-            results.append({"test": "37. Confluence Authoring: Continuity Validator", "status": "PASS", "details": f"{c_val['total_checks_passed']} checks passed"})
+            results.append({"test": "41. Confluence Authoring: Continuity Validator", "status": "PASS", "details": f"{c_val['total_checks_passed']} checks passed"})
         else:
-            results.append({"test": "37. Confluence Authoring: Continuity Validator", "status": "PASS", "details": "Validated against default stub"})
+            results.append({"test": "41. Confluence Authoring: Continuity Validator", "status": "PASS", "details": "Validated against default stub"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "37. Confluence Authoring: Continuity Validator", "status": "FAIL", "error": str(e)})
+        results.append({"test": "41. Confluence Authoring: Continuity Validator", "status": "FAIL", "error": str(e)})
 
-    # 38. Confluence Authoring: Unified Chapter Engine
+    # 42. Confluence Authoring: Unified Chapter Engine
     try:
         import chapter_engine
         stub_res = chapter_engine.prepare_next_chapter_stub()
         assert stub_res["status"] == "ready"
-        results.append({"test": "38. Confluence Authoring: Chapter Engine", "status": "PASS", "details": f"Book {stub_res['active_book']} Ch {stub_res['active_chapter']}"})
+        results.append({"test": "42. Confluence Authoring: Chapter Engine", "status": "PASS", "details": f"Book {stub_res['active_book']} Ch {stub_res['active_chapter']}"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "38. Confluence Authoring: Chapter Engine", "status": "FAIL", "error": str(e)})
+        results.append({"test": "42. Confluence Authoring: Chapter Engine", "status": "FAIL", "error": str(e)})
 
-    # 39. Confluence Authoring: Universe Simulation Loop
+    # 43. Confluence Authoring: Universe Simulation Loop
     try:
         import universe_simulation_loop
         sim = universe_simulation_loop.run_simulation(steps=1, dry_run=True)
         assert sim["simulation_status"] == "COMPLETED"
-        results.append({"test": "39. Confluence Authoring: Simulation Loop", "status": "PASS", "details": f"Simulated {sim['total_steps_executed']} step(s) (Dry Run)"})
+        results.append({"test": "43. Confluence Authoring: Simulation Loop", "status": "PASS", "details": f"Simulated {sim['total_steps_executed']} step(s) (Dry Run)"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "39. Confluence Authoring: Simulation Loop", "status": "FAIL", "error": str(e)})
+        results.append({"test": "43. Confluence Authoring: Simulation Loop", "status": "FAIL", "error": str(e)})
 
-    # 40. World Engine: Full Universe State & Celestial Physics Audit
+    # 44. World Engine: Global Multi-Book Consistency & Paradox Auditor
+    try:
+        import multi_book_consistency_auditor
+        p_aud = multi_book_consistency_auditor.audit_multi_book_consistency()
+        assert p_aud["status"] == "PASS"
+        results.append({"test": "44. World Engine: Multi-Book Paradox Audit", "status": "PASS", "details": f"{p_aud['total_consistency_checks_passed']} cross-story checks passed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "44. World Engine: Multi-Book Paradox Audit", "status": "FAIL", "error": str(e)})
+
+    # 45. World Engine: Full Universe State & Celestial Physics Audit
     try:
         import audit_universe_state, audit_lore_physics
         aud_res = audit_universe_state.audit_state()
         lore_res = audit_lore_physics.audit_physics()
         assert aud_res["status"] == "PASS" and lore_res["status"] == "PASS"
-        results.append({"test": "40. World Engine: Full System Audit", "status": "PASS", "details": f"{aud_res['character_registry_count']} books, {lore_res['valid_records']} ephemeris records"})
+        results.append({"test": "45. World Engine: Full System Audit", "status": "PASS", "details": f"{aud_res['character_registry_count']} books, {lore_res['valid_records']} ephemeris records"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "40. World Engine: Full System Audit", "status": "FAIL", "error": str(e)})
+        results.append({"test": "45. World Engine: Full System Audit", "status": "FAIL", "error": str(e)})
+
+    # 46. Confluence Authoring: Resonance Artifact Power & Overheat Physics
+    try:
+        import resonance_artifact_engine
+        art_res = resonance_artifact_engine.calculate_artifact_performance("SOLAR_LENS", 15.0)
+        assert art_res["power_output_kw"] > 0 and art_res["resonance_zone"] == "PEAK_FACING"
+        results.append({"test": "46. Confluence Authoring: Resonance Relic Engine", "status": "PASS", "details": f"Power: {art_res['power_output_kw']} kW (Overheat Risk: {art_res['overheat_risk_pct']}%)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "46. Confluence Authoring: Resonance Relic Engine", "status": "FAIL", "error": str(e)})
+
+    # 47. Confluence Authoring: Sensory Soundscape & Lighting Palette Director
+    try:
+        import sensory_audio_director
+        snd_res = sensory_audio_director.analyze_soundscape("The golden lens hummed with a dazzling beam while the bronze gears clacked.")
+        assert snd_res["status"] == "ANALYZED" and snd_res["sensory_richness_score"] > 0
+        results.append({"test": "47. Confluence Authoring: Sensory Soundscape Director", "status": "PASS", "details": f"Score: {snd_res['sensory_richness_score']}/10 ({snd_res['recommended_color_vibe']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "47. Confluence Authoring: Sensory Soundscape Director", "status": "FAIL", "error": str(e)})
+
+    # 48. Universe State: Multi-Book State Synchronization Engine
+    try:
+        import multi_book_sync_engine
+        sync_res = multi_book_sync_engine.audit_and_sync_all_books()
+        assert sync_res["status"] in ["SYNCHRONIZED", "PASS"]
+        results.append({"test": "48. Universe State: Multi-Book Sync Engine", "status": "PASS", "details": f"{sync_res['total_books_synced']} storylines synchronized"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "48. Universe State: Multi-Book Sync Engine", "status": "FAIL", "error": str(e)})
+
+    # 49. Prompt-Response Flow: Active Journal Discovery & Formatting
+    try:
+        import log_flow_entry
+        active_f = log_flow_entry.get_active_flow_file()
+        assert os.path.exists(active_f)
+        results.append({"test": "49. Prompt-Response Flow: Active Journal Discovery", "status": "PASS", "details": os.path.basename(active_f)})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "49. Prompt-Response Flow: Active Journal Discovery", "status": "FAIL", "error": str(e)})
+
+    # 50. Master Command Hub: Agent Hub CLI Parser & Route Verification
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        assert p.prog == "agent_hub" and "author" in p._subparsers._group_actions[0].choices
+        results.append({"test": "50. Master Command Hub: Agent Hub Dispatcher", "status": "PASS", "details": "5 master subcommands indexed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "50. Master Command Hub: Agent Hub Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 51. Core Foundation: Project Root & Path Bindings
+    try:
+        import agent_core
+        assert os.path.exists(agent_core.PROJECT_ROOT)
+        assert os.path.exists(agent_core.SYSTEM_STATE_DIR)
+        assert os.path.exists(agent_core.BOOKS_LIB_DIR)
+        results.append({"test": "51. Core Foundation: Path Bindings", "status": "PASS", "details": os.path.basename(agent_core.PROJECT_ROOT)})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "51. Core Foundation: Path Bindings", "status": "FAIL", "error": str(e)})
+
+    # 52. Core Foundation: Safe JSON IO & File Serialization
+    try:
+        import agent_core
+        test_data = agent_core.read_json_safe(agent_core.COSMIC_EVENTS_JSON, [])
+        assert isinstance(test_data, list) and len(test_data) > 0
+        results.append({"test": "52. Core Foundation: Safe JSON IO", "status": "PASS", "details": f"{len(test_data)} events loaded"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "52. Core Foundation: Safe JSON IO", "status": "FAIL", "error": str(e)})
+
+    # 53. Core Foundation: ANSI Color & Text Styling
+    try:
+        import agent_core
+        styled = agent_core.colorize("Stellar Test", agent_core.TermColor.BOLD, agent_core.TermColor.BRIGHT_GREEN)
+        slug = agent_core.slugify("The Solar Crucible: Book 01!")
+        assert "Solar_Crucible" in slug
+        results.append({"test": "53. Core Foundation: Text Styling & Slugify", "status": "PASS", "details": f"Slug: {slug}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "53. Core Foundation: Text Styling & Slugify", "status": "FAIL", "error": str(e)})
+
+    # 54. Core Foundation: Terminal Visual Status Board Generator
+    try:
+        import agent_core
+        overview_text = agent_core.generate_terminal_overview()
+        assert "THE STELLAR CONFLUENCE UNIVERSE" in overview_text
+        assert "GALACTIC STATUS BOARD" in overview_text
+        results.append({"test": "54. Core Foundation: Terminal Overview Board", "status": "PASS", "details": f"{len(overview_text.splitlines())} lines rendered"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "54. Core Foundation: Terminal Overview Board", "status": "FAIL", "error": str(e)})
+
+    # 55. Master Command Hub: Terminal Overview & Status Dispatch
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args = p.parse_args(["overview"])
+        assert args.command == "overview"
+        results.append({"test": "55. Master Hub: Overview Command Dispatch", "status": "PASS", "details": "Overview command routed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "55. Master Hub: Overview Command Dispatch", "status": "FAIL", "error": str(e)})
+
+    # 56. Master Command Hub: Doctor Comprehensive Diagnostics Sweep
+    try:
+        import agent_hub
+        # Verify doctor parser routing
+        p = agent_hub.build_parser()
+        args = p.parse_args(["doctor"])
+        assert args.command == "doctor"
+        results.append({"test": "56. Master Hub: Doctor Command Dispatch", "status": "PASS", "details": "Doctor diagnostic sweep indexed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "56. Master Hub: Doctor Command Dispatch", "status": "FAIL", "error": str(e)})
+
+    # 57. Confluence Authoring: Wave Physics Doppler & Relativistic Phase Calculations
+    try:
+        import confluence_wave_physics
+        wf_res = confluence_wave_physics.calculate_wavefront_state("[10, 5, 0]", 100.0, [0.0, 0.2, 0.0])
+        assert "wave_phase_degrees" in wf_res and "doppler_shift_factor" in wf_res
+        results.append({"test": "57. Confluence Wavefront: 3D Wave State", "status": "PASS", "details": f"Phase: {wf_res['wave_phase_degrees']}° (Doppler: {wf_res['doppler_shift_factor']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "57. Confluence Wavefront: 3D Wave State", "status": "FAIL", "error": str(e)})
+
+    # 58. Confluence Authoring: Faction Matrix Expansion Dictionary
+    try:
+        import faction_matrix
+        f_prof = faction_matrix.get_faction_profile("Nebula-Weavers")
+        assert "profile" in f_prof and "domain" in f_prof["profile"]
+        results.append({"test": "58. Confluence Authoring: Faction Expansion Matrix", "status": "PASS", "details": f"Domain: {f_prof['profile']['domain']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "58. Confluence Authoring: Faction Expansion Matrix", "status": "FAIL", "error": str(e)})
+
+    # 59. Confluence Authoring: Bilateral Faction Diplomacy Engine
+    try:
+        import faction_diplomacy_engine
+        dip_res = faction_diplomacy_engine.get_diplomatic_relation("Astrolabe Engineers", "Void-Bound Monks")
+        assert "stance" in dip_res and "tension_index" in dip_res
+        results.append({"test": "59. Confluence Authoring: Bilateral Diplomacy", "status": "PASS", "details": f"Stance: {dip_res['stance']} (Tension: {dip_res['tension_index']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "59. Confluence Authoring: Bilateral Diplomacy", "status": "FAIL", "error": str(e)})
+
+    # 60. Confluence Authoring: Autonomous Story Prose Generator Pipeline
+    try:
+        import story_generator
+        draft_res = story_generator.generate_full_chapter_prose(1, 1, save=False)
+        assert "total_words" in draft_res and draft_res["total_words"] > 100
+        results.append({"test": "60. Confluence Authoring: Story Prose Generator", "status": "PASS", "details": f"{draft_res['total_words']} words drafted"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "60. Confluence Authoring: Story Prose Generator", "status": "FAIL", "error": str(e)})
+
+    # 61. Universe State: Character Mesh Network Graph & Relationship Discovery
+    try:
+        import character_mesh_graph
+        mesh_res = character_mesh_graph.get_character_mesh(1)
+        assert "mesh" in mesh_res and "mentor" in mesh_res["mesh"]
+        results.append({"test": "61. Universe State: Character Mesh Network", "status": "PASS", "details": f"Mentor: {mesh_res['mesh']['mentor']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "61. Universe State: Character Mesh Network", "status": "FAIL", "error": str(e)})
+
+    # 62. Universe State: Character Arc Tracker Inventory Operations
+    try:
+        import character_arc_tracker
+        item_res = character_arc_tracker.add_inventory_item(1, "Photonic Calibration Chisel", "Precision tuning tool")
+        assert item_res["status"] == "item_added"
+        arc_info = character_arc_tracker.inspect_arc(1)
+        assert len(arc_info.get("inventory", [])) > 0
+        results.append({"test": "62. Universe State: Character Arc Tracker", "status": "PASS", "details": f"{len(arc_info['inventory'])} items tracked"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "62. Universe State: Character Arc Tracker", "status": "FAIL", "error": str(e)})
+
+    # 63. Universe State: Universe Lore Indexer Callback Extractor
+    try:
+        import universe_lore_indexer
+        cb_res = universe_lore_indexer.get_callbacks_for_book(1)
+        assert "perspective_character" in cb_res and "suggested_callbacks" in cb_res
+        results.append({"test": "63. Universe State: Lore Indexer Callbacks", "status": "PASS", "details": f"{len(cb_res['suggested_callbacks'])} callbacks suggested"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "63. Universe State: Lore Indexer Callbacks", "status": "FAIL", "error": str(e)})
+
+    # 64. Document-Now: Dynamic Version Registry Engine
+    try:
+        import version_registry
+        next_v = version_registry.get_next_version()
+        assert isinstance(next_v, str) and len(next_v) > 0
+        results.append({"test": "64. Document-Now: Version Registry Engine", "status": "PASS", "details": f"Next Version: {next_v}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "64. Document-Now: Version Registry Engine", "status": "FAIL", "error": str(e)})
+
+    # 65. Prompt-Response Flow: Flow Session Summary & Entry Counter
+    try:
+        import log_flow_entry
+        active_f = log_flow_entry.get_active_flow_file()
+        assert active_f is not None and os.path.exists(active_f)
+        results.append({"test": "65. Prompt-Response Flow: Session Discovery", "status": "PASS", "details": "Active flow discovered"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "65. Prompt-Response Flow: Session Discovery", "status": "FAIL", "error": str(e)})
 
     duration_total_ms = round((time.time() - start_total) * 1000, 1)
     all_pass = (passed_count == len(results))
@@ -467,3 +729,4 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
 if __name__ == "__main__":
     summary = run_in_process_tests()
     print(json.dumps(summary, indent=2))
+

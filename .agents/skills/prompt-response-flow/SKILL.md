@@ -15,6 +15,7 @@ Activate this workflow when:
 - Logging a completed prompt-response pair: `"log flow entry"` or `"record interaction"`.
 - Checking or fixing formatting in the Prompt-Response Flow journal.
 - Creating a new session flow file.
+- Inspecting session flow summary statistics.
 
 ---
 
@@ -48,14 +49,24 @@ Date: "2026-08-12 Wed 1149"
 
 ---
 
-## 3. Automation Scripts & Tools
+## 3. Automation Scripts & Master Hub Commands
 
-### Append Entry via Python
+### Append Entry via Master Hub
 ```bash
-python .agents/skills/prompt-response-flow/scripts/log_flow_entry.py --prompt "<Prompt Text>" --response "<Response Text>"
+python .agents/hub.py flow log --prompt "<Prompt Text>" --response "<Response Text>"
 ```
 
 ### Inspect Active Flow Document
 ```bash
-python .agents/skills/prompt-response-flow/scripts/log_flow_entry.py
+python .agents/hub.py flow active
+```
+
+### Summarize Current Flow Session Entries
+```bash
+python .agents/hub.py flow summary
+```
+
+### Create New Flow Session
+```bash
+python .agents/hub.py flow new
 ```

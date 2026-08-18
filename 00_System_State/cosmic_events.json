@@ -141,5 +141,137 @@
     "duration_gut": 10,
     "expiry_gut": 110,
     "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0014",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0015",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0016",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0017",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0018",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0019",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0020",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0021",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0022",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0023",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0024",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0025",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
   }
 ]

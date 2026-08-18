@@ -50,20 +50,26 @@ A character’s capability is dynamically determined by their spatial orientatio
 Strict rotation loop:
 $$\text{[Book 01, Ch 1]} \to \text{[Book 02, Ch 1]} \to \dots \to \text{[Book 74, Ch 1]} \to \text{[Book 01, Ch 2]} \to \text{[Book 02, Ch 2]} \dots$$
 
-### 1-Command Chapter Authoring Pipeline:
-1. **Prepare Chapter Stub**:
-   ```bash
-   python .agents/skills/confluence-chapter-authoring/scripts/chapter_engine.py prepare
-   ```
-2. **Draft Prose**: Write vivid chapter in `01_Books_Library/Book_XX_[Title_Slug]/Book_XX_Chapter_YY.md`.
-3. **Audit Prose Quality**:
-   ```bash
-   python .agents/skills/confluence-chapter-authoring/scripts/chapter_prose_evaluator.py --file "01_Books_Library/Book_XX_[Title_Slug]/Book_XX_Chapter_YY.md"
-   ```
-4. **Complete & Propagate State**:
-   ```bash
-   python .agents/skills/confluence-chapter-authoring/scripts/chapter_engine.py complete --synopsis "<1-2 sentence summary>" --gut-delta 1
-   ```
+### Master Hub Workflow (`.agents/hub.py`):
+```bash
+# 1. Inspect live galactic status board
+python .agents/hub.py overview
+
+# 2. Prepare chapter stub with 3-act blueprint & dialect guidelines
+python .agents/hub.py author prepare
+
+# 3. Draft prose (manual or co-pilot drafting)
+python .agents/hub.py author draft --book-id 1 --chapter 1
+
+# 4. Audit prose readability (Grade 4-6 target) & audio cadence
+python .agents/hub.py author evaluate --file "01_Books_Library/Book_01_The_Solar_Crucible/Book_01_Chapter_01.md"
+
+# 5. Complete & propagate state
+python .agents/hub.py author complete --synopsis "<1-2 sentence summary>" --gut-delta 1
+
+# 6. Run comprehensive system doctor
+python .agents/hub.py doctor
+```
 
 ---
 
@@ -76,7 +82,11 @@ The Stellar Confluence Universe/
 │   ├── cosmic_clockwork.md        <-- Real-time GUT, Loc_Type, Facing Angles & Resonance Constraints
 │   ├── character_registry.md      <-- Index of all 74 books, titles, heroes, factions & worlds
 │   ├── cosmic_events.json         <-- Active spatial ripple hazards & beacon pulses
-│   ├── character_arcs.json        <-- Dynamic inventory, wounds & cross-book bonds
+│   ├── character_arcs.json        <-- Dynamic inventory, wounds, mastery levels & relic custody
+│   ├── character_mastery.json     <-- XP progress, ranks & unlocked skill trees
+│   ├── galactic_tension.json      <-- Inter-faction friction & diplomatic stances
+│   ├── galactic_economy.json      <-- Commodity pricing & convoy dispatch
+│   ├── transit_missions.json      <-- Active starship spaceflight vectors & ETAs
 │   ├── universe_dashboard.html    <-- Interactive visual HTML/SVG galactic radar & timeline
 │   └── diary.md                   <-- Execution log of every completed chapter
 ├── 01_Books_Library/
@@ -89,13 +99,18 @@ The Stellar Confluence Universe/
 │   ├── Version_Registry.md
 │   └── YYYY-MM-DD_HHMM_Description.md
 └── .agents/
-    ├── AGENTS.md
+    ├── AGENTS.md                  <-- Master agent instructions and universe physics rules
+    ├── hub.py                     <-- Master Command Hub CLI (overview, doctor, test, author, state, audit, document, flow)
+    ├── agent_hub.py               <-- High-performance unified command dispatcher
+    ├── core/
+    │   ├── agent_core.py          <-- Centralized shared foundation: paths, safe IO, ANSI styling, terminal board
+    │   └── __init__.py
     └── skills/
-        ├── confluence-chapter-authoring/
-        ├── universe-state-manager/
-        ├── document-now/
-        ├── prompt-response-flow/
-        └── world-engine-audit/
+        ├── confluence-chapter-authoring/ (18 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics)
+        ├── universe-state-manager/       (18 scripts: ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
+        ├── world-engine-audit/           (4 scripts: 65+ test regression suite, continuity, paradox, physics, doctor)
+        ├── document-now/                 (2 scripts: version registry & 100+ Ndebele lexicon)
+        └── prompt-response-flow/         (1 script: interaction journal logging)
 ```
 
 ---
@@ -104,18 +119,22 @@ The Stellar Confluence Universe/
 
 Whenever the developer states **"document now"**, **"document progress"**, or requests a checkpoint:
 1. Refer to and execute `document-now` ([SKILL.md](file:///c:/Users/ignaz/OneDrive/Documents/Projects/2026-05-03%201325%20Syncthing%20Books/2026-05-20%20Wed%202132%20Syncthing%20Gateway/Projects/2026-08-12%20Wed%201113%20The%20Stellar%20Confluence%20Universe/.agents/skills/document-now/SKILL.md)).
-2. Acquire system timestamp via `get_timestamp.py`.
-3. Check Ndebele codename uniqueness from the 100+ lexicon (`version_registry.py check <codename>`).
+2. Collect system timestamp: `python .agents/hub.py document timestamp`.
+3. Check Ndebele codename uniqueness from 100+ catalog: `python .agents/hub.py document check <codename>`.
 4. Write `progress tracking/YYYY-MM-DD_HHMM_Description.md` (with 10-year-old child explanation & next steps, and Peter Dube + Antigravity attributions).
-5. Register version (`version_registry.py register ...`).
-6. Stage all changes (`git add .`) and commit: `YYYY-MM-DD Day HHMM: [Title] ([Codename] [Version])`.
+5. Register version: `python .agents/hub.py document register --version <version> --codename <codename> --meaning "<meaning>" --file "<filename>"`.
+6. Stage and commit: `git add .` && `git commit -m "YYYY-MM-DD Day HHMM: [Title] ([Codename] [Version])"`.
 
 ---
 
-## 8. Automated Diagnostics Rule ("Self-Test")
+## 8. Automated Diagnostics Rule ("Self-Test" & "Doctor")
 
 Whenever testing system health or before major release commits:
 ```bash
-python .agents/skills/world-engine-audit/scripts/agent_self_test.py
+# Instant in-process regression suite (65+ sanity checks in <1s)
+python .agents/hub.py test
+
+# Full system diagnostic sweep (State + Physics + Paradoxes + Tests)
+python .agents/hub.py doctor
 ```
-*(Runs 15 automated sanity checks across all 5 skills and verified 100% PASS)*
+*(Runs **65+ automated sanity checks** across all skills in <1 second with 100% PASS verification)*

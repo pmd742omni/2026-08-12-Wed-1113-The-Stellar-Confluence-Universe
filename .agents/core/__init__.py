@@ -1,0 +1,34 @@
+"""
+Core Package for The Stellar Confluence Universe Agent Engine
+"""
+from .agent_core import (
+    PROJECT_ROOT,
+    AGENTS_DIR,
+    SKILLS_DIR,
+    SYSTEM_STATE_DIR,
+    BOOKS_LIB_DIR,
+    PROGRESS_DIR,
+    ROTATION_TRACKER_MD,
+    CHARACTER_REGISTRY_MD,
+    COSMIC_CLOCKWORK_MD,
+    DIARY_MD,
+    COSMIC_EVENTS_JSON,
+    CHARACTER_ARCS_JSON,
+    CHARACTER_MASTERY_JSON,
+    GALACTIC_TENSION_JSON,
+    GALACTIC_ECONOMY_JSON,
+    TRANSIT_MISSIONS_JSON,
+    ARTIFACT_LEDGER_JSON,
+    DASHBOARD_HTML,
+    TermColor,
+    colorize,
+    slugify,
+    ensure_sys_path,
+    read_json_safe,
+    write_json_safe,
+    get_rotation_state,
+    get_character_info,
+    get_clockwork_info,
+    generate_terminal_overview,
+    find_project_root
+)

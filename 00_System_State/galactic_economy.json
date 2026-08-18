@@ -1,0 +1,203 @@
+{
+  "commodity_market": {
+    "Photonic Prism Crystals": {
+      "base_price_credits": 120,
+      "current_price": 125,
+      "market_trend": "HIGH_DEMAND"
+    },
+    "Phase-Resonant Basalt": {
+      "base_price_credits": 145,
+      "current_price": 140,
+      "market_trend": "STABLE"
+    },
+    "High-Torque Precision Brass": {
+      "base_price_credits": 95,
+      "current_price": 98,
+      "market_trend": "STABLE"
+    },
+    "Cryo-Methane Ice": {
+      "base_price_credits": 60,
+      "current_price": 72,
+      "market_trend": "RISING"
+    }
+  },
+  "active_trade_convoys": [
+    {
+      "convoy_id": "CONVOY-SOL-01",
+      "fleet_name": "Helios Solar Freight Guild",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 500,
+      "status": "EN_ROUTE",
+      "departure_gut": 98,
+      "eta_gut": 104,
+      "progress_percent": 33.3
+    },
+    {
+      "convoy_id": "CONVOY-02",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-03",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-04",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-05",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-06",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-07",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-08",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-09",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-10",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-11",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-12",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-13",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    }
+  ],
+  "planetary_stockpiles": {
+    "Helios Prime": {
+      "Photonic Prism Crystals": 4200,
+      "Precision Brass": 850,
+      "Cryo-Methane Ice": 320
+    },
+    "Umbra Chasm": {
+      "Phase-Resonant Basalt": 3800,
+      "Solar Batteries": 410,
+      "Precision Brass": 290
+    },
+    "Aethelgard": {
+      "Precision Brass": 6500,
+      "Photonic Prism Crystals": 720,
+      "Raw Ores": 1400
+    },
+    "Gliesia": {
+      "Cryo-Methane Ice": 8900,
+      "Structural Alloy Frames": 450
+    }
+  }
+}

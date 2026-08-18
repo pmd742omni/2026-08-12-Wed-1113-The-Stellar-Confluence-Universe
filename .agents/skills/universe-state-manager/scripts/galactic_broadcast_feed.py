@@ -11,12 +11,25 @@ import json
 import argparse
 import re
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT_DIR)))
+def find_project_root():
+    cwd = os.getcwd()
+    curr = cwd
+    while True:
+        if os.path.exists(os.path.join(curr, "00_System_State")) or os.path.exists(os.path.join(curr, ".git")):
+            return curr
+        parent = os.path.dirname(curr)
+        if parent == curr:
+            break
+        curr = parent
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(script_dir))))
+
+PROJECT_ROOT = find_project_root()
 SYSTEM_STATE_DIR = os.path.join(PROJECT_ROOT, "00_System_State")
 DIARY_MD = os.path.join(SYSTEM_STATE_DIR, "diary.md")
 EVENTS_JSON = os.path.join(SYSTEM_STATE_DIR, "cosmic_events.json")
 ROT_TRACKER = os.path.join(SYSTEM_STATE_DIR, "rotation_tracker.md")
+
 
 def get_broadcast_feed():
     # 1. Read recent diary entries

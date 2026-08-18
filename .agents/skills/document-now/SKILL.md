@@ -24,6 +24,8 @@ Execute this workflow immediately whenever the developer states:
 ### Step 0: Zero-Config Self-Bootstrapping
 Ensure the workspace progress tracking system is initialized:
 ```bash
+python .agents/hub.py document bootstrap
+# or
 python .agents/skills/document-now/scripts/version_registry.py bootstrap
 ```
 
@@ -32,6 +34,8 @@ python .agents/skills/document-now/scripts/version_registry.py bootstrap
 ### Step 1: Collect Authoritative Timestamps
 Extract accurate system date and time strings dynamically:
 ```bash
+python .agents/hub.py document timestamp
+# or
 python .agents/skills/document-now/scripts/get_timestamp.py
 ```
 Outputs:
@@ -45,14 +49,14 @@ Outputs:
 1. **Analyze Accomplishments**: Review recent prompts, files changed, lore/state advancements, or tool modifications.
 2. **Compute Next Version**:
    ```bash
-   python .agents/skills/document-now/scripts/version_registry.py next-version
+   python .agents/hub.py document next-version
    ```
 3. **Select & Verify Unique Ndebele Codename (100+ Vocabulary Catalog)**:
    Filter suggestions by domain or query:
    ```bash
    # Categories: Foundation, Cosmos, Energy, Engineering, Movement, Security, Harmony, Wisdom
-   python .agents/skills/document-now/scripts/version_registry.py suggest --category Cosmos --count 5
-   python .agents/skills/document-now/scripts/version_registry.py check <proposed_codename>
+   python .agents/hub.py document suggest --category Cosmos --count 5
+   python .agents/hub.py document check <proposed_codename>
    ```
    *Requirement*: The check MUST return `"unique": true`.
 4. **Draft Explanations for a 10-Year-Old Child**:
@@ -78,7 +82,7 @@ Write `progress tracking/YYYY-MM-DD_HHMM_Description.md` adhering strictly to th
 * [Key accomplishment bullet 3]
 
 ## Date & Time
-[Formatted Human Date Time, e.g., Thursday, 13 August 2026, 09:51 PM (local time)]
+[Formatted Human Date Time, e.g., Tuesday, 18 August 2026, 08:30 AM (local time)]
 
 ## Version [Version Number] ([Ndebele Codename])
 * **Codename**: [Ndebele Codename] ([English Meaning])
@@ -97,6 +101,8 @@ Co-developed by Peter Dube and Antigravity (AI Coding Assistant).
 
 ### Step 4: Register Version in Registry Database
 ```bash
+python .agents/hub.py document register --version <version> --codename <codename> --meaning "<meaning>" --file "progress tracking/<filename>.md"
+# or
 python .agents/skills/document-now/scripts/version_registry.py register <version> <codename> "<meaning>" "<human_date_time>" <filename>
 ```
 

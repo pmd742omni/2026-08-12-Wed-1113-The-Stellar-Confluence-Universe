@@ -2,7 +2,7 @@
   "Sun-Forged Hegemony::Void-Bound Monks": {
     "faction_a": "Sun-Forged Hegemony",
     "faction_b": "Void-Bound Monks",
-    "tension_index": 94,
+    "tension_index": 100,
     "diplomatic_state": "BORDER_MOBILIZATION",
     "history": [
       {
@@ -29,6 +29,90 @@
         "gut": 102,
         "delta": 2,
         "new_tension": 94,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 96,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 98,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
+        "state": "BORDER_MOBILIZATION",
+        "reason": "Solar flare interference"
+      },
+      {
+        "gut": 102,
+        "delta": 2,
+        "new_tension": 100,
         "state": "BORDER_MOBILIZATION",
         "reason": "Solar flare interference"
       }

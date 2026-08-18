@@ -208,6 +208,7 @@ def load_registry():
                 for item in scanned:
                     existing_vers[item["version"]] = item
                 data = sorted(existing_vers.values(), key=lambda x: parse_semver(x["version"]))
+                save_registry(data)
                 return data
         except Exception:
             pass
@@ -311,20 +312,25 @@ def bootstrap_workspace():
         "git_initialized": git_initialized
     }
 
-def register_version(ver_num, codename, meaning, date_str, filename):
+def register_version(ver_num=None, codename=None, meaning="", date_str="", filename="", version=None, date_time=None, file=None):
     """Registers a new version entry into the registry."""
-    check_res = check_codename_unique(codename)
+    ver = ver_num or version
+    name = codename
+    dt = date_str or date_time
+    fn = filename or file or f"progress tracking/{ver}.md"
+    
+    check_res = check_codename_unique(name)
     if not check_res["unique"]:
         print(json.dumps(check_res, indent=2))
         sys.exit(1)
         
     registry = load_registry()
     new_entry = {
-        "version": ver_num,
-        "codename": codename,
+        "version": ver,
+        "codename": name,
         "meaning": meaning,
-        "date": date_str,
-        "file": filename
+        "date": dt,
+        "file": fn
     }
     registry.append(new_entry)
     save_registry(registry)

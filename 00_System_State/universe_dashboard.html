@@ -1,1042 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>The Stellar Confluence Universe Studio</title>
-<style>
-  :root {
-    --bg: #0b0f19;
-    --card: #131b2e;
-    --border: #1e293b;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --sun: #f59e0b;
-    --void: #8b5cf6;
-    --astro: #10b981;
-    --exp: #06b6d4;
-    --alert: #ef4444;
-  }
-  body {
-    margin: 0;
-    padding: 24px;
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 16px;
-    margin-bottom: 16px;
-  }
-  h1 { margin: 0; font-size: 24px; font-weight: 700; }
-  .metrics { display: flex; gap: 16px; }
-  .metric-badge {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 13px;
-  }
-  .metric-val { font-size: 18px; font-weight: bold; color: var(--sun); display: block; }
-  .broadcast-wire {
-    background: rgba(19, 27, 46, 0.8);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .news-item { display: flex; align-items: center; gap: 10px; }
-  .news-tag {
-    font-size: 10px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 4px;
-    text-transform: uppercase;
-  }
-  .news-tag.cosmic_weather_alert { background: rgba(239, 68, 68, 0.2); color: var(--alert); border: 1px solid var(--alert); }
-  .news-tag.galactic_news_wire { background: rgba(245, 158, 11, 0.2); color: var(--sun); border: 1px solid var(--sun); }
-  .news-tag.commerce_dispatch { background: rgba(16, 185, 129, 0.2); color: var(--astro); border: 1px solid var(--astro); }
-  .news-tag.radio_intercept { background: rgba(6, 182, 212, 0.2); color: var(--exp); border: 1px solid var(--exp); }
-
-  .main-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .card h2 { margin-top: 0; font-size: 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  svg.radar {
-    width: 100%;
-    height: auto;
-    background: #070a13;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-  }
-  .radar-dot { transition: all 0.2s; cursor: pointer; }
-  .radar-dot:hover { r: 9; filter: brightness(1.5); }
-  .legend {
-    display: flex;
-    gap: 16px;
-    margin-top: 12px;
-    font-size: 12px;
-  }
-  .legend-item { display: flex; align-items: center; gap: 6px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  th, td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  th { color: var(--muted); }
-  .active-row { background: rgba(245, 158, 11, 0.1); font-weight: bold; }
-  @keyframes pulse {
-    0% { transform: scale(0.98); opacity: 0.4; }
-    50% { transform: scale(1.02); opacity: 0.8; }
-    100% { transform: scale(0.98); opacity: 0.4; }
-  }
-  .hazard-pulse { animation: pulse 3s infinite ease-in-out; transform-origin: center; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Stellar Confluence Universe: Grand Master Studio</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: #151c2e;
+            --accent-gold: #f39c12;
+            --accent-solar: #e67e22;
+            --accent-void: #9b59b6;
+            --accent-gear: #3498db;
+            --accent-frost: #1abc9c;
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --border: #2d3748;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 380px;
+            background-color: var(--panel-bg);
+            border-right: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+        .main-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: radial-gradient(circle at center, #1a233a 0%, #0b0f19 100%);
+        }
+        .header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            background-color: var(--accent-gold);
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .radar-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .audio-bar {
+            padding: 16px 24px;
+            background: rgba(21, 28, 46, 0.9);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .btn {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-gold { background: var(--accent-solar); }
+        .btn-void { background: var(--accent-void); }
+        .btn-gear { background: var(--accent-gear); }
+        .star-node { cursor: pointer; transition: transform 0.2s; }
+        .star-node:hover { transform: scale(2); }
+    </style>
 </head>
 <body>
-
-<div class="header">
-  <div>
-    <h1>The Stellar Confluence Universe Studio</h1>
-    <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">74-Book Interconnected Story Operating System</div>
-  </div>
-  <div class="metrics">
-    <div class="metric-badge">
-      <span class="metric-val">Book 01</span>
-      <span>Active Queue</span>
-    </div>
-    <div class="metric-badge">
-      <span class="metric-val">Chapter 01</span>
-      <span>Current Cycle</span>
-    </div>
-    <div class="metric-badge">
-      <span class="metric-val">GUT 100</span>
-      <span>Galactic Universal Time</span>
-    </div>
-  </div>
-</div>
-
-<!-- Galactic Subspace Broadcast Wire -->
-<div class="broadcast-wire">
-  <div class="news-item">
-          <span class="news-tag commerce_dispatch">COMMERCE_DISPATCH</span>
-          <strong>Meridian Trade Route: Brass and Crystal Cargo Clearing</strong> — Astrolabe gear transports report smooth synchronization across the equatorial orbital rings.
-        </div><div class="news-item">
-          <span class="news-tag radio_intercept">RADIO_INTERCEPT</span>
-          <strong>Subspace Chime Detected on 144.2 MHz</strong> — '...steady signal locked on the southern dunes... all relays green... over.'
+    <div class="sidebar">
+        <div>
+            <h1 style="font-size: 20px; margin: 0 0 6px 0; color: #fff;">The Stellar Confluence</h1>
+            <p style="font-size: 13px; color: var(--text-dim); margin: 0;">74-Book Continuous Interstellar Narrative Engine</p>
         </div>
-</div>
-
-<div class="main-layout">
-  <!-- Left: Galactic Radar Map -->
-  <div class="card">
-    <h2>Galactic Spatial Radar (Sector X / Y Projection)</h2>
-    <svg class="radar" viewBox="0 0 800 800">
-      <!-- Grid & Concentric Epicycle Rings -->
-      <circle cx="400" cy="400" r="360" fill="none" stroke="#1e293b" stroke-width="1" />
-      <circle cx="400" cy="400" r="270" fill="none" stroke="#1e293b" stroke-width="1" />
-      <circle cx="400" cy="400" r="180" fill="none" stroke="#1e293b" stroke-width="1" />
-      <circle cx="400" cy="400" r="90" fill="none" stroke="#1e293b" stroke-width="1" />
-      <line x1="0" y1="400" x2="800" y2="400" stroke="#1e293b" stroke-width="1" />
-      <line x1="400" y1="0" x2="400" y2="800" stroke="#1e293b" stroke-width="1" />
-      
-      <!-- Wavefront Direction Indicator -->
-      <defs>
-        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b" />
-        </marker>
-      </defs>
-      <line x1="400" y1="760" x2="400" y2="700" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" />
-      <text x="415" y="740" font-size="11" fill="#f59e0b" font-family="monospace">Confluence Wavefront Vector (+Y)</text>
-
-      <!-- Active Hazards -->
-      <circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0001: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0002: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0003: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0004: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0005: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0006: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0007: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0008: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0009: BEACON_PULSE (Book 04)</title>
-            </circle><circle cx="535.0" cy="346.0" r="45.0" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" class="hazard-pulse">
-                <title>HAZARD EVT-0010: BEACON_PULSE (Book 04)</title>
-            </circle>
-
-      <!-- Character Coordinates -->
-      <circle cx="490.0" cy="355.0" r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="2" class="radar-dot" onclick="alert('Book 01: Caelum Dawnrunner on SURFACE\nSector [10, 5, 0]\nResonance: PEAK_FACING (15°)')">
-            <title>Book 01: Caelum Dawnrunner | Sector [10, 5, 0] | PEAK_FACING (15°)</title>
-        </circle>
-        <text x="496.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 01</text>
-        <circle cx="508.0" cy="355.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 02: Captain Vespera Ray on ORBITAL\nSector [12, 5, 1]\nResonance: PEAK_FACING (25°)')">
-            <title>Book 02: Captain Vespera Ray | Sector [12, 5, 1] | PEAK_FACING (25°)</title>
-        </circle>
-        <text x="514.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 02</text>
-        <circle cx="526.0" cy="364.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 03: Tariq Sunstrider on SURFACE\nSector [14, 4, -2]\nResonance: PEAK_FACING (10°)')">
-            <title>Book 03: Tariq Sunstrider | Sector [14, 4, -2] | PEAK_FACING (10°)</title>
-        </circle>
-        <text x="532.0" y="367.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 03</text>
-        <circle cx="535.0" cy="346.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 04: Navigator Lyra Solis on DEEP_SPACE_TRANSIT\nSector [15, 6, 0]\nResonance: PEAK_FACING (30°)')">
-            <title>Book 04: Navigator Lyra Solis | Sector [15, 6, 0] | PEAK_FACING (30°)</title>
-        </circle>
-        <text x="541.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 04</text>
-        <circle cx="499.0" cy="328.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 05: High Optician Orin on SURFACE\nSector [11, 8, 2]\nResonance: PEAK_FACING (5°)')">
-            <title>Book 05: High Optician Orin | Sector [11, 8, 2] | PEAK_FACING (5°)</title>
-        </circle>
-        <text x="505.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 05</text>
-        <circle cx="517.0" cy="337.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 06: Seraphina Goldvein on SURFACE\nSector [13, 7, -1]\nResonance: PEAK_FACING (20°)')">
-            <title>Book 06: Seraphina Goldvein | Sector [13, 7, -1] | PEAK_FACING (20°)</title>
-        </circle>
-        <text x="523.0" y="340.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 06</text>
-        <circle cx="544.0" cy="355.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 07: Commander Brant on ORBITAL\nSector [16, 5, 3]\nResonance: PEAK_FACING (18°)')">
-            <title>Book 07: Commander Brant | Sector [16, 5, 3] | PEAK_FACING (18°)</title>
-        </circle>
-        <text x="550.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 07</text>
-        <circle cx="490.0" cy="373.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 08: Kaelen Lightweaver on SURFACE\nSector [10, 3, -3]\nResonance: PEAK_FACING (28°)')">
-            <title>Book 08: Kaelen Lightweaver | Sector [10, 3, -3] | PEAK_FACING (28°)</title>
-        </circle>
-        <text x="496.0" y="376.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 08</text>
-        <circle cx="508.0" cy="382.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 09: Forge-Master Theron on SURFACE\nSector [12, 2, 1]\nResonance: PEAK_FACING (12°)')">
-            <title>Book 09: Forge-Master Theron | Sector [12, 2, 1] | PEAK_FACING (12°)</title>
-        </circle>
-        <text x="514.0" y="385.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 09</text>
-        <circle cx="526.0" cy="346.0" r="4" fill="#f59e0b" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 10: Aria Skydancer on ORBITAL\nSector [14, 6, 4]\nResonance: PEAK_FACING (22°)')">
-            <title>Book 10: Aria Skydancer | Sector [14, 6, 4] | PEAK_FACING (22°)</title>
-        </circle>
-        <text x="532.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 10</text>
-        <circle cx="490.0" cy="355.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 11: Kage Silentstep on SURFACE\nSector [-10, 5, 0]\nResonance: SHADOW_FACING (165°)')">
-            <title>Book 11: Kage Silentstep | Sector [-10, 5, 0] | SHADOW_FACING (165°)</title>
-        </circle>
-        <text x="496.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 11</text>
-        <circle cx="508.0" cy="364.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 12: Nyx Riftseeker on SURFACE\nSector [-12, 4, 2]\nResonance: SHADOW_FACING (175°)')">
-            <title>Book 12: Nyx Riftseeker | Sector [-12, 4, 2] | SHADOW_FACING (175°)</title>
-        </circle>
-        <text x="514.0" y="367.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 12</text>
-        <circle cx="535.0" cy="346.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 13: Captain Vane on DEEP_SPACE_TRANSIT\nSector [-15, 6, 0]\nResonance: SHADOW_FACING (160°)')">
-            <title>Book 13: Captain Vane | Sector [-15, 6, 0] | SHADOW_FACING (160°)</title>
-        </circle>
-        <text x="541.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 13</text>
-        <circle cx="499.0" cy="328.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 14: Elder Morren on SURFACE\nSector [-11, 8, -2]\nResonance: SHADOW_FACING (178°)')">
-            <title>Book 14: Elder Morren | Sector [-11, 8, -2] | SHADOW_FACING (178°)</title>
-        </circle>
-        <text x="505.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 14</text>
-        <circle cx="517.0" cy="337.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 15: Liora Shadeborn on SURFACE\nSector [-13, 7, 1]\nResonance: SHADOW_FACING (170°)')">
-            <title>Book 15: Liora Shadeborn | Sector [-13, 7, 1] | SHADOW_FACING (170°)</title>
-        </circle>
-        <text x="523.0" y="340.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 15</text>
-        <circle cx="544.0" cy="355.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 16: Brother Ronin on ORBITAL\nSector [-16, 5, -1]\nResonance: SHADOW_FACING (155°)')">
-            <title>Book 16: Brother Ronin | Sector [-16, 5, -1] | SHADOW_FACING (155°)</title>
-        </circle>
-        <text x="550.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 16</text>
-        <circle cx="562.0" cy="400.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 17: Zephyr the Unseen on GATEWAY_SUBSPACE\nSector [-18, 0, 0]\nResonance: GATEWAY_SUBSPACE (90°)')">
-            <title>Book 17: Zephyr the Unseen | Sector [-18, 0, 0] | GATEWAY_SUBSPACE (90°)</title>
-        </circle>
-        <text x="568.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 17</text>
-        <circle cx="526.0" cy="373.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 18: Matron Karen on SURFACE\nSector [-14, 3, 3]\nResonance: SHADOW_FACING (172°)')">
-            <title>Book 18: Matron Karen | Sector [-14, 3, 3] | SHADOW_FACING (172°)</title>
-        </circle>
-        <text x="532.0" y="376.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 18</text>
-        <circle cx="490.0" cy="382.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 19: Acolyte Fen on SURFACE\nSector [-10, 2, -2]\nResonance: SHADOW_FACING (168°)')">
-            <title>Book 19: Acolyte Fen | Sector [-10, 2, -2] | SHADOW_FACING (168°)</title>
-        </circle>
-        <text x="496.0" y="385.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 19</text>
-        <circle cx="508.0" cy="346.0" r="4" fill="#8b5cf6" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 20: Master Kuro on ORBITAL\nSector [-12, 6, 2]\nResonance: SHADOW_FACING (162°)')">
-            <title>Book 20: Master Kuro | Sector [-12, 6, 2] | SHADOW_FACING (162°)</title>
-        </circle>
-        <text x="514.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 20</text>
-        <circle cx="400.0" cy="310.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 21: Tobias Cogsmith on SURFACE\nSector [0, 10, 5]\nResonance: TRANSIT_FACING (45°)')">
-            <title>Book 21: Tobias Cogsmith | Sector [0, 10, 5] | TRANSIT_FACING (45°)</title>
-        </circle>
-        <text x="406.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 21</text>
-        <circle cx="418.0" cy="292.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 22: Master Horologist Vera on ORBITAL\nSector [2, 12, 4]\nResonance: TRANSIT_FACING (60°)')">
-            <title>Book 22: Master Horologist Vera | Sector [2, 12, 4] | TRANSIT_FACING (60°)</title>
-        </circle>
-        <text x="424.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 22</text>
-        <circle cx="418.0" cy="301.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 23: Garrick Gearhead on SURFACE\nSector [-2, 11, 3]\nResonance: TRANSIT_FACING (50°)')">
-            <title>Book 23: Garrick Gearhead | Sector [-2, 11, 3] | TRANSIT_FACING (50°)</title>
-        </circle>
-        <text x="424.0" y="304.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 23</text>
-        <circle cx="400.0" cy="265.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 24: Elia Springtide on DEEP_SPACE_TRANSIT\nSector [0, 15, 6]\nResonance: TRANSIT_FACING (70°)')">
-            <title>Book 24: Elia Springtide | Sector [0, 15, 6] | TRANSIT_FACING (70°)</title>
-        </circle>
-        <text x="406.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 24</text>
-        <circle cx="427.0" cy="319.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 25: Caelen Dialmaker on SURFACE\nSector [3, 9, 2]\nResonance: TRANSIT_FACING (40°)')">
-            <title>Book 25: Caelen Dialmaker | Sector [3, 9, 2] | TRANSIT_FACING (40°)</title>
-        </circle>
-        <text x="433.0" y="322.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 25</text>
-        <circle cx="409.0" cy="328.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 26: Thurston Ratchet on SURFACE\nSector [1, 8, -3]\nResonance: TRANSIT_FACING (80°)')">
-            <title>Book 26: Thurston Ratchet | Sector [1, 8, -3] | TRANSIT_FACING (80°)</title>
-        </circle>
-        <text x="415.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 26</text>
-        <circle cx="409.0" cy="274.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 27: Lina Torsion on ORBITAL\nSector [-1, 14, 5]\nResonance: TRANSIT_FACING (55°)')">
-            <title>Book 27: Lina Torsion | Sector [-1, 14, 5] | TRANSIT_FACING (55°)</title>
-        </circle>
-        <text x="415.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 27</text>
-        <circle cx="436.0" cy="310.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 28: Orson Balancemaster on SURFACE\nSector [4, 10, -1]\nResonance: TRANSIT_FACING (65°)')">
-            <title>Book 28: Orson Balancemaster | Sector [4, 10, -1] | TRANSIT_FACING (65°)</title>
-        </circle>
-        <text x="442.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 28</text>
-        <circle cx="418.0" cy="256.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 29: Kendra Vector on DEEP_SPACE_TRANSIT\nSector [2, 16, 7]\nResonance: TRANSIT_FACING (75°)')">
-            <title>Book 29: Kendra Vector | Sector [2, 16, 7] | TRANSIT_FACING (75°)</title>
-        </circle>
-        <text x="424.0" y="259.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 29</text>
-        <circle cx="400.0" cy="328.0" r="4" fill="#10b981" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 30: Grand Clocksmith Aldous on SURFACE\nSector [0, 8, 4]\nResonance: TRANSIT_FACING (48°)')">
-            <title>Book 30: Grand Clocksmith Aldous | Sector [0, 8, 4] | TRANSIT_FACING (48°)</title>
-        </circle>
-        <text x="406.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 30</text>
-        <circle cx="580.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 31: Talon Frostskimmer on DEEP_SPACE_TRANSIT\nSector [20, 0, 10]\nResonance: TRANSIT_FACING (85°)')">
-            <title>Book 31: Talon Frostskimmer | Sector [20, 0, 10] | TRANSIT_FACING (85°)</title>
-        </circle>
-        <text x="586.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 31</text>
-        <circle cx="400.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 32: Aria Gossamer on ORBITAL\nSector [0, 20, -5]\nResonance: TRANSIT_FACING (90°)')">
-            <title>Book 32: Aria Gossamer | Sector [0, 20, -5] | TRANSIT_FACING (90°)</title>
-        </circle>
-        <text x="406.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 32</text>
-        <circle cx="445.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 33: Magda Magmabore on SURFACE\nSector [-5, -15, 0]\nResonance: TRANSIT_FACING (140°)')">
-            <title>Book 33: Magda Magmabore | Sector [-5, -15, 0] | TRANSIT_FACING (140°)</title>
-        </circle>
-        <text x="451.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 33</text>
-        <circle cx="670.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 34: Corin Wellspring on ORBITAL\nSector [30, 10, -10]\nResonance: TRANSIT_FACING (60°)')">
-            <title>Book 34: Corin Wellspring | Sector [30, 10, -10] | TRANSIT_FACING (60°)</title>
-        </circle>
-        <text x="676.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 34</text>
-        <circle cx="562.0" cy="292.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 35: Joren Plasmahook on DEEP_SPACE_TRANSIT\nSector [18, -12, 4]\nResonance: TRANSIT_FACING (35°)')">
-            <title>Book 35: Joren Plasmahook | Sector [18, -12, 4] | TRANSIT_FACING (35°)</title>
-        </circle>
-        <text x="568.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 35</text>
-        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 36: Mira Timefinder on GATEWAY_SUBSPACE\nSector [0, 0, 0]\nResonance: GATEWAY_SUBSPACE (90°)')">
-            <title>Book 36: Mira Timefinder | Sector [0, 0, 0] | GATEWAY_SUBSPACE (90°)</title>
-        </circle>
-        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 36</text>
-        <circle cx="472.0" cy="328.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 37: Sylva Greenbloom on SURFACE\nSector [8, -8, 8]\nResonance: TRANSIT_FACING (50°)')">
-            <title>Book 37: Sylva Greenbloom | Sector [8, -8, 8] | TRANSIT_FACING (50°)</title>
-        </circle>
-        <text x="478.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 37</text>
-        <circle cx="472.0" cy="292.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 38: Karris Resonator on SURFACE\nSector [-8, 12, -6]\nResonance: TRANSIT_FACING (110°)')">
-            <title>Book 38: Karris Resonator | Sector [-8, 12, -6] | TRANSIT_FACING (110°)</title>
-        </circle>
-        <text x="478.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 38</text>
-        <circle cx="535.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 39: Gideon Stillwater on SURFACE\nSector [15, -15, 2]\nResonance: TRANSIT_FACING (90°)')">
-            <title>Book 39: Gideon Stillwater | Sector [15, -15, 2] | TRANSIT_FACING (90°)</title>
-        </circle>
-        <text x="541.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 39</text>
-        <circle cx="598.0" cy="274.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 40: Nesta Skywing on ORBITAL\nSector [22, 14, -8]\nResonance: TRANSIT_FACING (40°)')">
-            <title>Book 40: Nesta Skywing | Sector [22, 14, -8] | TRANSIT_FACING (40°)</title>
-        </circle>
-        <text x="604.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 40</text>
-        <circle cx="445.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 41: Zayd Driftwalker on DEEP_SPACE_TRANSIT\nSector [5, -10, 15]\nResonance: TRANSIT_FACING (70°)')">
-            <title>Book 41: Zayd Driftwalker | Sector [5, -10, 15] | TRANSIT_FACING (70°)</title>
-        </circle>
-        <text x="451.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 41</text>
-        <circle cx="580.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 42: Tesla Sparkchaser on ORBITAL\nSector [-20, 15, 10]\nResonance: PEAK_FACING (25°)')">
-            <title>Book 42: Tesla Sparkchaser | Sector [-20, 15, 10] | PEAK_FACING (25°)</title>
-        </circle>
-        <text x="586.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 42</text>
-        <circle cx="490.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 43: Volcan Smeltmaster on SURFACE\nSector [10, -20, -5]\nResonance: PEAK_FACING (20°)')">
-            <title>Book 43: Volcan Smeltmaster | Sector [10, -20, -5] | PEAK_FACING (20°)</title>
-        </circle>
-        <text x="496.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 43</text>
-        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 44: Aegis Gatewarden on GATEWAY_SUBSPACE\nSector [0, 0, 100]\nResonance: GATEWAY_SUBSPACE (90°)')">
-            <title>Book 44: Aegis Gatewarden | Sector [0, 0, 100] | GATEWAY_SUBSPACE (90°)</title>
-        </circle>
-        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 44</text>
-        <circle cx="526.0" cy="274.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 45: Marina Deepglow on SURFACE\nSector [-14, -14, 0]\nResonance: SHADOW_FACING (175°)')">
-            <title>Book 45: Marina Deepglow | Sector [-14, -14, 0] | SHADOW_FACING (175°)</title>
-        </circle>
-        <text x="532.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 45</text>
-        <circle cx="625.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 46: Kite Windrunner on DEEP_SPACE_TRANSIT\nSector [25, 0, 0]\nResonance: PEAK_FACING (10°)')">
-            <title>Book 46: Kite Windrunner | Sector [25, 0, 0] | PEAK_FACING (10°)</title>
-        </circle>
-        <text x="631.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 46</text>
-        <circle cx="454.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 47: Chip Arborist on SURFACE\nSector [6, 18, -12]\nResonance: TRANSIT_FACING (55°)')">
-            <title>Book 47: Chip Arborist | Sector [6, 18, -12] | TRANSIT_FACING (55°)</title>
-        </circle>
-        <text x="460.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 47</text>
-        <circle cx="553.0" cy="328.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 48: Rust Sandtracker on SURFACE\nSector [17, -8, -10]\nResonance: PEAK_FACING (30°)')">
-            <title>Book 48: Rust Sandtracker | Sector [17, -8, -10] | PEAK_FACING (30°)</title>
-        </circle>
-        <text x="559.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 48</text>
-        <circle cx="472.0" cy="175.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 49: Vera Ringwarden on ORBITAL\nSector [8, 25, 4]\nResonance: TRANSIT_FACING (65°)')">
-            <title>Book 49: Vera Ringwarden | Sector [8, 25, 4] | TRANSIT_FACING (65°)</title>
-        </circle>
-        <text x="478.0" y="178.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 49</text>
-        <circle cx="625.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 50: Darius Shadowtracker on DEEP_SPACE_TRANSIT\nSector [-25, -5, 12]\nResonance: SHADOW_FACING (165°)')">
-            <title>Book 50: Darius Shadowtracker | Sector [-25, -5, 12] | SHADOW_FACING (165°)</title>
-        </circle>
-        <text x="631.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 50</text>
-        <circle cx="508.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 51: Aero Cloudstrider on ORBITAL\nSector [12, 10, -15]\nResonance: TRANSIT_FACING (45°)')">
-            <title>Book 51: Aero Cloudstrider | Sector [12, 10, -15] | TRANSIT_FACING (45°)</title>
-        </circle>
-        <text x="514.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 51</text>
-        <circle cx="445.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 52: Valen Containment on ORBITAL\nSector [-5, 20, 20]\nResonance: TRANSIT_FACING (85°)')">
-            <title>Book 52: Valen Containment | Sector [-5, 20, 20] | TRANSIT_FACING (85°)</title>
-        </circle>
-        <text x="451.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 52</text>
-        <circle cx="526.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 53: Pyra Flamecaller on SURFACE\nSector [14, -18, 6]\nResonance: PEAK_FACING (15°)')">
-            <title>Book 53: Pyra Flamecaller | Sector [14, -18, 6] | PEAK_FACING (15°)</title>
-        </circle>
-        <text x="532.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 53</text>
-        <circle cx="670.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 54: Wraith Helmsman on DEEP_SPACE_TRANSIT\nSector [-30, 0, -15]\nResonance: SHADOW_FACING (150°)')">
-            <title>Book 54: Wraith Helmsman | Sector [-30, 0, -15] | SHADOW_FACING (150°)</title>
-        </circle>
-        <text x="676.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 54</text>
-        <circle cx="400.0" cy="175.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 55: Lyrica Beaconkeeper on ORBITAL\nSector [0, -25, 18]\nResonance: TRANSIT_FACING (70°)')">
-            <title>Book 55: Lyrica Beaconkeeper | Sector [0, -25, 18] | TRANSIT_FACING (70°)</title>
-        </circle>
-        <text x="406.0" y="178.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 55</text>
-        <circle cx="562.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 56: Gem Crystalline on SURFACE\nSector [-18, 18, -4]\nResonance: TRANSIT_FACING (120°)')">
-            <title>Book 56: Gem Crystalline | Sector [-18, 18, -4] | TRANSIT_FACING (120°)</title>
-        </circle>
-        <text x="568.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 56</text>
-        <circle cx="715.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 57: Zenith Gravitybound on ORBITAL\nSector [35, 5, -20]\nResonance: TRANSIT_FACING (40°)')">
-            <title>Book 57: Zenith Gravitybound | Sector [35, 5, -20] | TRANSIT_FACING (40°)</title>
-        </circle>
-        <text x="721.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 57</text>
-        <circle cx="445.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 58: Lumi Ribbondancer on SURFACE\nSector [5, 5, 25]\nResonance: TRANSIT_FACING (35°)')">
-            <title>Book 58: Lumi Ribbondancer | Sector [5, 5, 25] | TRANSIT_FACING (35°)</title>
-        </circle>
-        <text x="451.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 58</text>
-        <circle cx="490.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 59: Tess Qubit on SURFACE\nSector [-10, -10, -20]\nResonance: TRANSIT_FACING (100°)')">
-            <title>Book 59: Tess Qubit | Sector [-10, -10, -20] | TRANSIT_FACING (100°)</title>
-        </circle>
-        <text x="496.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 59</text>
-        <circle cx="445.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 60: Flare Heatshield on DEEP_SPACE_TRANSIT\nSector [5, 0, 0]\nResonance: PEAK_FACING (0°)')">
-            <title>Book 60: Flare Heatshield | Sector [5, 0, 0] | PEAK_FACING (0°)</title>
-        </circle>
-        <text x="451.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 60</text>
-        <circle cx="598.0" cy="238.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 61: Levi Singer on DEEP_SPACE_TRANSIT\nSector [-22, -18, 8]\nResonance: TRANSIT_FACING (135°)')">
-            <title>Book 61: Levi Singer | Sector [-22, -18, 8] | TRANSIT_FACING (135°)</title>
-        </circle>
-        <text x="604.0" y="241.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 61</text>
-        <circle cx="508.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 62: Frost Aquanaut on SURFACE\nSector [-12, 10, 15]\nResonance: SHADOW_FACING (160°)')">
-            <title>Book 62: Frost Aquanaut | Sector [-12, 10, 15] | SHADOW_FACING (160°)</title>
-        </circle>
-        <text x="514.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 62</text>
-        <circle cx="472.0" cy="355.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 63: Braced Slingmaster on SURFACE\nSector [8, -5, -8]\nResonance: TRANSIT_FACING (50°)')">
-            <title>Book 63: Braced Slingmaster | Sector [8, -5, -8] | TRANSIT_FACING (50°)</title>
-        </circle>
-        <text x="478.0" y="358.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 63</text>
-        <circle cx="535.0" cy="265.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 64: Symbio Biomancer on DEEP_SPACE_TRANSIT\nSector [15, 15, 15]\nResonance: TRANSIT_FACING (65°)')">
-            <title>Book 64: Symbio Biomancer | Sector [15, 15, 15] | TRANSIT_FACING (65°)</title>
-        </circle>
-        <text x="541.0" y="268.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 64</text>
-        <circle cx="580.0" cy="310.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 65: Reflect Mirrorwright on SURFACE\nSector [20, -10, 5]\nResonance: PEAK_FACING (12°)')">
-            <title>Book 65: Reflect Mirrorwright | Sector [20, -10, 5] | PEAK_FACING (12°)</title>
-        </circle>
-        <text x="586.0" y="313.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 65</text>
-        <circle cx="562.0" cy="292.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 66: Vector Slingshot on DEEP_SPACE_TRANSIT\nSector [18, 12, -6]\nResonance: TRANSIT_FACING (45°)')">
-            <title>Book 66: Vector Slingshot | Sector [18, 12, -6] | TRANSIT_FACING (45°)</title>
-        </circle>
-        <text x="568.0" y="295.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 66</text>
-        <circle cx="535.0" cy="328.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 67: Ferrus Castellan on ORBITAL\nSector [-15, -8, 10]\nResonance: TRANSIT_FACING (110°)')">
-            <title>Book 67: Ferrus Castellan | Sector [-15, -8, 10] | TRANSIT_FACING (110°)</title>
-        </circle>
-        <text x="541.0" y="331.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 67</text>
-        <circle cx="400.0" cy="130.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 68: Pulse Scout on DEEP_SPACE_TRANSIT\nSector [0, 30, -10]\nResonance: TRANSIT_FACING (90°)')">
-            <title>Book 68: Pulse Scout | Sector [0, 30, -10] | TRANSIT_FACING (90°)</title>
-        </circle>
-        <text x="406.0" y="133.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 68</text>
-        <circle cx="472.0" cy="202.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 69: Vapour Ventmaster on SURFACE\nSector [-8, -22, -10]\nResonance: SHADOW_FACING (150°)')">
-            <title>Book 69: Vapour Ventmaster | Sector [-8, -22, -10] | SHADOW_FACING (150°)</title>
-        </circle>
-        <text x="478.0" y="205.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 69</text>
-        <circle cx="490.0" cy="220.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 70: Atlas Skymapper on SURFACE\nSector [10, 20, 10]\nResonance: TRANSIT_FACING (60°)')">
-            <title>Book 70: Atlas Skymapper | Sector [10, 20, 10] | TRANSIT_FACING (60°)</title>
-        </circle>
-        <text x="496.0" y="223.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 70</text>
-        <circle cx="508.0" cy="274.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 71: Flux Barricader on ORBITAL\nSector [12, -14, 18]\nResonance: PEAK_FACING (30°)')">
-            <title>Book 71: Flux Barricader | Sector [12, -14, 18] | PEAK_FACING (30°)</title>
-        </circle>
-        <text x="514.0" y="277.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 71</text>
-        <circle cx="454.0" cy="346.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 72: Cable Climber on ORBITAL\nSector [6, -6, 0]\nResonance: TRANSIT_FACING (55°)')">
-            <title>Book 72: Cable Climber | Sector [6, -6, 0] | TRANSIT_FACING (55°)</title>
-        </circle>
-        <text x="460.0" y="349.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 72</text>
-        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 73: Beacon Relaymaster on GATEWAY_SUBSPACE\nSector [0, 0, 50]\nResonance: GATEWAY_SUBSPACE (90°)')">
-            <title>Book 73: Beacon Relaymaster | Sector [0, 0, 50] | GATEWAY_SUBSPACE (90°)</title>
-        </circle>
-        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 73</text>
-        <circle cx="400.0" cy="400.0" r="4" fill="#06b6d4" stroke="none" stroke-width="0" class="radar-dot" onclick="alert('Book 74: Harmonia Nexus on ORBITAL\nSector [0, 0, 0]\nResonance: PEAK_FACING (0°)')">
-            <title>Book 74: Harmonia Nexus | Sector [0, 0, 0] | PEAK_FACING (0°)</title>
-        </circle>
-        <text x="406.0" y="403.0" font-size="8" fill="#94a3b8" font-family="monospace">Book 74</text>
-        
-    </svg>
-
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background: var(--sun)"></div> Sun-Forged (1-10)</div>
-      <div class="legend-item"><div class="legend-dot" style="background: var(--void)"></div> Void-Bound (11-20)</div>
-      <div class="legend-item"><div class="legend-dot" style="background: var(--astro)"></div> Astrolabe (21-30)</div>
-      <div class="legend-item"><div class="legend-dot" style="background: var(--exp)"></div> Expansion (31-74)</div>
+        <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px;">Universal Ephemeris State</div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--accent-gold);">GUT 100 &bull; Book 01 Ch 01</div>
+        </div>
+        <div id="inspector-card" style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px;">Protagonist Dossier</div>
+            <div id="insp-hero" style="font-size: 18px; font-weight: 700; color: #fff;">Caelum Dawnrunner</div>
+            <div id="insp-fac" style="font-size: 13px; color: var(--accent-solar); margin-top: 2px;">Sun-Forged Hegemony</div>
+            <div id="insp-world" style="font-size: 12px; color: var(--text-dim); margin-top: 6px;">Homeworld: Helios Prime</div>
+        </div>
     </div>
-  </div>
-
-  <!-- Right: Active Ephemeris Table -->
-  <div class="card" style="max-height: 840px; overflow-y: auto;">
-    <h2>Active Cosmic Ephemeris (74 Storylines)</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Book</th>
-          <th>Hero</th>
-          <th>Location</th>
-          <th>Facing</th>
-          <th>Resonance</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="active-row">
-          <td>Book 01</td>
-          <td>Caelum Dawnrunner</td>
-          <td><code>SURFACE</code> [10, 5, 0]</td>
-          <td>15°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 02</td>
-          <td>Captain Vespera Ray</td>
-          <td><code>ORBITAL</code> [12, 5, 1]</td>
-          <td>25°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 03</td>
-          <td>Tariq Sunstrider</td>
-          <td><code>SURFACE</code> [14, 4, -2]</td>
-          <td>10°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 04</td>
-          <td>Navigator Lyra Solis</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [15, 6, 0]</td>
-          <td>30°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 05</td>
-          <td>High Optician Orin</td>
-          <td><code>SURFACE</code> [11, 8, 2]</td>
-          <td>5°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 06</td>
-          <td>Seraphina Goldvein</td>
-          <td><code>SURFACE</code> [13, 7, -1]</td>
-          <td>20°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 07</td>
-          <td>Commander Brant</td>
-          <td><code>ORBITAL</code> [16, 5, 3]</td>
-          <td>18°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 08</td>
-          <td>Kaelen Lightweaver</td>
-          <td><code>SURFACE</code> [10, 3, -3]</td>
-          <td>28°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 09</td>
-          <td>Forge-Master Theron</td>
-          <td><code>SURFACE</code> [12, 2, 1]</td>
-          <td>12°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 10</td>
-          <td>Aria Skydancer</td>
-          <td><code>ORBITAL</code> [14, 6, 4]</td>
-          <td>22°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 11</td>
-          <td>Kage Silentstep</td>
-          <td><code>SURFACE</code> [-10, 5, 0]</td>
-          <td>165°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 12</td>
-          <td>Nyx Riftseeker</td>
-          <td><code>SURFACE</code> [-12, 4, 2]</td>
-          <td>175°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 13</td>
-          <td>Captain Vane</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [-15, 6, 0]</td>
-          <td>160°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 14</td>
-          <td>Elder Morren</td>
-          <td><code>SURFACE</code> [-11, 8, -2]</td>
-          <td>178°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 15</td>
-          <td>Liora Shadeborn</td>
-          <td><code>SURFACE</code> [-13, 7, 1]</td>
-          <td>170°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 16</td>
-          <td>Brother Ronin</td>
-          <td><code>ORBITAL</code> [-16, 5, -1]</td>
-          <td>155°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 17</td>
-          <td>Zephyr the Unseen</td>
-          <td><code>GATEWAY_SUBSPACE</code> [-18, 0, 0]</td>
-          <td>90°</td>
-          <td><code>GATEWAY_SUBSPACE</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 18</td>
-          <td>Matron Karen</td>
-          <td><code>SURFACE</code> [-14, 3, 3]</td>
-          <td>172°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 19</td>
-          <td>Acolyte Fen</td>
-          <td><code>SURFACE</code> [-10, 2, -2]</td>
-          <td>168°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 20</td>
-          <td>Master Kuro</td>
-          <td><code>ORBITAL</code> [-12, 6, 2]</td>
-          <td>162°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 21</td>
-          <td>Tobias Cogsmith</td>
-          <td><code>SURFACE</code> [0, 10, 5]</td>
-          <td>45°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 22</td>
-          <td>Master Horologist Vera</td>
-          <td><code>ORBITAL</code> [2, 12, 4]</td>
-          <td>60°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 23</td>
-          <td>Garrick Gearhead</td>
-          <td><code>SURFACE</code> [-2, 11, 3]</td>
-          <td>50°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 24</td>
-          <td>Elia Springtide</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [0, 15, 6]</td>
-          <td>70°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 25</td>
-          <td>Caelen Dialmaker</td>
-          <td><code>SURFACE</code> [3, 9, 2]</td>
-          <td>40°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 26</td>
-          <td>Thurston Ratchet</td>
-          <td><code>SURFACE</code> [1, 8, -3]</td>
-          <td>80°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 27</td>
-          <td>Lina Torsion</td>
-          <td><code>ORBITAL</code> [-1, 14, 5]</td>
-          <td>55°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 28</td>
-          <td>Orson Balancemaster</td>
-          <td><code>SURFACE</code> [4, 10, -1]</td>
-          <td>65°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 29</td>
-          <td>Kendra Vector</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [2, 16, 7]</td>
-          <td>75°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 30</td>
-          <td>Grand Clocksmith Aldous</td>
-          <td><code>SURFACE</code> [0, 8, 4]</td>
-          <td>48°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 31</td>
-          <td>Talon Frostskimmer</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [20, 0, 10]</td>
-          <td>85°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 32</td>
-          <td>Aria Gossamer</td>
-          <td><code>ORBITAL</code> [0, 20, -5]</td>
-          <td>90°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 33</td>
-          <td>Magda Magmabore</td>
-          <td><code>SURFACE</code> [-5, -15, 0]</td>
-          <td>140°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 34</td>
-          <td>Corin Wellspring</td>
-          <td><code>ORBITAL</code> [30, 10, -10]</td>
-          <td>60°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 35</td>
-          <td>Joren Plasmahook</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [18, -12, 4]</td>
-          <td>35°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 36</td>
-          <td>Mira Timefinder</td>
-          <td><code>GATEWAY_SUBSPACE</code> [0, 0, 0]</td>
-          <td>90°</td>
-          <td><code>GATEWAY_SUBSPACE</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 37</td>
-          <td>Sylva Greenbloom</td>
-          <td><code>SURFACE</code> [8, -8, 8]</td>
-          <td>50°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 38</td>
-          <td>Karris Resonator</td>
-          <td><code>SURFACE</code> [-8, 12, -6]</td>
-          <td>110°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 39</td>
-          <td>Gideon Stillwater</td>
-          <td><code>SURFACE</code> [15, -15, 2]</td>
-          <td>90°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 40</td>
-          <td>Nesta Skywing</td>
-          <td><code>ORBITAL</code> [22, 14, -8]</td>
-          <td>40°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 41</td>
-          <td>Zayd Driftwalker</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [5, -10, 15]</td>
-          <td>70°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 42</td>
-          <td>Tesla Sparkchaser</td>
-          <td><code>ORBITAL</code> [-20, 15, 10]</td>
-          <td>25°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 43</td>
-          <td>Volcan Smeltmaster</td>
-          <td><code>SURFACE</code> [10, -20, -5]</td>
-          <td>20°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 44</td>
-          <td>Aegis Gatewarden</td>
-          <td><code>GATEWAY_SUBSPACE</code> [0, 0, 100]</td>
-          <td>90°</td>
-          <td><code>GATEWAY_SUBSPACE</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 45</td>
-          <td>Marina Deepglow</td>
-          <td><code>SURFACE</code> [-14, -14, 0]</td>
-          <td>175°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 46</td>
-          <td>Kite Windrunner</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [25, 0, 0]</td>
-          <td>10°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 47</td>
-          <td>Chip Arborist</td>
-          <td><code>SURFACE</code> [6, 18, -12]</td>
-          <td>55°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 48</td>
-          <td>Rust Sandtracker</td>
-          <td><code>SURFACE</code> [17, -8, -10]</td>
-          <td>30°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 49</td>
-          <td>Vera Ringwarden</td>
-          <td><code>ORBITAL</code> [8, 25, 4]</td>
-          <td>65°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 50</td>
-          <td>Darius Shadowtracker</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [-25, -5, 12]</td>
-          <td>165°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 51</td>
-          <td>Aero Cloudstrider</td>
-          <td><code>ORBITAL</code> [12, 10, -15]</td>
-          <td>45°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 52</td>
-          <td>Valen Containment</td>
-          <td><code>ORBITAL</code> [-5, 20, 20]</td>
-          <td>85°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 53</td>
-          <td>Pyra Flamecaller</td>
-          <td><code>SURFACE</code> [14, -18, 6]</td>
-          <td>15°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 54</td>
-          <td>Wraith Helmsman</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [-30, 0, -15]</td>
-          <td>150°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 55</td>
-          <td>Lyrica Beaconkeeper</td>
-          <td><code>ORBITAL</code> [0, -25, 18]</td>
-          <td>70°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 56</td>
-          <td>Gem Crystalline</td>
-          <td><code>SURFACE</code> [-18, 18, -4]</td>
-          <td>120°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 57</td>
-          <td>Zenith Gravitybound</td>
-          <td><code>ORBITAL</code> [35, 5, -20]</td>
-          <td>40°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 58</td>
-          <td>Lumi Ribbondancer</td>
-          <td><code>SURFACE</code> [5, 5, 25]</td>
-          <td>35°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 59</td>
-          <td>Tess Qubit</td>
-          <td><code>SURFACE</code> [-10, -10, -20]</td>
-          <td>100°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 60</td>
-          <td>Flare Heatshield</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [5, 0, 0]</td>
-          <td>0°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 61</td>
-          <td>Levi Singer</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [-22, -18, 8]</td>
-          <td>135°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 62</td>
-          <td>Frost Aquanaut</td>
-          <td><code>SURFACE</code> [-12, 10, 15]</td>
-          <td>160°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 63</td>
-          <td>Braced Slingmaster</td>
-          <td><code>SURFACE</code> [8, -5, -8]</td>
-          <td>50°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 64</td>
-          <td>Symbio Biomancer</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [15, 15, 15]</td>
-          <td>65°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 65</td>
-          <td>Reflect Mirrorwright</td>
-          <td><code>SURFACE</code> [20, -10, 5]</td>
-          <td>12°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 66</td>
-          <td>Vector Slingshot</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [18, 12, -6]</td>
-          <td>45°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 67</td>
-          <td>Ferrus Castellan</td>
-          <td><code>ORBITAL</code> [-15, -8, 10]</td>
-          <td>110°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 68</td>
-          <td>Pulse Scout</td>
-          <td><code>DEEP_SPACE_TRANSIT</code> [0, 30, -10]</td>
-          <td>90°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 69</td>
-          <td>Vapour Ventmaster</td>
-          <td><code>SURFACE</code> [-8, -22, -10]</td>
-          <td>150°</td>
-          <td><code>SHADOW_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 70</td>
-          <td>Atlas Skymapper</td>
-          <td><code>SURFACE</code> [10, 20, 10]</td>
-          <td>60°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 71</td>
-          <td>Flux Barricader</td>
-          <td><code>ORBITAL</code> [12, -14, 18]</td>
-          <td>30°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 72</td>
-          <td>Cable Climber</td>
-          <td><code>ORBITAL</code> [6, -6, 0]</td>
-          <td>55°</td>
-          <td><code>TRANSIT_FACING</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 73</td>
-          <td>Beacon Relaymaster</td>
-          <td><code>GATEWAY_SUBSPACE</code> [0, 0, 50]</td>
-          <td>90°</td>
-          <td><code>GATEWAY_SUBSPACE</code></td>
-        </tr>
-        <tr class="">
-          <td>Book 74</td>
-          <td>Harmonia Nexus</td>
-          <td><code>ORBITAL</code> [0, 0, 0]</td>
-          <td>0°</td>
-          <td><code>PEAK_FACING</code></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
+    <div class="main-stage">
+        <div class="header">
+            <span class="badge">Live 3D Confluence Radar</span>
+            <span style="font-size: 13px; color: var(--text-dim);">74 Star-Systems Synchronized</span>
+        </div>
+        <div class="radar-container">
+            <svg width="700" height="700" viewBox="0 0 700 700">
+                <circle cx="350" cy="350" r="280" fill="none" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,4" />
+                <circle cx="350" cy="350" r="200" fill="none" stroke="#1e293b" stroke-width="1" />
+                <circle cx="350" cy="350" r="100" fill="none" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,4" />
+                <line x1="350" y1="50" x2="350" y2="650" stroke="#1e293b" stroke-width="1" />
+                <line x1="50" y1="350" x2="650" y2="350" stroke="#1e293b" stroke-width="1" />
+                <!-- Center Ancient Gateway -->
+                <circle cx="350" cy="350" r="12" fill="#38bdf8" />
+                <circle cx="163" cy="227" r="8" fill="#e67e22" stroke="#ffffff" stroke-width="2" data-hero="Caelum Dawnrunner" data-book="1" data-world="Helios Prime" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="236" cy="364" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Captain Vespera Ray" data-book="2" data-world="Solar Bastion Station" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="309" cy="501" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Tariq Sunstrider" data-book="3" data-world="Kaelen-7 (Desert World)" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="382" cy="118" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Navigator Lyra Solis" data-book="4" data-world="Cruiser *Corona Victor*" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="455" cy="255" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="High Optician Orin" data-book="5" data-world="The Zenith Observatory" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="528" cy="392" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Seraphina Goldvein" data-book="6" data-world="Aurelia Mining Spire" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="601" cy="529" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Commander Brant" data-book="7" data-world="Star-Forge Orbital Aegis" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="154" cy="146" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Kaelen Lightweaver" data-book="8" data-world="Prism Oasis" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="227" cy="283" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Forge-Master Theron" data-book="9" data-world="The Pyre Foundry" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="300" cy="420" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Aria Skydancer" data-book="10" data-world="Thermal Glider Station" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="373" cy="557" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Kage Silentstep" data-book="11" data-world="Umbra Minor (Shadow Moon)" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="446" cy="174" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Nyx Riftseeker" data-book="12" data-world="Abyssal Rift Valley" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="519" cy="311" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Captain Vane" data-book="13" data-world="Stealth Vessel *Ghost-Prow*" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="592" cy="448" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Elder Morren" data-book="14" data-world="The Obsidian Citadel" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="145" cy="585" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Liora Shadeborn" data-book="15" data-world="Sub-surface Crypts" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="218" cy="202" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Brother Ronin" data-book="16" data-world="Penumbra Orbital Spire" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="291" cy="339" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Zephyr the Unseen" data-book="17" data-world="The Void Maw" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="364" cy="476" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Matron Karen" data-book="18" data-world="Nightfall Moon" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="437" cy="93" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Acolyte Fen" data-book="19" data-world="Basalt Sanctum" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="510" cy="230" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Master Kuro" data-book="20" data-world="Umbral Station Alpha" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="583" cy="367" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Tobias Cogsmith" data-book="21" data-world="The Clockwork Moon" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="136" cy="504" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Master Horologist Vera" data-book="22" data-world="Orrery Prime Spire" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="209" cy="121" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Garrick Gearhead" data-book="23" data-world="Ferrum Industrial Basin" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="282" cy="258" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Elia Springtide" data-book="24" data-world="Rig *The Gyro-Anchor*" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="355" cy="395" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Caelen Dialmaker" data-book="25" data-world="Brass Meridian City" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="428" cy="532" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Thurston Ratchet" data-book="26" data-world="Deep Vault Orrery" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="501" cy="149" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Lina Torsion" data-book="27" data-world="Ring Station Archimedes" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="574" cy="286" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Orson Balancemaster" data-book="28" data-world="Harmonic Dam Facility" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="127" cy="423" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Kendra Vector" data-book="29" data-world="Cruiser *Kinetic Drive*" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="200" cy="560" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Grand Clocksmith Aldous" data-book="30" data-world="The Great Chronograph" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="273" cy="177" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Talon Frostskimmer" data-book="31" data-world="Comet Halley-V" data-faction="Comet-Riders" class="star-node" /> <circle cx="346" cy="314" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Aria Gossamer" data-book="32" data-world="Opal Cloud Cluster" data-faction="Nebula-Weavers" class="star-node" /> <circle cx="419" cy="451" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Magda Magmabore" data-book="33" data-world="Pyros Core Station" data-faction="Deep-Core Miners" class="star-node" /> <circle cx="492" cy="588" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Corin Wellspring" data-book="34" data-world="Singularity Verge Rig" data-faction="Gravity-Surfers" class="star-node" /> <circle cx="565" cy="205" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Joren Plasmahook" data-book="35" data-world="Ion Flare Belt" data-faction="Plasma-Shepherds" class="star-node" /> <circle cx="118" cy="342" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Mira Timefinder" data-book="36" data-world="Subspace Conduit Seven" data-faction="Chrono-Navigators" class="star-node" /> <circle cx="191" cy="479" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Sylva Greenbloom" data-book="37" data-world="Aethel-IV Garden World" data-faction="Bio-Alchemists" class="star-node" /> <circle cx="264" cy="96" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Karris Resonator" data-book="38" data-world="Spires of Lithos" data-faction="Crystal-Singers" class="star-node" /> <circle cx="337" cy="233" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Gideon Stillwater" data-book="39" data-world="Oceanus Twilight Strip" data-faction="Tide-Wardens" class="star-node" /> <circle cx="410" cy="370" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Nesta Skywing" data-book="40" data-world="Jupiter-Class Haven Spire" data-faction="Storm-Gliders" class="star-node" /> <circle cx="483" cy="507" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Zayd Driftwalker" data-book="41" data-world="Asteroid Emporium 9" data-faction="Drift-Merchants" class="star-node" /> <circle cx="556" cy="124" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Tesla Sparkchaser" data-book="42" data-world="Pulsar Ridge Node" data-faction="Magnetar-Leapers" class="star-node" /> <circle cx="109" cy="261" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Volcan Smeltmaster" data-book="43" data-world="Hephaestus Basin" data-faction="Magma-Founders" class="star-node" /> <circle cx="182" cy="398" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Aegis Gatewarden" data-book="44" data-world="The Keystone Gate" data-faction="Stargate Sentinels" class="star-node" /> <circle cx="255" cy="535" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Marina Deepglow" data-book="45" data-world="Hydra Deep Trench" data-faction="Abyssal Divers" class="star-node" /> <circle cx="328" cy="152" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Kite Windrunner" data-book="46" data-world="Light-Sail Barge *Zephyr*" data-faction="Solar-Sailors" class="star-node" /> <circle cx="401" cy="289" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Chip Arborist" data-book="47" data-world="Glass World Silex" data-faction="Silica-Botanists" class="star-node" /> <circle cx="474" cy="426" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Rust Sandtracker" data-book="48" data-world="Crimson Barrens" data-faction="Rust-Nomads" class="star-node" /> <circle cx="547" cy="563" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Vera Ringwarden" data-book="49" data-world="Saturnia Habitat Ring" data-faction="Orbital Architects" class="star-node" /> <circle cx="100" cy="180" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Darius Shadowtracker" data-book="50" data-world="Frigate *Null-Point*" data-faction="Dark-Matter Scavengers" class="star-node" /> <circle cx="173" cy="317" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Aero Cloudstrider" data-book="51" data-world="Zephyr Cloud Port" data-faction="Cloud-Keepers" class="star-node" /> <circle cx="246" cy="454" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Valen Containment" data-book="52" data-world="Positron Spire" data-faction="Annihilation Engineers" class="star-node" /> <circle cx="319" cy="591" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Pyra Flamecaller" data-book="53" data-world="Phaeton Caldera" data-faction="Ember-Dancers" class="star-node" /> <circle cx="392" cy="208" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Wraith Helmsman" data-book="54" data-world="Graveyard Cluster 13" data-faction="Derelict-Salvagers" class="star-node" /> <circle cx="465" cy="345" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Lyrica Beaconkeeper" data-book="55" data-world="Pulsar Relay Epsilon" data-faction="Signal-Keepers" class="star-node" /> <circle cx="538" cy="482" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Gem Crystalline" data-book="56" data-world="Neptunian Core Platform" data-faction="Carbon-Crafters" class="star-node" /> <circle cx="91" cy="99" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Zenith Gravitybound" data-book="57" data-world="Kerr-Hole Observation Spire" data-faction="Horizon-Seekers" class="star-node" /> <circle cx="164" cy="236" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Lumi Ribbondancer" data-book="58" data-world="Borealis Pole City" data-faction="Aurora-Weavers" class="star-node" /> <circle cx="237" cy="373" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Tess Qubit" data-book="59" data-world="Zero-Kelvin Array" data-faction="Quantum-Cryptographers" class="star-node" /> <circle cx="310" cy="510" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Flare Heatshield" data-book="60" data-world="Diver Vessel *Icarus-XI*" data-faction="Sun-Divers" class="star-node" /> <circle cx="383" cy="127" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Levi Singer" data-book="61" data-world="Creature Pod Alpha" data-faction="Void-Fauna Handlers" class="star-node" /> <circle cx="456" cy="264" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Frost Aquanaut" data-book="62" data-world="Europa-Class Ocean" data-faction="Cryo-Explorers" class="star-node" /> <circle cx="529" cy="401" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Braced Slingmaster" data-book="63" data-world="Lunar Launch Rail" data-faction="Mass-Driver Guild" class="star-node" /> <circle cx="602" cy="538" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Symbio Biomancer" data-book="64" data-world="Bio-Vessel *Gaea*" data-faction="Organic-Shipwrights" class="star-node" /> <circle cx="155" cy="155" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Reflect Mirrorwright" data-book="65" data-world="Mirror Field Desolation" data-faction="Heliostat-Masters" class="star-node" /> <circle cx="228" cy="292" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Vector Slingshot" data-book="66" data-world="Transfer Craft *Velocity*" data-faction="Orbital Dynamics Guild" class="star-node" /> <circle cx="301" cy="429" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Ferrus Castellan" data-book="67" data-world="Fortress Asteroid 101" data-faction="Asteroid Fortress Clan" class="star-node" /> <circle cx="374" cy="566" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Pulse Scout" data-book="68" data-world="Deep Sensor Prowler" data-faction="Early-Warning Rangers" class="star-node" /> <circle cx="447" cy="183" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Vapour Ventmaster" data-book="69" data-world="Boiling Shelf Base" data-faction="Thermal Vent Guild" class="star-node" /> <circle cx="520" cy="320" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Atlas Skymapper" data-book="70" data-world="Cartography Dome" data-faction="Cosmic Mapmakers" class="star-node" /> <circle cx="593" cy="457" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Flux Barricader" data-book="71" data-world="Shield Generator Spire" data-faction="Magnetosphere Wardens" class="star-node" /> <circle cx="146" cy="594" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Cable Climber" data-book="72" data-world="Equatorial Spindle 1" data-faction="Space-Elevator Crew" class="star-node" /> <circle cx="219" cy="211" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Beacon Relaymaster" data-book="73" data-world="Relay Hub Prime" data-faction="Interstellar Courier Union" class="star-node" /> <circle cx="292" cy="348" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Harmonia Nexus" data-book="74" data-world="The Grand Galactic Confluence Hub" data-faction="Confluence Council" class="star-node" />
+            </svg>
+        </div>
+        <div class="audio-bar">
+            <span style="font-size: 13px; font-weight: 600;">Procedural Soundscapes (Web Audio API):</span>
+            <button class="btn btn-gold" onclick="playTone(144.2, 'sawtooth')">☀️ Solar Hum (144.2 Hz)</button>
+            <button class="btn btn-void" onclick="playTone(128.5, 'sine')">🌑 Umbral Resonance (128.5 Hz)</button>
+            <button class="btn btn-gear" onclick="playTone(160.0, 'triangle')">⚙️ Astrolabe Chime (160 Hz)</button>
+        </div>
+    </div>
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1.2);
+        }
+        document.querySelectorAll('.star-node').forEach(el => {
+            el.addEventListener('click', () => {
+                document.getElementById('insp-hero').innerText = el.dataset.hero;
+                document.getElementById('insp-fac').innerText = el.dataset.faction;
+                document.getElementById('insp-world').innerText = 'Homeworld: ' + el.dataset.world + ' (Book ' + el.dataset.book + ')';
+            });
+        });
+    </script>
 </body>
 </html>
