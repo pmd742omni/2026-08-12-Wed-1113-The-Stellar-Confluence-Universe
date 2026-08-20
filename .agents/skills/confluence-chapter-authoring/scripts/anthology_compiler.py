@@ -28,14 +28,16 @@ PROJECT_ROOT = find_project_root()
 BOOKS_LIB_DIR = os.path.join(PROJECT_ROOT, "01_Books_Library")
 SYSTEM_STATE_DIR = os.path.join(PROJECT_ROOT, "00_System_State")
 SKILLS_DIR = os.path.join(PROJECT_ROOT, ".agents", "skills")
-
+CORE_DIR = os.path.join(PROJECT_ROOT, ".agents", "core")
+sys.path.insert(0, CORE_DIR)
 sys.path.insert(0, os.path.join(SKILLS_DIR, "confluence-chapter-authoring", "scripts"))
 sys.path.insert(0, os.path.join(SKILLS_DIR, "universe-state-manager", "scripts"))
 
+import edition_manager
 import chapter_engine
 import character_mesh_graph
 
-def compile_book_manuscript(book_id):
+def compile_book_manuscript(book_id, edition=None):
     book_id = int(book_id)
     char_info = chapter_engine.get_character_info(book_id)
     if not char_info:
@@ -47,8 +49,7 @@ def compile_book_manuscript(book_id):
     world = char_info["world"]
     sector = char_info["sector"]
 
-    title_slug = chapter_engine.slugify(title)
-    book_folder = os.path.join(BOOKS_LIB_DIR, f"Book_{book_id:02d}_{title_slug}")
+    book_folder = edition_manager.get_book_dir(book_id, edition=edition, create=False)
 
     if not os.path.exists(book_folder):
         return {"error": f"Book folder {book_folder} does not exist yet."}
@@ -125,10 +126,36 @@ def compile_book_manuscript(book_id):
         "manuscript_file": output_file
     }
 
+def compile_all_books(edition=None):
+    """Compiles full manuscripts across all 74 books."""
+    results = []
+    total_universe_words = 0
+    total_universe_chapters = 0
+
+    for b_id in range(1, 75):
+        res = compile_book_manuscript(b_id, edition=edition)
+        if "error" not in res:
+            results.append(res)
+            total_universe_words += res.get("total_words", 0)
+            total_universe_chapters += res.get("total_chapters", 0)
+
+    return {
+        "status": "ALL_BOOKS_COMPILED",
+        "total_books_compiled": len(results),
+        "total_universe_chapters": total_universe_chapters,
+        "total_universe_words": total_universe_words,
+        "books": results
+    }
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Anthology & Manuscript Compiler")
-    parser.add_argument("--book", type=int, default=1, help="Book ID number to compile")
+    parser.add_argument("--book", type=int, help="Book ID number to compile")
+    parser.add_argument("--all", action="store_true", help="Compile all 74 book manuscripts")
+    parser.add_argument("--edition", help="Edition folder name or path")
 
     args = parser.parse_args()
-    res = compile_book_manuscript(args.book)
+    if args.all or not args.book:
+        res = compile_all_books(edition=args.edition) if args.all else compile_book_manuscript(args.book or 1, edition=args.edition)
+    else:
+        res = compile_book_manuscript(args.book, edition=args.edition)
     print(json.dumps(res, indent=2))

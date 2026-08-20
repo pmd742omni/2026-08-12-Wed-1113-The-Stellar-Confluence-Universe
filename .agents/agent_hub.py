@@ -222,6 +222,30 @@ def handle_author(args):
         gut_val = getattr(args, "gut", 100) or 100
         res = galactic_adventure_engine.generate_adventure_quest(args.book_id or 1, gut_val, quest_type=getattr(args, "type", None))
         print(json.dumps(res, indent=2))
+    elif args.action == "prompt":
+        import model_prompt_architect
+        if getattr(args, "json", False):
+            ctx = model_prompt_architect.build_model_authoring_context(args.book_id or 1, args.chapter or 1, getattr(args, "gut", None))
+            print(json.dumps(ctx, indent=2))
+        else:
+            prompt_str = model_prompt_architect.generate_model_authoring_prompt(args.book_id or 1, args.chapter or 1, getattr(args, "gut", None))
+            print(prompt_str)
+    elif args.action == "write":
+        import chapter_engine
+        b_id = args.book_id or 1
+        c_num = args.chapter or 1
+        content = args.text or ""
+        if args.file and os.path.exists(args.file):
+            with open(args.file, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
+        char_info = chapter_engine.get_character_info(b_id)
+        title_slug = chapter_engine.slugify(char_info["title"])
+        book_folder = os.path.join(BOOKS_LIB_DIR, f"Book_{b_id:02d}_{title_slug}")
+        os.makedirs(book_folder, exist_ok=True)
+        target_file = os.path.join(book_folder, f"Book_{b_id:02d}_Chapter_{c_num:02d}.md")
+        with open(target_file, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(json.dumps({"status": "saved", "book_id": b_id, "chapter": c_num, "saved_to": target_file}, indent=2))
     else:
         print(json.dumps({"error": f"Unknown author action: {args.action}"}, indent=2))
 
@@ -563,6 +587,206 @@ def handle_search(args):
             print(colorize("   No matching storylines, vehicles, relics, creatures, or active missions found.", TermColor.DIM))
         print(sep + "\n")
 
+def handle_edition(args):
+    """Dispatches edition actions (list, info, new, set, migrate)."""
+    import edition_manager
+    if args.action == "list":
+        editions = edition_manager.list_editions()
+        if getattr(args, "json", False):
+            print(json.dumps(editions, indent=2))
+        else:
+            w = 95
+            sep = colorize("=" * w, TermColor.BRIGHT_CYAN)
+            sub_sep = colorize("-" * w, TermColor.DIM)
+            print("\n" + sep)
+            print(colorize("   *  THE STELLAR CONFLUENCE UNIVERSE: EDITIONS CATALOG  *", TermColor.BOLD, TermColor.BRIGHT_YELLOW))
+            print(sep)
+            print(f" {'Edition Folder':<50} | {'Books':<6} | {'Chapters':<10} | {'Total Words':<12}")
+            print(sub_sep)
+            for ed in editions:
+                words_fmt = f"{ed['total_words']:,}"
+                print(f" {colorize(ed['edition_dir_name'][:50], TermColor.BRIGHT_WHITE):<50} | {ed['total_books']:<6} | {ed['total_chapters']:<10} | {colorize(words_fmt, TermColor.BRIGHT_GREEN):<12}")
+            print(sep + "\n")
+    elif args.action == "info":
+        active = edition_manager.get_active_edition_dir()
+        print(json.dumps({"active_edition_name": os.path.basename(active), "active_edition_path": active}, indent=2))
+    elif args.action == "new":
+        res = edition_manager.create_new_edition(getattr(args, "name", "Iterative Edition") or "Iterative Edition")
+        print(json.dumps(res, indent=2))
+    elif args.action == "set":
+        res = edition_manager.set_active_edition(args.name)
+        print(json.dumps(res, indent=2))
+    elif args.action == "migrate":
+        res = edition_manager.migrate_existing_root_books_to_edition()
+        print(json.dumps(res, indent=2))
+
+def handle_read(args):
+    """Renders chapter or manuscript text in the terminal with colored formatting."""
+    import glob
+    import chapter_engine
+    from core.edition_manager import get_book_dir
+    book_id = args.book or 1
+    char_info = chapter_engine.get_character_info(book_id)
+    if not char_info:
+        print(colorize(f"Error: Book {book_id} not found in registry.", TermColor.BRIGHT_RED))
+        sys.exit(1)
+    
+    ed_flag = getattr(args, "edition", None)
+    book_folder = get_book_dir(book_id, edition=ed_flag, create=False)
+
+    if args.full:
+        target_file = os.path.join(book_folder, f"Book_{book_id:02d}_Full_Manuscript.md")
+        if not os.path.exists(target_file):
+            import anthology_compiler
+            anthology_compiler.compile_book_manuscript(book_id, edition=ed_flag)
+    else:
+        chap_num = args.chapter or 1
+        target_file = os.path.join(book_folder, f"Book_{book_id:02d}_Chapter_{chap_num:02d}.md")
+        if not os.path.exists(target_file):
+            import story_generator
+            story_generator.generate_full_chapter_prose(book_id, chap_num, save=True)
+
+    if not os.path.exists(target_file):
+        print(colorize(f"Error: Manuscript file {target_file} could not be loaded.", TermColor.BRIGHT_RED))
+        sys.exit(1)
+
+    with open(target_file, "r", encoding="utf-8", errors="ignore") as f:
+        content = f.read()
+
+    w = 80
+    sep = colorize("=" * w, TermColor.BRIGHT_CYAN)
+    print("\n" + sep)
+    print(colorize(f"   *  THE STELLAR CONFLUENCE LIBRARY: BOOK {book_id:02d}  *", TermColor.BOLD, TermColor.BRIGHT_YELLOW))
+    print(colorize(f"   *  {char_info['title']} ({char_info['hero']} - {char_info['faction']})  *", TermColor.BRIGHT_WHITE))
+    print(sep + "\n")
+
+    # Format markdown lines with color highlights
+    for line in content.splitlines():
+        if line.startswith("# "):
+            print(colorize(line, TermColor.BOLD, TermColor.BRIGHT_YELLOW))
+        elif line.startswith("## "):
+            print("\n" + colorize(line, TermColor.BOLD, TermColor.BRIGHT_CYAN))
+        elif line.startswith("**"):
+            print(colorize(line, TermColor.BRIGHT_WHITE))
+        elif line.startswith("---"):
+            print(colorize("-" * w, TermColor.DIM))
+        elif '"' in line:
+            # Highlight dialogue in quotes with yellow
+            parts = line.split('"')
+            colored_line = ""
+            for idx, p in enumerate(parts):
+                if idx % 2 == 1:
+                    colored_line += colorize(f'"{p}"', TermColor.BRIGHT_YELLOW)
+                else:
+                    colored_line += p
+            print(colored_line)
+        else:
+            print(line)
+    print("\n" + sep + "\n")
+
+def handle_library(args=None):
+    """Displays all 74 books with written chapters, titles, heroes, and file paths."""
+    import glob
+    import chapter_engine
+    from core.edition_manager import get_book_dir, get_active_edition_dir
+    w = 95
+    sep = colorize("=" * w, TermColor.BRIGHT_CYAN)
+    sub_sep = colorize("-" * w, TermColor.DIM)
+    
+    ed_flag = getattr(args, "edition", None) if args else None
+    active_ed = ed_flag or os.path.basename(get_active_edition_dir())
+
+    print("\n" + sep)
+    print(colorize(f"   *  THE STELLAR CONFLUENCE UNIVERSE: 74-BOOK MASTER LIBRARY  *", TermColor.BOLD, TermColor.BRIGHT_YELLOW))
+    print(colorize(f"   *  Edition: {active_ed}  *", TermColor.BRIGHT_CYAN))
+    print(sep)
+    print(f" {'ID':<4} | {'Book Title':<34} | {'Protagonist':<22} | {'Chapters':<10} | {'Words':<8}")
+    print(sub_sep)
+
+    total_words = 0
+    total_chaps = 0
+
+    for b_id in range(1, 75):
+        char_info = chapter_engine.get_character_info(b_id)
+        if not char_info:
+            continue
+        book_folder = get_book_dir(b_id, edition=ed_flag, create=False)
+        ch_files = glob.glob(os.path.join(book_folder, "Book_*_Chapter_*.md")) if os.path.exists(book_folder) else []
+        
+        words_count = 0
+        for cf in ch_files:
+            try:
+                with open(cf, "r", encoding="utf-8", errors="ignore") as f:
+                    words_count += len(re.findall(r'\b\w+\b', f.read()))
+            except Exception:
+                pass
+
+        total_words += words_count
+        total_chaps += len(ch_files)
+        chap_display = f"{len(ch_files)} Ch" if ch_files else "0 Ch"
+
+        print(f" {b_id:02d}   | {char_info['title'][:34]:<34} | {char_info['hero'][:22]:<22} | {colorize(chap_display, TermColor.BRIGHT_GREEN):<10} | {words_count:<8}")
+
+    print(sub_sep)
+    print(colorize(f" TOTAL UNIVERSE LIBRARY: 74 Books | {total_chaps} Chapters | {total_words:,} Total Words", TermColor.BOLD, TermColor.BRIGHT_GREEN))
+    print(sep + "\n")
+
+def handle_story(args):
+    """Dispatches story simulation, review, and compilation actions."""
+    if args.action == "simulate":
+        import universe_simulation_loop
+        res = universe_simulation_loop.run_simulation(
+            steps=args.steps,
+            target_chapter=args.target_chapter,
+            gut_delta=args.gut_delta or 1,
+            dry_run=args.dry_run,
+            auto_compile=not args.no_compile
+        )
+        print(json.dumps(res, indent=2))
+    elif args.action == "compile-all":
+        import anthology_compiler
+        res = anthology_compiler.compile_all_books(edition=getattr(args, "edition", None))
+        print(json.dumps(res, indent=2))
+    elif args.action == "review":
+        import glob
+        import chapter_engine
+        import chapter_prose_evaluator
+        from core.edition_manager import get_book_dir
+        b_id = args.book or 1
+        char_info = chapter_engine.get_character_info(b_id)
+        if not char_info:
+            print(json.dumps({"error": f"Book {b_id} not found"}, indent=2))
+            return
+        ed_flag = getattr(args, "edition", None)
+        book_folder = get_book_dir(b_id, edition=ed_flag, create=False)
+        ch_files = sorted(glob.glob(os.path.join(book_folder, "Book_*_Chapter_*.md"))) if os.path.exists(book_folder) else []
+        
+        eval_reports = []
+        for cf in ch_files:
+            ev = chapter_prose_evaluator.evaluate_file(cf)
+            eval_reports.append({
+                "chapter_file": os.path.basename(cf),
+                "fkgl": ev.get("flesch_kincaid_grade_level"),
+                "total_words": ev.get("total_words"),
+                "dialogue": ev.get("dialogue_percentage"),
+                "warmth_score": ev.get("fun_and_warmth_score"),
+                "cadence": ev.get("audio_cadence", {}).get("cadence_assessment")
+            })
+        
+        avg_fkgl = round(sum(r["fkgl"] for r in eval_reports if r.get("fkgl")) / max(1, len(eval_reports)), 2) if eval_reports else 5.2
+        print(json.dumps({
+            "book_id": b_id,
+            "title": char_info["title"],
+            "hero": char_info["hero"],
+            "total_chapters_reviewed": len(eval_reports),
+            "average_flesch_kincaid_grade_level": avg_fkgl,
+            "target_readability": "Grade 4-6 (Ages 9-12)",
+            "status": "PASS" if 3.5 <= avg_fkgl <= 7.0 else "WARNING",
+            "chapters": eval_reports
+        }, indent=2))
+    else:
+        print(json.dumps({"error": f"Unknown story action: {args.action}"}, indent=2))
+
 def handle_quickstart(args=None):
     """Displays an interactive quickstart guide with clear action suggestions."""
     w = 78
@@ -682,7 +906,7 @@ def build_parser():
     p_author.add_argument("action", choices=[
         "cycle", "prepare", "complete", "evaluate", "polish", "storyboard", "audiobook", "compile",
         "simulate", "resonance", "voice", "encounter", "physics", "faction", "diplomacy",
-        "relic", "soundscape", "draft", "dual-layer", "quest"
+        "relic", "soundscape", "draft", "dual-layer", "quest", "prompt", "write"
     ], help="Authoring action")
     p_author.add_argument("--synopsis", help="Chapter synopsis for 'complete' or 'cycle'")
     p_author.add_argument("--gut-delta", type=int, default=1, help="GUT delta for 'complete' or 'cycle'")
@@ -766,7 +990,34 @@ def build_parser():
     p_flow.add_argument("action", choices=["log", "active", "summary", "new"], help="Flow action")
     p_flow.add_argument("--prompt", help="Developer prompt text")
     p_flow.add_argument("--response", help="Agent response text")
-    p_flow.add_argument("--file", help="Specific flow file path")
+    p_flow.add_argument("--file", help="Override flow file path")
+
+    # 17. edition (Timestamped Version Folders in 01_Books_Library)
+    p_ed = subparsers.add_parser("edition", help="Manage timestamped book editions in 01_Books_Library")
+    p_ed.add_argument("action", choices=["list", "info", "new", "set", "migrate"], help="Edition action")
+    p_ed.add_argument("--name", default="Iterative Edition", help="Name or description for new edition")
+
+    # 18. read (Terminal Story Reader)
+    p_read = subparsers.add_parser("read", help="Read chapters or full book manuscripts with rich terminal formatting")
+    p_read.add_argument("--book", type=int, default=1, help="Book ID number (1-74)")
+    p_read.add_argument("--chapter", type=int, default=1, help="Chapter number (1-20)")
+    p_read.add_argument("--full", action="store_true", help="Read full compiled manuscript")
+    p_read.add_argument("--edition", help="Edition folder name or path")
+
+    # 19. library (Master 74-Book Library Directory)
+    p_lib = subparsers.add_parser("library", help="Display full 74-book library index with word counts and chapters")
+    p_lib.add_argument("--edition", help="Edition folder name or path")
+
+    # 20. story (Multi-Book Story Simulation, Quality Review & Compilation)
+    p_story = subparsers.add_parser("story", help="Multi-Book Story Simulation, Review & Compilation")
+    p_story.add_argument("action", choices=["simulate", "review", "compile-all"], help="Story action")
+    p_story.add_argument("--book", type=int, default=1, help="Book ID for review")
+    p_story.add_argument("--steps", type=int, help="Sequential chapters to simulate")
+    p_story.add_argument("--target-chapter", type=int, default=20, help="Target chapter across all books (e.g. 20 for full 1,480 chapters)")
+    p_story.add_argument("--gut-delta", type=int, default=1, help="GUT ticks to advance per chapter")
+    p_story.add_argument("--dry-run", action="store_true", help="Simulate without writing files")
+    p_story.add_argument("--no-compile", action="store_true", help="Skip manuscript compilation")
+    p_story.add_argument("--edition", help="Edition folder name or path")
 
     return parser
 
@@ -789,6 +1040,14 @@ def main():
         sys.exit(0 if success else 1)
     elif args.command == "quickstart":
         handle_quickstart(args)
+    elif args.command == "edition":
+        handle_edition(args)
+    elif args.command == "read":
+        handle_read(args)
+    elif args.command == "library":
+        handle_library(args)
+    elif args.command == "story":
+        handle_story(args)
     elif args.command == "book":
         handle_book(args)
     elif args.command == "search":

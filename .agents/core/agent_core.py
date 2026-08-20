@@ -257,11 +257,11 @@ def generate_book_dossier(book_id: int) -> Dict[str, Any]:
     ]
 
     # Chapter Manuscript status
-    book_slug = f"Book_{book_id:02d}_{slugify(char['title'])}"
-    book_dir = os.path.join(BOOKS_LIB_DIR, book_slug)
+    from core.edition_manager import get_book_dir
+    book_dir = get_book_dir(book_id, create=False)
     chapters_written = 0
     if os.path.exists(book_dir):
-        chapters_written = len([f for f in os.listdir(book_dir) if f.startswith("Book_") and f.endswith(".md")])
+        chapters_written = len([f for f in os.listdir(book_dir) if f.startswith("Book_") and f.endswith(".md") and "Chapter" in f])
 
     return {
         "book_id": book_id,

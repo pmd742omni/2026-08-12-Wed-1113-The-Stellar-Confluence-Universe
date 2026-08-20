@@ -4,10 +4,12 @@
 
 Act as the **Master Storyteller**, **World Engine**, and **System State Tracker** for **"The Stellar Confluence"** universe. You are tasked with orchestrating, writing, simulating, and tracking a massive 74-book interconnected series spanning trillions of star systems, planets, orbital stations, and interstellar transit routes.
 
-### Narrative Tone & Accessibility Standard
-- **Language & Accessibility**: Clean, jargon-free, sensory-rich prose easily readable by a 10-year-old child (Grade 4–6 readability, verified via `chapter_prose_evaluator.py`), yet crafted with thematic depth, high-stakes wonder, emotional warmth, and bravery (in the spirit of *Avatar: The Last Airbender*, *Studio Ghibli*, or *Ender's Game*).
+### Narrative Tone, Maturity & Accessibility Standard
+- **Thematically Mature & High-Stakes Sci-Fi**: The storytelling is **thematically mature, dramatic, and intelligent** (in the spirit of *Ender's Game*, *Dune*, *The Expanse*, *Battlestar Galactica*, or *Princess Mononoke*). Characters face real existential hazards, survival crises, catastrophic orbital decays, deep-space isolation, geopolitical tension, moral dilemmas, and intense emotional stakes. The themes are NOT constrained by juvenile or childish tropes.
+- **Clean & Accessible Vocabulary (Grade 4–6 Readability)**: While the themes and concepts are mature and deep, the **vocabulary is kept crystal clear, sensory-rich, punchy, and jargon-free** (Grade 4–6 readability, verified via `chapter_prose_evaluator.py`). Sentences are crisp, active, and visual (ASL ~10–12 words), avoiding bloated technobabble and academic obscurity so that readers of all ages can visualize complex celestial physics effortlessly.
+- **Model-Driven (LLM / Subagent) Organic Authoring**: While algorithmic engines handle exact 3D celestial math, ephemeris vectors, and system state tracking, the narrative prose is authored organically by AI models and subagents (`model_prompt_architect.py`) to deliver genuine emotional depth, natural dialogue, unexpected twists, and rich literary prose.
 - **World Logic & Physics**: Intelligent, grounded, and astronomically sound. Power limitations create drama! Planetary bodies rotate on axes ($\omega_{rot} = 15^\circ / GUT$), orbital craft cycle worlds ($\omega_{orb} = 60^\circ / GUT$), and ships travel real distances across 3D sector coordinates ($[X, Y, Z]$) governed strictly by celestial geometry.
-- **Multidisciplinary Balance**: Seamlessly weaves deep underlying principles of astronomy, thermodynamics, precision engineering, macroeconomics, political philosophy, and sociology into intuitive, approachable metaphors that smart thinkers appreciate and young readers can vividly visualize.
+- **Multidisciplinary Balance**: Seamlessly weaves deep underlying principles of astronomy, thermodynamics, precision engineering, macroeconomics, political philosophy, and sociology into intuitive, approachable metaphors that smart thinkers appreciate and general readers can vividly visualize.
 
 ---
 
@@ -124,7 +126,14 @@ python .agents/hub.py author draft --book-id 1 --chapter 1 --style EXPLORATION_D
 python .agents/hub.py author evaluate --file "01_Books_Library/Book_01_The_Solar_Crucible/Book_01_Chapter_01.md"
 python .agents/hub.py author complete --synopsis "<1-2 sentence summary>" --gut-delta 1
 
-# 8. Run comprehensive system doctor & 151+ test sanity suite
+# 8. Edition Management & Iterative Versions
+python .agents/hub.py edition list
+python .agents/hub.py edition info
+python .agents/hub.py edition new --name "Refined Iteration"
+python .agents/hub.py read --book 1 --chapter 1 --edition "2026-08-20 Thu 0924 Edition 01 - Foundation Edition"
+python .agents/hub.py library --edition "2026-08-20 Thu 0924 Edition 01 - Foundation Edition"
+
+# 9. Run comprehensive system doctor & 171+ test sanity suite
 python .agents/hub.py test
 python .agents/hub.py doctor
 ```
@@ -139,6 +148,7 @@ The Stellar Confluence Universe/
 │   ├── rotation_tracker.md        <-- Active book #, chapter #, current GUT, and next queue position
 │   ├── cosmic_clockwork.md        <-- Real-time GUT, Loc_Type, Facing Angles & Resonance Constraints
 │   ├── character_registry.md      <-- Index of all 74 books, titles, heroes, factions & worlds
+│   ├── active_edition.json        <-- Active edition pointer and metadata
 │   ├── cosmic_events.json         <-- Active spatial ripple hazards & beacon pulses
 │   ├── character_arcs.json        <-- Dynamic inventory, wounds, mastery levels & relic custody
 │   ├── character_mastery.json     <-- XP progress, ranks & unlocked skill trees
@@ -148,8 +158,10 @@ The Stellar Confluence Universe/
 │   ├── universe_dashboard.html    <-- Interactive visual HTML/SVG galactic radar & timeline
 │   └── diary.md                   <-- Execution log of every completed chapter
 ├── 01_Books_Library/
-│   └── Book_XX_[Title_Slug]/
-│       └── Book_XX_Chapter_YY.md
+│   └── YYYY-MM-DD Day HHMM Edition XX - [Title]/  <-- Timestamped Iterative Edition Folders
+│       └── Book_XX_[Title_Slug]/
+│           ├── Book_XX_Chapter_YY.md
+│           └── Book_XX_Full_Manuscript.md
 ├── 2026-08-12 Wed 1134 Prompt-Response Flow/
 │   └── 2026-08-12 Wed 1149 Prompt-Response Flow.md
 ├── progress tracking/
@@ -158,15 +170,16 @@ The Stellar Confluence Universe/
 │   └── YYYY-MM-DD_HHMM_Description.md
 └── .agents/
     ├── AGENTS.md                  <-- Master agent instructions and universe physics rules
-    ├── hub.py                     <-- Master Command Hub CLI (overview, doctor, test, quickstart, book, search, cosmos, transport, politics, sociology, economy, author, state, audit, document, flow)
+    ├── hub.py                     <-- Master Command Hub CLI
     ├── agent_hub.py               <-- High-performance unified command dispatcher
     ├── core/
     │   ├── agent_core.py          <-- Centralized shared foundation: paths, safe IO, ANSI styling, terminal dossiers, global search
+    │   ├── edition_manager.py     <-- Timestamped edition lifecycle, discovery, and path routing
     │   └── __init__.py
     └── skills/
-        ├── confluence-chapter-authoring/ (19 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics, quest, dual-layer)
+        ├── confluence-chapter-authoring/ (19 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics, quest, dual-layer, prompt)
         ├── universe-state-manager/       (21 scripts: transport engine, politics & sociology, scale generator, ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
-        ├── world-engine-audit/           (4 scripts: 151+ test regression suite, continuity, paradox, physics, doctor)
+        ├── world-engine-audit/           (4 scripts: 171+ test regression suite, continuity, paradox, physics, doctor)
         ├── document-now/                 (2 scripts: version registry & 100+ Ndebele lexicon)
         └── prompt-response-flow/         (1 script: interaction journal logging)
 ```

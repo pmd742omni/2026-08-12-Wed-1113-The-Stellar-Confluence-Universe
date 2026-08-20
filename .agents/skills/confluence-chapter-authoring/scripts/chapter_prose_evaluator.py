@@ -111,16 +111,28 @@ def evaluate_audio_cadence(sentences):
     }
 
 def evaluate_prose(text, expected_constraint=None):
-    clean_text = re.sub(r'<!--[\s\S]*?-->', '', text)
+    # 1. Strip Markdown Header / Frontmatter Metadata if present
+    if "---" in text:
+        parts = text.split("---", 1)
+        # Check if the text before --- is metadata header
+        if any(k in parts[0] for k in ["Galactic Universal Time", "Perspective Character", "Resonance State", "Book "]):
+            body_to_eval = parts[1]
+        else:
+            body_to_eval = text
+    else:
+        body_to_eval = text
+
+    clean_text = re.sub(r'<!--[\s\S]*?-->', '', body_to_eval)
     clean_text = re.sub(r'^#+.*$', '', clean_text, flags=re.MULTILINE)
-    clean_text = re.sub(r'\*\*.*?\*\*', '', clean_text)
+    clean_text = re.sub(r'\[.*?\]\(.*?\)', '', clean_text)
+    clean_text = re.sub(r'[*_`]', '', clean_text)
     clean_text = clean_text.strip()
 
     words = re.findall(r'\b[A-Za-z0-9\'-]+\b', clean_text)
     total_words = len(words)
 
     raw_sentences = re.split(r'[\.\?!]+\s+', clean_text)
-    sentences = [s.strip() for s in raw_sentences if len(s.strip()) > 0]
+    sentences = [s.strip() for s in raw_sentences if len(s.strip()) > 0 and any(c.isalpha() for c in s)]
     total_sentences = max(1, len(sentences))
 
     if total_words == 0:
@@ -128,7 +140,7 @@ def evaluate_prose(text, expected_constraint=None):
 
     total_syllables = sum(count_syllables(w) for w in words)
 
-    # Readability Formulas
+    # Readability Formulas (Flesch Reading Ease & Flesch-Kincaid Grade Level)
     asl = total_words / total_sentences
     asw = total_syllables / total_words
 
@@ -182,6 +194,16 @@ def evaluate_prose(text, expected_constraint=None):
     if synonym_suggestions:
         recommendations.append(f"Consider simplifying {len(synonym_suggestions)} complex word(s) using Grade 4-6 alternatives.")
 
+    # Emotional Warmth & Wonder Keywords
+    EMOTION_WORDS = ["laughed", "smiled", "grinned", "beamed", "cheered", "gasped", "marveled", "whispered", "gazed", "celebrated", "wondered", "chuckled", "sparked", "courage", "friendship", "warmth", "brave", "kindness", "gentle", "joy", "proud", "relief"]
+    emotion_hits = sum(1 for ew in EMOTION_WORDS if re.search(rf'\b{ew}\b', lower_text))
+    warmth_score = min(100.0, round(emotion_hits * 12.5 + (dialogue_pct * 0.8), 1))
+
+    # Dramatic Stakes & Tension Keywords (Mature Sci-Fi Stakes)
+    DRAMATIC_WORDS = ["danger", "alarm", "crisis", "overheat", "failure", "breach", "blackout", "peril", "vibration", "decay", "warning", "stall", "jam", "shear", "risk", "critical", "struggle", "pressure", "emergency"]
+    dramatic_hits = sum(1 for dw in DRAMATIC_WORDS if re.search(rf'\b{dw}\b', lower_text))
+    dramatic_stakes_score = min(100.0, round(dramatic_hits * 14.0 + 30.0, 1))
+
     # Dual-Audience Scoring:
     # 1. Child accessibility score (0-100)
     fkgl_score = max(0, 100 - abs(fkgl - 5.2) * 25)
@@ -192,7 +214,7 @@ def evaluate_prose(text, expected_constraint=None):
     realism_penalties = len(jargon_found) * 20
     intellectual_rigor_score = max(50.0, min(100.0, 95.0 - realism_penalties))
 
-    dual_audience_score = round((child_accessibility_score * 0.55) + (intellectual_rigor_score * 0.45), 1)
+    dual_audience_score = round((child_accessibility_score * 0.4) + (intellectual_rigor_score * 0.3) + (dramatic_stakes_score * 0.3), 1)
 
     return {
         "status": "PASS" if is_grade_appropriate and not jargon_found else "WARNING",
@@ -202,9 +224,11 @@ def evaluate_prose(text, expected_constraint=None):
         "flesch_reading_ease": fre,
         "flesch_kincaid_grade_level": fkgl,
         "target_age_group": "Ages 9-12 (Target Met)" if is_grade_appropriate else "Out of Target",
-        "dual_audience_score": f"{dual_audience_score} / 100 (Grade 4-6 Accessibility + Scientific Rigor)",
+        "dual_audience_score": f"{dual_audience_score} / 100 (Grade 4-6 Vocabulary + High-Stakes Sci-Fi)",
         "child_accessibility_score": f"{child_accessibility_score} / 100",
         "intellectual_rigor_score": f"{intellectual_rigor_score} / 100",
+        "dramatic_stakes_score": f"{dramatic_stakes_score} / 100 (High-Stakes Peril & Drama)",
+        "fun_and_warmth_score": f"{warmth_score} / 100 (Emotional Warmth & Engaging Banter)",
         "dialogue_percentage": f"{dialogue_pct}%",
         "sensory_word_density": f"{sensory_density}%",
         "audio_cadence": audio_cadence,

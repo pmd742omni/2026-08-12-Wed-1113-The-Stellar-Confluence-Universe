@@ -33,9 +33,12 @@ DIARY_MD = os.path.join(SYSTEM_STATE_DIR, "diary.md")
 
 # Ensure helper scripts are importable
 SKILLS_DIR = os.path.join(PROJECT_ROOT, ".agents", "skills")
+CORE_DIR = os.path.join(PROJECT_ROOT, ".agents", "core")
+sys.path.insert(0, CORE_DIR)
 sys.path.insert(0, os.path.join(SKILLS_DIR, "confluence-chapter-authoring", "scripts"))
 sys.path.insert(0, os.path.join(SKILLS_DIR, "universe-state-manager", "scripts"))
 
+from edition_manager import get_book_dir, get_active_edition_dir
 from advance_rotation import read_rotation_tracker, advance_rotation, write_rotation_tracker
 from calculate_resonance import calculate_resonance
 from cosmic_event_bus import check_hazards
@@ -124,8 +127,7 @@ def prepare_next_chapter_stub():
     voice_profile = character_voice_profiler.get_faction_voice_profile(char_info["faction"])
 
     # Format paths
-    title_slug = slugify(char_info["title"])
-    book_folder = os.path.join(BOOKS_LIB_DIR, f"Book_{active_book:02d}_{title_slug}")
+    book_folder = get_book_dir(active_book)
     chapter_file = os.path.join(book_folder, f"Book_{active_book:02d}_Chapter_{active_chap:02d}.md")
     os.makedirs(book_folder, exist_ok=True)
 
@@ -204,8 +206,8 @@ def complete_chapter_generation(synopsis, gut_increment=1):
     title = char_info["title"] if char_info else f"Book {active_book}"
     hero = char_info["hero"] if char_info else "Hero"
 
-    title_slug = slugify(title)
-    chapter_file = os.path.join(BOOKS_LIB_DIR, f"Book_{active_book:02d}_{title_slug}", f"Book_{active_book:02d}_Chapter_{active_chap:02d}.md")
+    book_folder = get_book_dir(active_book)
+    chapter_file = os.path.join(book_folder, f"Book_{active_book:02d}_Chapter_{active_chap:02d}.md")
     
     prose_eval = None
     if os.path.exists(chapter_file):
