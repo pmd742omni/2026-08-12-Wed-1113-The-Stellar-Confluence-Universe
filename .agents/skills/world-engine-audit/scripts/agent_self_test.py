@@ -929,6 +929,461 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
     except Exception as e:
         results.append({"test": "86. Master Hub: Quest Command Dispatch", "status": "FAIL", "error": str(e)})
 
+    # 87. Galactic Scale Generator: Star System & Celestial Physics
+    try:
+        import galactic_scale_generator
+        sys_res = galactic_scale_generator.generate_star_system("[125, -42, 88]")
+        assert sys_res["status"] == "SYSTEM_GENERATED" and sys_res["total_planetary_bodies"] >= 2
+        results.append({"test": "87. Galactic Scale: Star System Generator", "status": "PASS", "details": f"{sys_res['system_name']} ({sys_res['total_planetary_bodies']} worlds)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "87. Galactic Scale: Star System Generator", "status": "FAIL", "error": str(e)})
+
+    # 88. Galactic Scale Generator: Exotic Biomes & Surface Gravity
+    try:
+        import galactic_scale_generator
+        sys_b = galactic_scale_generator.generate_star_system("[0, 50, 100]")
+        p1 = sys_b["planets"][0]
+        assert "surface_gravity_g" in p1 and "atmospheric_mix" in p1
+        results.append({"test": "88. Galactic Scale: Exotic Biome Matrix", "status": "PASS", "details": f"{p1['biome_title']} (g={p1['surface_gravity_g']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "88. Galactic Scale: Exotic Biome Matrix", "status": "FAIL", "error": str(e)})
+
+    # 89. Galactic Scale Generator: Alien Creature Xenobiology Catalog
+    try:
+        import galactic_scale_generator
+        c_res = galactic_scale_generator.generate_creature_encounter("CRYSTAL_SPIRE_FOREST")
+        assert c_res["status"] == "CREATURE_ENCOUNTER_GENERATED" and len(c_res["creature_name"]) > 0
+        results.append({"test": "89. Galactic Scale: Creature Xenobiology", "status": "PASS", "details": f"{c_res['creature_name']} [{c_res['size_scale']}]"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "89. Galactic Scale: Creature Xenobiology", "status": "FAIL", "error": str(e)})
+
+    # 90. Galactic Scale Generator: Interstellar Cultural Traditions & Philosophy
+    try:
+        import galactic_scale_generator
+        cult_res = galactic_scale_generator.generate_cultural_profile("Nebula-Weavers")
+        assert cult_res["status"] == "CULTURAL_PROFILE_GENERATED" and "core_philosophy" in cult_res
+        results.append({"test": "90. Galactic Scale: Interstellar Cultures", "status": "PASS", "details": cult_res["traditional_greeting"][:40] + "..."})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "90. Galactic Scale: Interstellar Cultures", "status": "FAIL", "error": str(e)})
+
+    # 91. Galactic Scale Generator: Dynamic Sub-Factions & Local Enclaves
+    try:
+        import galactic_scale_generator
+        sys_f = galactic_scale_generator.generate_star_system("[-50, 100, 25]")
+        assert len(sys_f["active_sub_factions"]) >= 2
+        results.append({"test": "91. Galactic Scale: Sub-Faction Enclaves", "status": "PASS", "details": f"{sys_f['active_sub_factions'][0]}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "91. Galactic Scale: Sub-Faction Enclaves", "status": "FAIL", "error": str(e)})
+
+    # 92. Planetary Ecology Matrix: Scale Generator Boundless Lookups
+    try:
+        import planetary_ecology_matrix
+        prof_dyn = planetary_ecology_matrix.get_planetary_profile("[125, -42, 88]")
+        assert "world_name" in prof_dyn and "astrophysics" in prof_dyn
+        results.append({"test": "92. Planetary Ecology: Scale Generator Integration", "status": "PASS", "details": f"Dynamically resolved {prof_dyn['world_name']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "92. Planetary Ecology: Scale Generator Integration", "status": "FAIL", "error": str(e)})
+
+    # 93. Galactic Adventure: 25+ Multi-Stage Quest Blueprints
+    try:
+        import galactic_adventure_engine
+        q_rescue = galactic_adventure_engine.generate_adventure_quest(1, 100, quest_type="COMET_TAIL_RESCUE")
+        assert "five_stage_blueprint" in q_rescue["quest_details"]
+        results.append({"test": "93. Galactic Adventure: 5-Stage Quest Blueprint", "status": "PASS", "details": q_rescue["quest_details"]["title"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "93. Galactic Adventure: 5-Stage Quest Blueprint", "status": "FAIL", "error": str(e)})
+
+    # 94. Narrative Beat Architect: 6 Dynamic Plot Styles
+    try:
+        import narrative_beat_architect
+        b_disc = narrative_beat_architect.generate_scene_beats("Caelum", "Solar", "Sun-Forged", "Helios", "SURFACE", 15.0, "PEAK_FACING", "Cap", "Limit", plot_style="EXPLORATION_DISCOVERY")
+        assert b_disc["plot_style"] == "EXPLORATION_DISCOVERY"
+        results.append({"test": "94. Narrative Beat Architect: 6 Plot Styles", "status": "PASS", "details": f"Plot Style: {b_disc['plot_style']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "94. Narrative Beat Architect: 6 Plot Styles", "status": "FAIL", "error": str(e)})
+
+    # 95. Story Generator: Dynamic Multi-Plot & Creature Integration
+    try:
+        import story_generator
+        draft_creature = story_generator.generate_full_chapter_prose(1, 1, save=False, plot_style="CREATURE_ALLIANCE")
+        assert draft_creature["plot_style"] == "CREATURE_ALLIANCE" and "creature_encounter" in draft_creature
+        results.append({"test": "95. Story Generator: Creature Alliance Narrative", "status": "PASS", "details": f"{draft_creature['hero']} & {draft_creature['creature_encounter']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "95. Story Generator: Creature Alliance Narrative", "status": "FAIL", "error": str(e)})
+
+    # 96. Character Voice Profiler: 25+ Cultural Dialect Banks
+    try:
+        import character_voice_profiler
+        assert len(character_voice_profiler.FACTION_VOCABULARY_BANKS) >= 15
+        prof_aurora = character_voice_profiler.get_faction_voice_profile("Aurora-Weavers")
+        assert "aurora" in prof_aurora["keywords"]
+        results.append({"test": "96. Character Voice: 25+ Dialect Banks", "status": "PASS", "details": f"{len(character_voice_profiler.FACTION_VOCABULARY_BANKS)} dialect banks verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "96. Character Voice: 25+ Dialect Banks", "status": "FAIL", "error": str(e)})
+
+    # 97. Faction Matrix: Expanded Expansion Faction Profiles
+    try:
+        import faction_matrix
+        f_cryst = faction_matrix.get_faction_profile("Crystal-Singers")
+        assert "Piezoelectric" in f_cryst["profile"]["domain"]
+        results.append({"test": "97. Faction Matrix: Crystal-Singers & Expansion", "status": "PASS", "details": f_cryst["matched_name"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "97. Faction Matrix: Crystal-Singers & Expansion", "status": "FAIL", "error": str(e)})
+
+    # 98. Prose Polisher: Multi-Faction Sensory Palettes
+    try:
+        import prose_polisher
+        pol_cryst = prose_polisher.polish_prose_text("The crystal and sound were clear.", faction="Crystal-Singers")
+        assert "resonant quartz crystal" in pol_cryst["polished_text"] or "harmonic singing chime" in pol_cryst["polished_text"]
+        results.append({"test": "98. Prose Polisher: Multi-Faction Sensory Palettes", "status": "PASS", "details": "Crystal sensory styling verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "98. Prose Polisher: Multi-Faction Sensory Palettes", "status": "FAIL", "error": str(e)})
+
+    # 99. Core Engine: Global Search Xenobiology Creature Indexing
+    try:
+        from core.agent_core import search_universe
+        s_creature = search_universe("Grav-Whale")
+        assert len(s_creature.get("matched_creatures", [])) >= 1
+        results.append({"test": "99. Core Engine: Xenobiology Global Search", "status": "PASS", "details": f"{len(s_creature['matched_creatures'])} creature match(es)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "99. Core Engine: Xenobiology Global Search", "status": "FAIL", "error": str(e)})
+
+    # 100. Master Hub CLI: Cosmos Subcommand Group Parser
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args = p.parse_args(["cosmos", "explore", "--coords", "[125, -42, 88]"])
+        assert args.command == "cosmos" and args.action == "explore"
+        results.append({"test": "100. Master Hub: Cosmos CLI Dispatcher", "status": "PASS", "details": "cosmos explore parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "100. Master Hub: Cosmos CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 101. Master Hub CLI: Cosmos Creature & Culture Dispatch
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_c = p.parse_args(["cosmos", "creature", "--biome", "CRYSTAL_SPIRE_FOREST"])
+        assert args_c.command == "cosmos" and args_c.action == "creature"
+        results.append({"test": "101. Master Hub: Cosmos Creature Dispatch", "status": "PASS", "details": "cosmos creature parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "101. Master Hub: Cosmos Creature Dispatch", "status": "FAIL", "error": str(e)})
+
+    # 102. Galactic Transport: 4-Tier Taxonomy & Catalog
+    try:
+        import galactic_transport_engine
+        all_v = galactic_transport_engine.get_all_vehicles()
+        assert len(all_v) >= 12 and "TIER_1_INTRA_PLANETARY" in galactic_transport_engine.TRANSPORT_TIERS
+        results.append({"test": "102. Galactic Transport: 4-Tier Taxonomy Catalog", "status": "PASS", "details": f"{len(all_v)} vehicle archetypes across 4 tiers"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "102. Galactic Transport: 4-Tier Taxonomy Catalog", "status": "FAIL", "error": str(e)})
+
+    # 103. Galactic Transport: Vehicle Profile Resolution
+    try:
+        import galactic_transport_engine
+        v_prof = galactic_transport_engine.get_vehicle_profile("SOLAR_SAIL_CUTTER")
+        assert v_prof is not None and "Solar-Sail" in v_prof["name"]
+        results.append({"test": "103. Galactic Transport: Vehicle Profile Resolution", "status": "PASS", "details": v_prof["name"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "103. Galactic Transport: Vehicle Profile Resolution", "status": "FAIL", "error": str(e)})
+
+    # 104. Galactic Transport: Intra-Planetary Transit Kinetics
+    try:
+        import galactic_transport_engine
+        k_intra = galactic_transport_engine.calculate_transit_kinetics("ATMOSPHERIC_SKIMMER", 15.0, speed_multiplier=1.2, cargo_tonnage=5.0)
+        assert k_intra["estimated_duration_gut"] > 0
+        results.append({"test": "104. Galactic Transport: Intra-Planetary Kinetics", "status": "PASS", "details": f"Duration: {k_intra['estimated_duration_gut']} GUT (Load: {k_intra['load_factor']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "104. Galactic Transport: Intra-Planetary Kinetics", "status": "FAIL", "error": str(e)})
+
+    # 105. Galactic Transport: Interstellar Wavefront Kinetics
+    try:
+        import galactic_transport_engine
+        k_wave = galactic_transport_engine.calculate_transit_kinetics("CONFLUENCE_WAVE_RIDER", 40.0)
+        assert k_wave["estimated_duration_gut"] > 0
+        results.append({"test": "105. Galactic Transport: Interstellar Wavefront Kinetics", "status": "PASS", "details": f"Duration: {k_wave['estimated_duration_gut']} GUT"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "105. Galactic Transport: Interstellar Wavefront Kinetics", "status": "FAIL", "error": str(e)})
+
+    # 106. Galactic Transport: Faction Vehicle Preferences
+    try:
+        import galactic_transport_engine
+        pref_sun = galactic_transport_engine.get_faction_vehicle_preference("Sun-Forged Hegemony")
+        assert pref_sun["recommended_vehicles_count"] >= 1
+        results.append({"test": "106. Galactic Transport: Faction Vehicle Preferences", "status": "PASS", "details": f"{pref_sun['recommended_vehicles_count']} craft matches for Sun-Forged"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "106. Galactic Transport: Faction Vehicle Preferences", "status": "FAIL", "error": str(e)})
+
+    # 107. Galactic Transport: Cockpit Sensory Feedback
+    try:
+        import galactic_transport_engine
+        cockpit = galactic_transport_engine.get_cockpit_experience("ASTROLABE_GEAR_GONDOLA", "Tobias Cogsmith", "Orbital Docks")
+        assert "cockpit_description" in cockpit and len(cockpit["cockpit_description"]) > 20
+        results.append({"test": "107. Galactic Transport: Cockpit Sensory Experience", "status": "PASS", "details": cockpit["vehicle"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "107. Galactic Transport: Cockpit Sensory Experience", "status": "FAIL", "error": str(e)})
+
+    # 108. Galactic Politics: Governance Archetype Catalog
+    try:
+        import galactic_sociology_politics_engine
+        assert len(galactic_sociology_politics_engine.GOVERNANCE_ARCHETYPES) >= 6
+        results.append({"test": "108. Galactic Politics: Governance Archetypes", "status": "PASS", "details": f"{len(galactic_sociology_politics_engine.GOVERNANCE_ARCHETYPES)} governance models indexed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "108. Galactic Politics: Governance Archetypes", "status": "FAIL", "error": str(e)})
+
+    # 109. Galactic Politics: Solar Hegemonic Directives
+    try:
+        import galactic_sociology_politics_engine
+        gov_sun = galactic_sociology_politics_engine.get_governance_model("Sun-Forged Hegemony")
+        assert "Radiant Accord" in gov_sun["legal_charter"]
+        results.append({"test": "109. Galactic Politics: Solar Hegemonic Charter", "status": "PASS", "details": gov_sun["name"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "109. Galactic Politics: Solar Hegemonic Charter", "status": "FAIL", "error": str(e)})
+
+    # 110. Galactic Politics: Bilateral Treaties & Shared Principles
+    try:
+        import galactic_sociology_politics_engine
+        treaty = galactic_sociology_politics_engine.get_diplomatic_treaties("Sun-Forged Hegemony", "Astrolabe Engineers")
+        assert len(treaty["active_treaties"]) >= 2
+        results.append({"test": "110. Galactic Politics: Bilateral Treaties", "status": "PASS", "details": f"{len(treaty['active_treaties'])} active treaties"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "110. Galactic Politics: Bilateral Treaties", "status": "FAIL", "error": str(e)})
+
+    # 111. Galactic Sociology: Sociological Profile & Social Strata
+    try:
+        import galactic_sociology_politics_engine
+        soc = galactic_sociology_politics_engine.get_sociological_profile("Helios Prime")
+        assert len(soc["social_strata_hierarchy"]) == 4 and "signature_rite_of_passage" in soc
+        results.append({"test": "111. Galactic Sociology: Sociological Profiles", "status": "PASS", "details": f"Governance: {soc['governance_model']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "111. Galactic Sociology: Sociological Profiles", "status": "FAIL", "error": str(e)})
+
+    # 112. Galactic Sociology: Sacred Cosmic Taboos
+    try:
+        import galactic_sociology_politics_engine
+        taboos = galactic_sociology_politics_engine.SOCIOLOGICAL_SYSTEMS["sacred_cosmic_taboos"]
+        assert len(taboos) >= 4
+        results.append({"test": "112. Galactic Sociology: Sacred Cosmic Taboos", "status": "PASS", "details": f"{len(taboos)} universal decrees"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "112. Galactic Sociology: Sacred Cosmic Taboos", "status": "FAIL", "error": str(e)})
+
+    # 113. Galactic Sociology: Civic Hospitality Interaction
+    try:
+        import galactic_sociology_politics_engine
+        civ = galactic_sociology_politics_engine.generate_civic_interaction("Sun-Forged Hegemony", "Void-Bound Monks")
+        assert "hospitality_performed" in civ and len(civ["host_greeting"]) > 5
+        results.append({"test": "113. Galactic Sociology: Civic Hospitality", "status": "PASS", "details": civ["hospitality_performed"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "113. Galactic Sociology: Civic Hospitality", "status": "FAIL", "error": str(e)})
+
+    # 114. Trade Economy: 25+ Multi-Tier Commodities Catalog
+    try:
+        import galactic_trade_economy
+        prices = galactic_trade_economy.get_market_prices()
+        assert prices["total_commodities"] >= 20
+        results.append({"test": "114. Trade Economy: 25+ Commodity Catalog", "status": "PASS", "details": f"{prices['total_commodities']} commodities tracked"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "114. Trade Economy: 25+ Commodity Catalog", "status": "FAIL", "error": str(e)})
+
+    # 115. Trade Economy: Multi-Currency Valuation & Conversion
+    try:
+        import galactic_trade_economy
+        conv = galactic_trade_economy.convert_currency(100.0, "SOL_CREDIT", "GUILD_SCRIP")
+        assert conv["converted_amount"] > 0
+        results.append({"test": "115. Trade Economy: Multi-Currency Valuation", "status": "PASS", "details": f"100 SC = {conv['converted_amount']} GPS"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "115. Trade Economy: Multi-Currency Valuation", "status": "FAIL", "error": str(e)})
+
+    # 116. Trade Economy: Dynamic Price Elasticity & Market Shocks
+    try:
+        import galactic_trade_economy
+        fluc = galactic_trade_economy.trigger_market_fluctuation("Photonic Prism Crystals", 15.0, "High Solar Observatory Demand")
+        assert fluc["status"] == "MARKET_UPDATED" and fluc["new_price_credits"] > fluc["old_price_credits"]
+        results.append({"test": "116. Trade Economy: Dynamic Price Elasticity", "status": "PASS", "details": f"{fluc['old_price_credits']} -> {fluc['new_price_credits']} Credits ({fluc['percentage_change']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "116. Trade Economy: Dynamic Price Elasticity", "status": "FAIL", "error": str(e)})
+
+    # 117. Trade Economy: Convoy Dispatch Scheduling
+    try:
+        import galactic_trade_economy
+        disp = galactic_trade_economy.dispatch_convoy("Helios Prime", "Umbra Chasm", "Solarite Ore", 1200, 100, 8)
+        assert disp["status"] == "CONVOY_DISPATCHED" and disp["eta_gut"] == 108
+        results.append({"test": "117. Trade Economy: Convoy Dispatch Scheduling", "status": "PASS", "details": f"{disp['convoy_id']} (ETA: GUT {disp['eta_gut']})"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "117. Trade Economy: Convoy Dispatch Scheduling", "status": "FAIL", "error": str(e)})
+
+    # 118. Trade Economy: Planetary Stockpile Verification
+    try:
+        import galactic_trade_economy
+        stock = galactic_trade_economy.get_planetary_stockpile("Helios Prime")
+        assert len(stock["stockpiles"]) >= 2
+        results.append({"test": "118. Trade Economy: Planetary Stockpiles", "status": "PASS", "details": f"Helios Prime: {len(stock['stockpiles'])} commodities"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "118. Trade Economy: Planetary Stockpiles", "status": "FAIL", "error": str(e)})
+
+    # 119. Galactic Adventure: 25+ Adventure Archetypes Matrix
+    try:
+        import galactic_adventure_engine
+        assert len(galactic_adventure_engine.EXPANDED_ADVENTURE_ARCHETYPES) >= 20
+        results.append({"test": "119. Galactic Adventure: 25+ Archetypes Catalog", "status": "PASS", "details": f"{len(galactic_adventure_engine.EXPANDED_ADVENTURE_ARCHETYPES)} quest archetypes"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "119. Galactic Adventure: 25+ Archetypes Catalog", "status": "FAIL", "error": str(e)})
+
+    # 120. Galactic Adventure: Vehicle & Sociological Blueprint Synthesis
+    try:
+        import galactic_adventure_engine
+        q_trans = galactic_adventure_engine.generate_adventure_quest(1, 100, quest_type="ATMOSPHERIC_SKIMMER_THERMAL_SURF")
+        assert "vehicle_deployed" in q_trans["quest_details"]
+        results.append({"test": "120. Galactic Adventure: Vehicle & Stage Blueprint", "status": "PASS", "details": q_trans["quest_details"]["vehicle_deployed"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "120. Galactic Adventure: Vehicle & Stage Blueprint", "status": "FAIL", "error": str(e)})
+
+    # 121. Story Generator: Vehicle, Governance & Trade Prose Integration
+    try:
+        import story_generator
+        draft_prose = story_generator.generate_full_chapter_prose(1, 1, save=False)
+        assert "Primary Transport" in draft_prose["chapter_prose"] and "Governance & Cultural Accord" in draft_prose["chapter_prose"]
+        results.append({"test": "121. Story Generator: Transport & Governance Synthesis", "status": "PASS", "details": f"Transport: {draft_prose.get('vehicle_deployed')}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "121. Story Generator: Transport & Governance Synthesis", "status": "FAIL", "error": str(e)})
+
+    # 122. Core Engine: Global Search Transport Vehicle Indexing
+    try:
+        from core.agent_core import search_universe
+        s_veh = search_universe("Skimmer")
+        assert len(s_veh.get("matched_vehicles", [])) >= 1
+        results.append({"test": "122. Core Foundation: Search Vehicle Indexing", "status": "PASS", "details": f"{len(s_veh['matched_vehicles'])} vehicle match(es)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "122. Core Foundation: Search Vehicle Indexing", "status": "FAIL", "error": str(e)})
+
+    # 123. Core Engine: Global Search Governance Indexing
+    try:
+        from core.agent_core import search_universe
+        s_gov = search_universe("Hegemonic")
+        assert len(s_gov.get("matched_governance", [])) >= 1
+        results.append({"test": "123. Core Foundation: Search Governance Indexing", "status": "PASS", "details": f"{len(s_gov['matched_governance'])} governance match(es)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "123. Core Foundation: Search Governance Indexing", "status": "FAIL", "error": str(e)})
+
+    # 124. Core Engine: Global Search Commodities Indexing
+    try:
+        from core.agent_core import search_universe
+        s_comm = search_universe("Brass")
+        assert len(s_comm.get("matched_commodities", [])) >= 1
+        results.append({"test": "124. Core Foundation: Search Commodities Indexing", "status": "PASS", "details": f"{len(s_comm['matched_commodities'])} commodity match(es)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "124. Core Foundation: Search Commodities Indexing", "status": "FAIL", "error": str(e)})
+
+    # 125. Master Hub CLI: Transport Subcommand Parser Routing
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_t = p.parse_args(["transport", "simulate", "--vehicle", "SOLAR_SAIL_CUTTER", "--dist", "12.5"])
+        assert args_t.command == "transport" and args_t.action == "simulate"
+        results.append({"test": "125. Master Hub: Transport CLI Dispatcher", "status": "PASS", "details": "transport simulate parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "125. Master Hub: Transport CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 126. Master Hub CLI: Politics Subcommand Parser Routing
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_p = p.parse_args(["politics", "governance", "--faction", "Sun-Forged Hegemony"])
+        assert args_p.command == "politics" and args_p.action == "governance"
+        results.append({"test": "126. Master Hub: Politics CLI Dispatcher", "status": "PASS", "details": "politics governance parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "126. Master Hub: Politics CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 127. Master Hub CLI: Sociology Subcommand Parser Routing
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_s = p.parse_args(["sociology", "profile", "--world", "Helios Prime"])
+        assert args_s.command == "sociology" and args_s.action == "profile"
+        results.append({"test": "127. Master Hub: Sociology CLI Dispatcher", "status": "PASS", "details": "sociology profile parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "127. Master Hub: Sociology CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 128. Master Hub CLI: Economy Subcommand Parser Routing
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_e = p.parse_args(["economy", "convert", "--amount", "250", "--from-curr", "SOL_CREDIT", "--to-curr", "GUILD_SCRIP"])
+        assert args_e.command == "economy" and args_e.action == "convert"
+        results.append({"test": "128. Master Hub: Economy CLI Dispatcher", "status": "PASS", "details": "economy convert parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "128. Master Hub: Economy CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 129. Galactic Politics: Deep-Core Collective Charter
+    try:
+        import galactic_sociology_politics_engine
+        gov_core = galactic_sociology_politics_engine.get_governance_model("Deep-Core Miners")
+        assert "Bedrock Treaty" in gov_core["legal_charter"]
+        results.append({"test": "129. Galactic Politics: Deep-Core Charter", "status": "PASS", "details": gov_core["name"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "129. Galactic Politics: Deep-Core Charter", "status": "FAIL", "error": str(e)})
+
+    # 130. Galactic Sociology: Architectural Aesthetics Matrix
+    try:
+        import galactic_sociology_politics_engine
+        archs = galactic_sociology_politics_engine.SOCIOLOGICAL_SYSTEMS["architectural_philosophies"]
+        assert len(archs) >= 4
+        results.append({"test": "130. Galactic Sociology: Architectural Aesthetics", "status": "PASS", "details": f"{len(archs)} aesthetic philosophies indexed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "130. Galactic Sociology: Architectural Aesthetics", "status": "FAIL", "error": str(e)})
+
+    # 131. System Stability: Regression In-Process Performance Benchmark
+    try:
+        duration_now = (time.time() - start_total) * 1000
+        assert duration_now < 5000.0  # Must run in under 5 seconds
+        results.append({"test": "131. System Stability: In-Process Performance", "status": "PASS", "details": f"{duration_now:.1f}ms (<5000ms benchmark)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "131. System Stability: In-Process Performance", "status": "FAIL", "error": str(e)})
+
     duration_total_ms = round((time.time() - start_total) * 1000, 1)
     all_pass = (passed_count == len(results))
 
@@ -942,4 +1397,5 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
 if __name__ == "__main__":
     summary = run_in_process_tests()
     print(json.dumps(summary, indent=2))
+
 

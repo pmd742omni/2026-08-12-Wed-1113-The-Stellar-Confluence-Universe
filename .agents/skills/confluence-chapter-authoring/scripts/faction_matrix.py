@@ -202,6 +202,63 @@ FACTION_DATABASE = {
             "debuff": "STANDARD LIMIT: Seed growth speed bounded by normal bio-chemical rates."
         },
         "subspace": "Living seed pods enter suspended animation stasis."
+    },
+    "Crystal-Singers": {
+        "domain": "Piezoelectric Sonance / Harmonic Crystal Resonance",
+        "energy_medium": "Vibrating Quartz Prisms & Acoustic Tone Tuning",
+        "signature_gear": "Resonant Tuning Forks, Crystal Chime Staffs, Sound-Refracting Shields",
+        "tactical_style": "Acoustic pulse barriers, frequency dampening, crystal shattering waves",
+        "peak_facing": {
+            "buff": "SONIC CLARITY: Crystal lattices amplify acoustic soundwaves to crystalline brilliance.",
+            "debuff": "HARMONIC OVERLOAD: Risk of micro-fracturing crystal tools under extreme vibration."
+        },
+        "shadow_facing": {
+            "buff": "PURE ACOUSTICS: Subterranean silence enhances listening and micro-vibration detection.",
+            "debuff": "COLD DAMPENING: Frozen crystal facets lose flexibility, dampening high-pitch tones."
+        },
+        "transit_facing": {
+            "buff": "HARMONIC CHIME: Perfectly stable resonance tuning and crystal communication.",
+            "debuff": "STANDARD LIMIT: Sound wave range bounded by atmospheric density."
+        },
+        "subspace": "Crystal vibrations maintain steady internal resonance."
+    },
+    "Tide-Wardens": {
+        "domain": "Hydro-Kinetic Pressure / Oceanic Wave Dynamics",
+        "energy_medium": "Pressurized Saline Fluid & Tidal Current Vectors",
+        "signature_gear": "Hydro-Harpoons, Pressure-Sealed Shell Helms, Buoyant Jet Fins",
+        "tactical_style": "Hydro-kinetic jet thrusts, tidal current redirection, deep-depth pressure shielding",
+        "peak_facing": {
+            "buff": "THERMAL CURRENT: Water jets superheat, creating high-pressure steam propulsion.",
+            "debuff": "EVAPORATION: Rapid fluid loss requires constant water replenishment."
+        },
+        "shadow_facing": {
+            "buff": "ABYSSAL STEALTH: Deep ocean currents provide complete thermal concealment.",
+            "debuff": "DENSE VISCOSITY: Cold water reduces rapid steering reaction times."
+        },
+        "transit_facing": {
+            "buff": "HARMONIC SWELL: Smooth hydrodynamic movement and reliable pressure seals.",
+            "debuff": "STANDARD LIMIT: Propulsion bounded by onboard water reservoir."
+        },
+        "subspace": "Hydro systems operate normally on internal water tanks."
+    },
+    "Magnetar-Leapers": {
+        "domain": "Electromagnetic Polarity / Flux Arc Propulsion",
+        "energy_medium": "High-Flux Magnetic Coils & Polar Leap Cleats",
+        "signature_gear": "Polarity Boots, Magnetic Arc Gloves, Flux Repulsion Gauntlets",
+        "tactical_style": "Lightning-fast magnetic leaps, polar repulsion dodges, electromagnetic disarming arcs",
+        "peak_facing": {
+            "buff": "FLUX SURGE: Magnetic leap distance triples along solar wind flux lines.",
+            "debuff": "POLARITY INVERSION RISK: Excessive charge can momentarily short-circuit boot circuits."
+        },
+        "shadow_facing": {
+            "buff": "STEADY POLARITY: Absence of solar radiation enables micro-precise landing lock.",
+            "debuff": "LOW VOLTAGE: Arc discharge loses offensive shock power."
+        },
+        "transit_facing": {
+            "buff": "HARMONIC LEAP: Smooth, reliable magnetic navigation along planetary lines.",
+            "debuff": "STANDARD LIMIT: Leap distance bounded by local magnetic field strength."
+        },
+        "subspace": "Requires artificial magnetic anchor points to leap."
     }
 }
 

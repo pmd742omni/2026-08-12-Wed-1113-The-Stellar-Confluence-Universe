@@ -2,11 +2,12 @@
 
 ## 1. Master Role & Narrative Standard
 
-Act as the **Master Storyteller**, **World Engine**, and **System State Tracker** for **"The Stellar Confluence"** universe. You are tasked with orchestrating, writing, simulating, and tracking a massive 74-book interconnected series spanning multiple star systems, planets, orbital stations, and interstellar transit routes.
+Act as the **Master Storyteller**, **World Engine**, and **System State Tracker** for **"The Stellar Confluence"** universe. You are tasked with orchestrating, writing, simulating, and tracking a massive 74-book interconnected series spanning trillions of star systems, planets, orbital stations, and interstellar transit routes.
 
 ### Narrative Tone & Accessibility Standard
 - **Language & Accessibility**: Clean, jargon-free, sensory-rich prose easily readable by a 10-year-old child (Grade 4–6 readability, verified via `chapter_prose_evaluator.py`), yet crafted with thematic depth, high-stakes wonder, emotional warmth, and bravery (in the spirit of *Avatar: The Last Airbender*, *Studio Ghibli*, or *Ender's Game*).
 - **World Logic & Physics**: Intelligent, grounded, and astronomically sound. Power limitations create drama! Planetary bodies rotate on axes ($\omega_{rot} = 15^\circ / GUT$), orbital craft cycle worlds ($\omega_{orb} = 60^\circ / GUT$), and ships travel real distances across 3D sector coordinates ($[X, Y, Z]$) governed strictly by celestial geometry.
+- **Multidisciplinary Balance**: Seamlessly weaves deep underlying principles of astronomy, thermodynamics, precision engineering, macroeconomics, political philosophy, and sociology into intuitive, approachable metaphors that smart thinkers appreciate and young readers can vividly visualize.
 
 ---
 
@@ -24,17 +25,49 @@ A character’s capability is dynamically determined by their spatial orientatio
 
 ---
 
-## 3. Spatial Sectors, Waypoints & Cross-Book Ripple Effects
+## 3. 4-Tier Galactic Transport & Multi-Scale Mobility
+
+Characters explore the vast cosmos through a grounded 4-tier transport taxonomy (`galactic_transport_engine.py`):
+1. **Tier 1 (Intra-Planetary & Atmospheric)**: Solar-Thermal Atmospheric Skimmers, Copper Dune Sand-Sails, Bioluminescent Benthic Sea Crawlers, Planetary Vacuum Mag-Lev Expresses, and Orbital Skyhook Elevators.
+2. **Tier 2 (System-Level & Interplanetary)**: Prismatic Photonic Solar-Sail Cutters, Heavy-Haul Xenon-Ion Cargo Freighters, Magnetic Coronal Prominence Plasma Scoopers, and Resonant Planetary Cycler Stations.
+3. **Tier 3 (Interstellar & Wavefront Transit)**: Harmonic Confluence Wave-Riders, Umbral Void Phase Shuttles, Tachyon Chrono-Slipstream Corvettes, and Dyson Relativistic Accelerator Slingshots.
+4. **Tier 4 (Intergalactic & Deep Cosmos)**: Primordial Dark-Matter Drift Caravans and Keystone Subspace Transit Gateways.
+5. **Cultural & Faction Signature Craft**: Astrolabe Clockwork Gear-Gondolas, Comet-Rider Cryo-Sublimation Skiffs, Bio-Alchemist Living Manta-Craft, and Crystal-Singer Prismatic Suncatchers.
+
+---
+
+## 4. Interstellar Politics, Governance & Civilizations
+
+Civilizations and enclaves operate under rich political models and sociological codes (`galactic_sociology_politics_engine.py`):
+- **Governance Models**: Solar Hegemonic Artificer Council, Subspace Monastic Enclave of Quiet Voices, Grand Clockwork Artisan Syndicate, United Flotilla Council of Wayfarers, Tectonic Core Mining Collective, Harmonic Suncatcher Choir Academy, Living Canopy Ecological Stewardship.
+- **Sociological Stratification**: Apprentice Scouts, Wayfarer Guides, Master Artisans/Scholars, High Artificers/Elder Keepers.
+- **Rites of Passage**: The First Slingshot Flight, The Chasm Vigil of Silence, The Meridian Gear Calibration, The Grav-Whale Song Greeting.
+- **Hospitality Rites & Customs**: Warm amber tea and wishing stone greetings, clean tool and fresh oil welcoming, twilight lantern blessings, shared stardust salt pinches.
+- **Sacred Cosmic Taboos**: Strict non-weaponization of navigational beacons, preservation of xenobiology nurseries, universal sanctity of distress beacons, and the peace of hospitality bread.
+
+---
+
+## 5. Dynamic Trade Economy & Multi-Currency System
+
+The galaxy is connected through dynamic commercial supply chains (`galactic_trade_economy.py`):
+- **25+ Multi-Tier Commodities**: Raw Ores (Solarite, Phase Basalt, Cryo-Ice, Silk), Refined Precision Tech (Photonic Prisms, Precision Brass, Tachyon Chrono-Cells, Flux Coils), Biotech (Luminescent Spores, Bio-Chitin, Star-Bloom Salves), and Luxury Cultural Goods (Singing Quartz Goblets, Solar Mead, Eclipse Tapestries, Astrolabe Watches).
+- **Galactic Currencies**: Solar Sovereign Credits (SC), Astrolabe Precision Scrip (GPS), Umbral Silence Tokens (VT), and Wayfarer Drift Vouchers (WDV).
+- **Dynamic Market Factors**: Price elasticity, trade lanes, convoy dispatch scheduling, planetary stockpiles, and supply shock events.
+
+---
+
+## 6. Spatial Sectors, Waypoints & Galactic Scale Universe
 
 - **Coordinate System**: 3D Sector Coordinates $[X, Y, Z]$.
-- **Location Types (`Loc_Type`)**: `SURFACE` (axial day/night spin), `ORBITAL` (rapid orbital revolution), `DEEP_SPACE_TRANSIT` (vector heading towards destination), `GATEWAY_SUBSPACE` (wormhole conduit).
+- **Boundless Cosmic Scale**: Trillions of star systems (O/B/A/F/G/K/M, Magnetars, Pulsars, Hypergiants, Binary/Trinary, Micro-Singularities, Dyson Swarms), 30+ exotic celestial biomes, alien xenobiology creatures, interstellar cultures, and millions of dynamic sub-factions procedurally generated via `galactic_scale_generator.py`.
+- **Alien Xenobiology & Creatures**: Majestic fauna and flora (Grav-Whales, Light-Moths, Phase-Stalkers, Silicon-Weavers, Chrono-Tortoises, Coronal Drakes, Bioluminescent Coral Colossi, Magnetic Glide-Rays) with non-violent handling and cooperative wonder interactions.
 - **Cross-Book Ripple Hazards**:
   - Cosmic disruptions (stellar flares, beacon pulses, stargate collapses) logged via `cosmic_event_bus.py` project an environmental hazard radius ($d = \sqrt{\Delta x^2 + \Delta y^2 + \Delta z^2} \le R_{blast}$).
   - Any traveling starship or planetary base within the influence radius automatically experiences environmental turbulence in its next chapter.
 
 ---
 
-## 4. 74-Book Architecture & Faction Catalog
+## 7. 74-Book Architecture & Faction Catalog
 
 - **30 Core Faction Books**:
   - `Book 01` – `Book 10`: The Sun-Forged Hegemony (10 radiant heroes across desert worlds, solar observatories, radiant cruisers).
@@ -45,39 +78,54 @@ A character’s capability is dynamically determined by their spatial orientatio
 
 ---
 
-## 5. Round-Robin Chapter Generation Protocol
+## 8. Master Hub CLI & Authoring Protocols
 
 Strict rotation loop:
 $$\text{[Book 01, Ch 1]} \to \text{[Book 02, Ch 1]} \to \dots \to \text{[Book 74, Ch 1]} \to \text{[Book 01, Ch 2]} \to \text{[Book 02, Ch 2]} \dots$$
 
 ### Master Hub Workflow (`.agents/hub.py`):
 ```bash
-# 1. Inspect live galactic status board or guided quickstart
+# 1. Live galactic status board or guided quickstart
 python .agents/hub.py overview
 python .agents/hub.py quickstart
 
-# 2. Inspect individual 360-degree storyline dossier or search universe
-python .agents/hub.py book 1
-python .agents/hub.py search "Prism"
+# 2. Transport & Multi-Scale Mobility
+python .agents/hub.py transport catalog
+python .agents/hub.py transport simulate --vehicle "SOLAR_SAIL_CUTTER" --dist 15.0
 
-# 3. One-Shot Authoring Cycle (prepare -> draft -> evaluate -> polish -> complete)
+# 3. Interstellar Politics, Governance & Sociology
+python .agents/hub.py politics governance --faction "Sun-Forged Hegemony"
+python .agents/hub.py sociology profile --world "Helios Prime"
+
+# 4. Galactic Trade Economy, Markets & Currencies
+python .agents/hub.py economy market
+python .agents/hub.py economy convert --amount 100 --from-curr SOL_CREDIT --to-curr GUILD_SCRIP
+
+# 5. Procedural Cosmos & Sector Exploration
+python .agents/hub.py cosmos explore --coords "[125, -42, 88]"
+python .agents/hub.py cosmos creature --biome "CRYSTAL_SPIRE_FOREST"
+
+# 6. Inspect individual 360-degree storyline dossier or global search
+python .agents/hub.py book 1
+python .agents/hub.py search "Skimmer"
+
+# 7. One-Shot Authoring Cycle (prepare -> draft -> evaluate -> polish -> complete)
 python .agents/hub.py author cycle --book-id 1
 
-# Or Step-by-Step Manual Authoring & Adventure Generation:
-python .agents/hub.py author prepare
+# Or Step-by-Step Manual Authoring & 25+ Adventure Quests:
 python .agents/hub.py author quest --book-id 1
-python .agents/hub.py author draft --book-id 1 --chapter 1
+python .agents/hub.py author draft --book-id 1 --chapter 1 --style EXPLORATION_DISCOVERY
 python .agents/hub.py author evaluate --file "01_Books_Library/Book_01_The_Solar_Crucible/Book_01_Chapter_01.md"
 python .agents/hub.py author complete --synopsis "<1-2 sentence summary>" --gut-delta 1
 
-# 4. Run comprehensive system doctor & sanity suite
+# 8. Run comprehensive system doctor & 131+ test sanity suite
 python .agents/hub.py test
 python .agents/hub.py doctor
 ```
 
 ---
 
-## 6. Directory Structure & State Files
+## 9. Directory Structure & State Files
 
 ```
 The Stellar Confluence Universe/
@@ -104,22 +152,22 @@ The Stellar Confluence Universe/
 │   └── YYYY-MM-DD_HHMM_Description.md
 └── .agents/
     ├── AGENTS.md                  <-- Master agent instructions and universe physics rules
-    ├── hub.py                     <-- Master Command Hub CLI (overview, doctor, test, quickstart, book, search, author, state, audit, document, flow)
+    ├── hub.py                     <-- Master Command Hub CLI (overview, doctor, test, quickstart, book, search, cosmos, transport, politics, sociology, economy, author, state, audit, document, flow)
     ├── agent_hub.py               <-- High-performance unified command dispatcher
     ├── core/
     │   ├── agent_core.py          <-- Centralized shared foundation: paths, safe IO, ANSI styling, terminal dossiers, global search
     │   └── __init__.py
     └── skills/
         ├── confluence-chapter-authoring/ (19 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics, quest)
-        ├── universe-state-manager/       (18 scripts: ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
-        ├── world-engine-audit/           (4 scripts: 86+ test regression suite, continuity, paradox, physics, doctor)
+        ├── universe-state-manager/       (21 scripts: transport engine, politics & sociology, scale generator, ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
+        ├── world-engine-audit/           (4 scripts: 131+ test regression suite, continuity, paradox, physics, doctor)
         ├── document-now/                 (2 scripts: version registry & 100+ Ndebele lexicon)
         └── prompt-response-flow/         (1 script: interaction journal logging)
 ```
 
 ---
 
-## 7. Progress Tracking Rule ("Document Now")
+## 10. Progress Tracking Rule ("Document Now")
 
 Whenever the developer states **"document now"**, **"document progress"**, or requests a checkpoint:
 1. Refer to and execute `document-now` ([SKILL.md](file:///c:/Users/ignaz/OneDrive/Documents/Projects/2026-05-03%201325%20Syncthing%20Books/2026-05-20%20Wed%202132%20Syncthing%20Gateway/Projects/2026-08-12%20Wed%201113%20The%20Stellar%20Confluence%20Universe/.agents/skills/document-now/SKILL.md)).
@@ -131,14 +179,14 @@ Whenever the developer states **"document now"**, **"document progress"**, or re
 
 ---
 
-## 8. Automated Diagnostics Rule ("Self-Test" & "Doctor")
+## 11. Automated Diagnostics Rule ("Self-Test" & "Doctor")
 
 Whenever testing system health or before major release commits:
 ```bash
-# Instant in-process regression suite (86+ sanity checks in <1s)
+# Instant in-process regression suite (131+ sanity checks in ~1s)
 python .agents/hub.py test
 
 # Full system diagnostic sweep (State + Physics + Paradoxes + Tests)
 python .agents/hub.py doctor
 ```
-*(Runs **86+ automated sanity checks** across all skills in <1 second with 100% PASS verification)*
+*(Runs **131+ automated sanity checks** across all skills with 100% PASS verification)*

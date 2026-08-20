@@ -31,7 +31,6 @@ SKILLS_DIR = os.path.join(PROJECT_ROOT, ".agents", "skills")
 sys.path.insert(0, SCRIPT_DIR)
 sys.path.insert(0, os.path.join(SKILLS_DIR, "universe-state-manager", "scripts"))
 
-
 import chapter_engine
 
 FACTION_VOCABULARY_BANKS = {
@@ -99,6 +98,26 @@ FACTION_VOCABULARY_BANKS = {
         "keywords": ["charge", "pole", "flux", "pulse", "arc", "leap", "polar", "repulsion", "circuit", "spark", "field", "lightning"],
         "tone": "Electrifying, brisk, daring, fast-paced",
         "example_idiom": "Match polarities on the leap, or the field will throw you into orbit."
+    },
+    "Aurora-Weavers": {
+        "keywords": ["aurora", "shimmer", "curtain", "spectral", "emerald", "glow", "sky", "ribbon", "dazzle", "harmony", "prism", "veil"],
+        "tone": "Luminous, whimsical, poetic, awe-inspiring",
+        "example_idiom": "Follow the emerald curtain where the sky breathes light."
+    },
+    "Void-Nomads": {
+        "keywords": ["starway", "caravan", "drift", "beacon", "hull", "passage", "crossroads", "wayfarer", "compass", "oasis", "haven"],
+        "tone": "Worldly, resourceful, hospitable, open-hearted",
+        "example_idiom": "A warm lantern in deep space turns any stranger into family."
+    },
+    "Solar-Artificers": {
+        "keywords": ["forge", "temper", "alloy", "crucible", "optic", "refract", "furnace", "chisel", "amber", "polish", "quench"],
+        "tone": "Craftsman-like, patient, disciplined, exacting pride",
+        "example_idiom": "Measure three times in cold shadow before cutting in hot sun."
+    },
+    "Stardust-Cartographers": {
+        "keywords": ["chart", "constellation", "quadrant", "meridian", "parsec", "beacon", "horizon", "survey", "atlas", "vector"],
+        "tone": "Scholarly, curious, pioneering, methodical wonder",
+        "example_idiom": "Every uncharted star has a story waiting for an open notebook."
     }
 }
 
@@ -115,7 +134,6 @@ def get_faction_voice_profile(faction):
         "typical_idioms": [prof["example_idiom"]],
         "keywords": prof["keywords"]
     }
-
 
 def analyze_character_dialogue(chapter_text, book_id=1):
     char_info = chapter_engine.get_character_info(book_id)
@@ -156,7 +174,6 @@ def analyze_character_dialogue(chapter_text, book_id=1):
 
     # Calculate cultural resonance score
     density = (matched_hits / max(1, total_words)) * 100.0
-    # Expected density ~ 3-8%
     score = min(100.0, round(density * 15.0 + 40.0, 1))
 
     return {

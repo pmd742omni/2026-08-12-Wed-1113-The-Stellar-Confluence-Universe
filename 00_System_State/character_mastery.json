@@ -4,9 +4,9 @@
     "hero_name": "Caelum Dawnrunner",
     "faction": "Sun-Forged Hegemony",
     "rank": "High Artificer",
-    "level": 41,
-    "mastery_points": 4020,
-    "stamina_pool": 700,
+    "level": 53,
+    "mastery_points": 5220,
+    "stamina_pool": 880,
     "unlocked_techniques": [
       "Solar Beam Focusing",
       "Photonic Prism Refraction"
@@ -41,6 +41,46 @@
         "chapter": 1,
         "gut": 102,
         "event": "+150 XP: Calibrated Ancient Solar Array (Rank: Journey-Master)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
+      },
+      {
+        "chapter": 1,
+        "gut": 102,
+        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
       },
       {
         "chapter": 1,

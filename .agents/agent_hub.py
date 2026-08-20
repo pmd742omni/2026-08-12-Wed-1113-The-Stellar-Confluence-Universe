@@ -2,7 +2,8 @@
 """
 Master Command Hub & Unified Agent CLI for The Stellar Confluence Universe
 Provides a high-performance, single-entry-point dispatcher for all skills:
-- confluence-chapter-authoring (authoring, evaluation, storyboards, audio scripts, wave physics, faction matrices, relics)
+- cosmos (galactic scale generator, infinite star systems, exotic biomes, xenobiology creatures, cultures, sub-factions)
+- confluence-chapter-authoring (authoring, evaluation, storyboards, audio scripts, wave physics, faction matrices, relics, quests)
 - universe-state-manager (ephemeris, transit, trade, tension, mastery, relics, ecology, route pathfinding, mesh graph)
 - world-engine-audit (physics, continuity, paradox, regression sanity test, comprehensive doctor)
 - document-now (version registry, 100+ Ndebele lexicon, automated progress logs, version registration)
@@ -97,6 +98,19 @@ def run_doctor_diagnostic():
         "test_suite": test_res
     }
 
+def handle_cosmos(args):
+    """Dispatches galactic scale generator commands."""
+    import galactic_scale_generator
+    if args.action in ["explore", "system"]:
+        res = galactic_scale_generator.generate_star_system(args.coords or "[0, 0, 0]", args.name)
+    elif args.action == "creature":
+        res = galactic_scale_generator.generate_creature_encounter(args.biome, args.name or "wild")
+    elif args.action == "culture":
+        res = galactic_scale_generator.generate_cultural_profile(args.faction or args.name or "Universal")
+    else:
+        res = {"error": f"Unknown cosmos action: {args.action}"}
+    print(json.dumps(res, indent=2))
+
 def handle_author(args):
     """Dispatches authoring actions."""
     if args.action == "cycle":
@@ -125,7 +139,7 @@ def handle_author(args):
     elif args.action == "polish":
         import prose_polisher
         sample = args.text or "The solar lens hummed with bright energy."
-        res = prose_polisher.polish_prose_text(sample)
+        res = prose_polisher.polish_prose_text(sample, faction=args.faction or "Sun-Forged")
         print(json.dumps(res, indent=2))
     elif args.action == "storyboard":
         import scene_storyboard_generator
@@ -189,12 +203,12 @@ def handle_author(args):
         print(json.dumps(res, indent=2))
     elif args.action == "draft":
         import story_generator
-        res = story_generator.generate_full_chapter_prose(args.book_id or 1, args.chapter or 1)
+        res = story_generator.generate_full_chapter_prose(args.book_id or 1, args.chapter or 1, save=args.save if hasattr(args, "save") else False, plot_style=getattr(args, "style", None))
         print(json.dumps(res, indent=2))
     elif args.action == "quest":
         import galactic_adventure_engine
         gut_val = getattr(args, "gut", 100) or 100
-        res = galactic_adventure_engine.generate_adventure_quest(args.book_id or 1, gut_val)
+        res = galactic_adventure_engine.generate_adventure_quest(args.book_id or 1, gut_val, quest_type=getattr(args, "type", None))
         print(json.dumps(res, indent=2))
     else:
         print(json.dumps({"error": f"Unknown author action: {args.action}"}, indent=2))
@@ -396,6 +410,62 @@ def handle_book(args):
     else:
         print(format_book_dossier_terminal(args.book_id))
 
+def handle_transport(args):
+    """Dispatches galactic transport & multi-scale mobility commands."""
+    import galactic_transport_engine
+    if args.action == "catalog":
+        res = {"total_vehicles": len(galactic_transport_engine.get_all_vehicles()), "catalog": galactic_transport_engine.TRANSPORT_TIERS}
+    elif args.action == "info":
+        res = galactic_transport_engine.get_vehicle_profile(args.vehicle) or {"error": f"Vehicle '{args.vehicle}' not found."}
+    elif args.action == "simulate":
+        res = galactic_transport_engine.calculate_transit_kinetics(args.vehicle, args.dist or 10.0, args.speed or 1.0, args.cargo or 0.0)
+    elif args.action == "faction":
+        res = galactic_transport_engine.get_faction_vehicle_preference(args.name or "Sun-Forged Hegemony")
+    else:
+        res = {"error": f"Unknown transport action: {args.action}"}
+    print(json.dumps(res, indent=2))
+
+def handle_politics(args):
+    """Dispatches galactic politics, governance and treaties commands."""
+    import galactic_sociology_politics_engine
+    if args.action == "list":
+        res = {"total_archetypes": len(galactic_sociology_politics_engine.GOVERNANCE_ARCHETYPES), "archetypes": galactic_sociology_politics_engine.GOVERNANCE_ARCHETYPES}
+    elif args.action == "governance":
+        res = galactic_sociology_politics_engine.get_governance_model(args.faction or "Sun-Forged Hegemony")
+    elif args.action == "treaties":
+        res = galactic_sociology_politics_engine.get_diplomatic_treaties(args.faction1 or "Sun-Forged Hegemony", args.faction2 or "Astrolabe Engineers")
+    else:
+        res = {"error": f"Unknown politics action: {args.action}"}
+    print(json.dumps(res, indent=2))
+
+def handle_sociology(args):
+    """Dispatches interstellar sociology and cultural traditions commands."""
+    import galactic_sociology_politics_engine
+    if args.action == "profile":
+        res = galactic_sociology_politics_engine.get_sociological_profile(args.world or "Helios Prime")
+    elif args.action == "interaction":
+        res = galactic_sociology_politics_engine.generate_civic_interaction(args.faction1 or "Sun-Forged Hegemony", args.faction2 or "Void-Bound Monks", args.type or "HOSPITALITY_MEETING")
+    else:
+        res = {"error": f"Unknown sociology action: {args.action}"}
+    print(json.dumps(res, indent=2))
+
+def handle_economy(args):
+    """Dispatches galactic trade economy, commodities, and currency conversion commands."""
+    import galactic_trade_economy
+    if args.action == "market":
+        res = galactic_trade_economy.get_market_prices(args.category)
+    elif args.action == "convert":
+        res = galactic_trade_economy.convert_currency(args.amount or 100.0, args.from_curr or "SOL_CREDIT", args.to_curr or "GUILD_SCRIP")
+    elif args.action == "dispatch":
+        res = galactic_trade_economy.dispatch_convoy(args.origin or "Helios Prime", args.dest or "Aethelgard Gear-City", args.cargo or "Photonic Prism Crystals", args.tonnage or 500, args.gut or 100)
+    elif args.action == "fluctuate":
+        res = galactic_trade_economy.trigger_market_fluctuation(args.commodity or "Photonic Prism Crystals", args.delta or 10.0, args.reason or "Command hub manual update")
+    elif args.action == "stockpile":
+        res = galactic_trade_economy.get_planetary_stockpile(args.world or "Helios Prime")
+    else:
+        res = {"error": f"Unknown economy action: {args.action}"}
+    print(json.dumps(res, indent=2))
+
 def handle_search(args):
     """Dispatches galactic global search."""
     res = search_universe(args.query)
@@ -412,6 +482,21 @@ def handle_search(args):
             print(f" {colorize('MATCHED STORYLINES & CHARACTERS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
             for b in res["matched_storylines"][:5]:
                 print(f"   |-- Book {b['book_id']:02d}: {colorize(b['title'], TermColor.BRIGHT_YELLOW)} | {b['hero']} ({b['faction']}) @ {b['world']}")
+        if res.get("matched_vehicles"):
+            print(sub_sep)
+            print(f" {colorize('MATCHED TRANSPORT VEHICLES & MOBILITY:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for v in res["matched_vehicles"][:3]:
+                print(f"   |-- {colorize(v.get('name', 'Vehicle'), TermColor.BRIGHT_CYAN)} [{v.get('tier_title', 'Craft')}] -> {v.get('propulsion_type')}")
+        if res.get("matched_governance"):
+            print(sub_sep)
+            print(f" {colorize('MATCHED GOVERNANCE & POLITICAL CHARTERS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for g in res["matched_governance"][:2]:
+                print(f"   |-- {colorize(g.get('name', 'Governance'), TermColor.BRIGHT_MAGENTA)} -> {g.get('legal_charter')[:55]}...")
+        if res.get("matched_commodities"):
+            print(sub_sep)
+            print(f" {colorize('MATCHED COMMODITY MARKET GOODS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for cm in res["matched_commodities"][:3]:
+                print(f"   |-- {colorize(cm.get('name', 'Good'), TermColor.BRIGHT_GREEN)} [{cm.get('current_price')} Credits/{cm.get('unit')}] -> {cm.get('description')[:45]}...")
         if res["matched_relics"]:
             print(sub_sep)
             print(f" {colorize('MATCHED MASTER RELICS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
@@ -424,6 +509,11 @@ def handle_search(args):
             print(f" {colorize('MATCHED TRANSIT MISSIONS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
             for t in res["matched_transits"][:3]:
                 print(f"   |-- Book {t.get('book_id'):02d} to {t.get('waypoint_name')} (ETA: GUT {t.get('eta_gut')})")
+        if res.get("matched_creatures"):
+            print(sub_sep)
+            print(f" {colorize('MATCHED ALIEN XENOBIOLOGY & CREATURES:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for c in res["matched_creatures"][:3]:
+                print(f"   |-- {colorize(c['species_name'], TermColor.BRIGHT_GREEN)} [{c['size_scale']}] | {c['temperament']}")
         if res["matched_inventory_items"]:
             print(sub_sep)
             print(f" {colorize('MATCHED CHARACTER INVENTORY:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
@@ -432,7 +522,7 @@ def handle_search(args):
                 itm_label = itm_obj.get("name", itm_obj.get("item", str(itm_obj))) if isinstance(itm_obj, dict) else str(itm_obj)
                 print(f"   |-- {itm.get('book')}: {itm_label}")
         if res["total_results"] == 0:
-            print(colorize("   No matching storylines, relics, or active missions found.", TermColor.DIM))
+            print(colorize("   No matching storylines, vehicles, relics, creatures, or active missions found.", TermColor.DIM))
         print(sep + "\n")
 
 def handle_quickstart(args=None):
@@ -451,11 +541,17 @@ def handle_quickstart(args=None):
     print(sub_sep)
     print(colorize(" RECOMMENDED AGENT WORKFLOWS:", TermColor.BOLD, TermColor.BRIGHT_WHITE))
     print(f"   1. {colorize('One-Shot Chapter Cycle:', TermColor.BRIGHT_CYAN)}   python .agents/hub.py author cycle")
-    print(f"   2. {colorize('Inspect Storyline Dossier:', TermColor.BRIGHT_CYAN)}  python .agents/hub.py book {active_b}")
-    print(f"   3. {colorize('Global Galactic Search:', TermColor.BRIGHT_CYAN)}    python .agents/hub.py search <term>")
-    print(f"   4. {colorize('Full System Health Check:', TermColor.BRIGHT_CYAN)}  python .agents/hub.py doctor")
-    print(f"   5. {colorize('Sanity & Regression Suite:', TermColor.BRIGHT_CYAN)} python .agents/hub.py test")
-    print(f"   6. {colorize('Document Progress (Now):', TermColor.BRIGHT_CYAN)}  python .agents/hub.py document timestamp")
+    print(f"   2. {colorize('Transport & Mobility:', TermColor.BRIGHT_CYAN)}       python .agents/hub.py transport catalog")
+    print(f"   3. {colorize('Politics & Governance:', TermColor.BRIGHT_CYAN)}      python .agents/hub.py politics governance")
+    print(f"   4. {colorize('Interstellar Sociology:', TermColor.BRIGHT_CYAN)}     python .agents/hub.py sociology profile --world \"Helios Prime\"")
+    print(f"   5. {colorize('Trade Economy & Market:', TermColor.BRIGHT_CYAN)}     python .agents/hub.py economy market")
+    print(f"   6. {colorize('Cosmos Sector Exploration:', TermColor.BRIGHT_CYAN)}  python .agents/hub.py cosmos explore --coords \"[125, -42, 88]\"")
+    print(f"   7. {colorize('Alien Creature Discovery:', TermColor.BRIGHT_CYAN)}   python .agents/hub.py cosmos creature")
+    print(f"   8. {colorize('Inspect Storyline Dossier:', TermColor.BRIGHT_CYAN)}  python .agents/hub.py book {active_b}")
+    print(f"   9. {colorize('Global Galactic Search:', TermColor.BRIGHT_CYAN)}    python .agents/hub.py search <term>")
+    print(f"  10. {colorize('Full System Health Check:', TermColor.BRIGHT_CYAN)}  python .agents/hub.py doctor")
+    print(f"  11. {colorize('Sanity & Regression Suite:', TermColor.BRIGHT_CYAN)} python .agents/hub.py test")
+    print(f"  12. {colorize('Document Progress (Now):', TermColor.BRIGHT_CYAN)}  python .agents/hub.py document timestamp")
     print(sep + "\n")
 
 def build_parser():
@@ -473,7 +569,7 @@ def build_parser():
     subparsers.add_parser("doctor", help="Execute complete system diagnostic health sweep")
 
     # 3. test
-    subparsers.add_parser("test", help="Execute complete 75+ sanity & regression test suite")
+    subparsers.add_parser("test", help="Execute complete 130+ sanity & regression test suite")
 
     # 4. quickstart
     subparsers.add_parser("quickstart", help="Display interactive quickstart guide and recommended agent actions")
@@ -484,11 +580,60 @@ def build_parser():
     p_book.add_argument("--json", action="store_true", help="Output dossier as JSON")
 
     # 6. search (Global Search)
-    p_search = subparsers.add_parser("search", help="Galactic global search across all 74 storylines, relics, transits & inventory")
+    p_search = subparsers.add_parser("search", help="Galactic global search across all 74 storylines, vehicles, politics, economy, relics, creatures & inventory")
     p_search.add_argument("query", help="Search keyword or term")
     p_search.add_argument("--json", action="store_true", help="Output results as JSON")
 
-    # 7. author
+    # 7. cosmos (Galactic Scale Generator)
+    p_cosmos = subparsers.add_parser("cosmos", help="Galactic Scale Engine commands for infinite star systems, biomes, creatures & cultures")
+    p_cosmos.add_argument("action", choices=["explore", "system", "creature", "culture", "faction"], help="Cosmos action")
+    p_cosmos.add_argument("--coords", default="[125, -42, 88]", help="3D Sector coordinates")
+    p_cosmos.add_argument("--name", help="System or entity name")
+    p_cosmos.add_argument("--biome", help="Biome ID filter")
+    p_cosmos.add_argument("--faction", help="Faction or entity name for culture")
+
+    # 8. transport (Galactic Mobility)
+    p_trans = subparsers.add_parser("transport", help="Galactic Transport & Multi-Scale Mobility Engine")
+    p_trans.add_argument("action", choices=["catalog", "info", "simulate", "faction"], help="Transport action")
+    p_trans.add_argument("--vehicle", help="Vehicle ID or name")
+    p_trans.add_argument("--dist", type=float, default=10.0, help="Distance units")
+    p_trans.add_argument("--speed", type=float, default=1.0, help="Speed multiplier")
+    p_trans.add_argument("--cargo", type=float, default=0.0, help="Cargo tonnage")
+    p_trans.add_argument("--name", help="Faction name for preference lookup")
+
+    # 9. politics (Galactic Governance & Treaties)
+    p_pol = subparsers.add_parser("politics", help="Interstellar Politics & Governance Engine")
+    p_pol.add_argument("action", choices=["list", "governance", "treaties"], help="Politics action")
+    p_pol.add_argument("--faction", help="Faction name for governance model")
+    p_pol.add_argument("--faction1", help="Primary faction for treaties")
+    p_pol.add_argument("--faction2", help="Secondary faction for treaties")
+
+    # 10. sociology (Sociological Profiles & Traditions)
+    p_soc = subparsers.add_parser("sociology", help="Interstellar Sociology & Civilizations Engine")
+    p_soc.add_argument("action", choices=["profile", "interaction"], help="Sociology action")
+    p_soc.add_argument("--world", help="World or faction name")
+    p_soc.add_argument("--faction1", help="Host faction")
+    p_soc.add_argument("--faction2", help="Guest faction")
+    p_soc.add_argument("--type", default="HOSPITALITY_MEETING", help="Interaction type")
+
+    # 11. economy (Trade Economy & Market)
+    p_eco = subparsers.add_parser("economy", help="Galactic Trade Economy & Currency Engine")
+    p_eco.add_argument("action", choices=["market", "convert", "dispatch", "fluctuate", "stockpile"], help="Economy action")
+    p_eco.add_argument("--category", help="Commodity category filter")
+    p_eco.add_argument("--amount", type=float, default=100.0, help="Currency amount to convert")
+    p_eco.add_argument("--from-curr", default="SOL_CREDIT", help="Origin currency")
+    p_eco.add_argument("--to-curr", default="GUILD_SCRIP", help="Target currency")
+    p_eco.add_argument("--origin", help="Origin world")
+    p_eco.add_argument("--dest", help="Destination world")
+    p_eco.add_argument("--cargo", help="Cargo commodity")
+    p_eco.add_argument("--tonnage", type=int, default=500, help="Cargo tonnage")
+    p_eco.add_argument("--commodity", help="Commodity for fluctuation")
+    p_eco.add_argument("--delta", type=float, help="Percentage delta for price change")
+    p_eco.add_argument("--reason", help="Reason for price change")
+    p_eco.add_argument("--world", help="World for stockpile query")
+    p_eco.add_argument("--gut", type=int, default=100, help="GUT timestamp")
+
+    # 12. author
     p_author = subparsers.add_parser("author", help="Confluence Chapter Authoring commands")
     p_author.add_argument("action", choices=[
         "cycle", "prepare", "complete", "evaluate", "polish", "storyboard", "audiobook", "compile",
@@ -515,9 +660,12 @@ def build_parser():
     p_author.add_argument("--freq", type=float, default=144.0, help="Frequency in MHz")
     p_author.add_argument("--loc", help="Location type (SURFACE, ORBITAL, DEEP_SPACE_TRANSIT, GATEWAY_SUBSPACE)")
     p_author.add_argument("--steps", type=int, default=1, help="Simulation steps")
+    p_author.add_argument("--style", help="Plot style filter for draft")
+    p_author.add_argument("--type", help="Quest type filter for quest")
+    p_author.add_argument("--save", action="store_true", help="Save directly to chapter file in 01_Books_Library")
     p_author.add_argument("--dry-run", action="store_true", help="Dry run simulation or cycle")
 
-    # 8. state
+    # 13. state
     p_state = subparsers.add_parser("state", help="Universe State Manager commands")
     p_state.add_argument("action", choices=[
         "audit", "dashboard", "ephemeris", "hazards", "tension", "trade", "mastery",
@@ -552,12 +700,12 @@ def build_parser():
     p_state.add_argument("--add-item", help="Item name to add to character inventory")
     p_state.add_argument("--desc", help="Item description for character inventory")
 
-    # 9. audit
+    # 14. audit
     p_audit = subparsers.add_parser("audit", help="World Engine Audit commands")
     p_audit.add_argument("action", choices=["test", "continuity", "paradox", "physics", "all"], help="Audit action")
     p_audit.add_argument("--file", help="Chapter markdown file path")
 
-    # 10. document
+    # 15. document
     p_doc = subparsers.add_parser("document", help="Document-Now workflow commands")
     p_doc.add_argument("action", choices=["bootstrap", "suggest", "check", "next-version", "timestamp", "register"], help="Document action")
     p_doc.add_argument("--codename", help="Proposed Ndebele codename")
@@ -569,7 +717,7 @@ def build_parser():
     p_doc.add_argument("--date-time", help="Formatted human date time for register")
     p_doc.add_argument("--file", help="Progress filename for register")
 
-    # 11. flow
+    # 16. flow
     p_flow = subparsers.add_parser("flow", help="Prompt-Response Flow journal commands")
     p_flow.add_argument("action", choices=["log", "active", "summary", "new"], help="Flow action")
     p_flow.add_argument("--prompt", help="Developer prompt text")
@@ -601,6 +749,16 @@ def main():
         handle_book(args)
     elif args.command == "search":
         handle_search(args)
+    elif args.command == "cosmos":
+        handle_cosmos(args)
+    elif args.command == "transport":
+        handle_transport(args)
+    elif args.command == "politics":
+        handle_politics(args)
+    elif args.command == "sociology":
+        handle_sociology(args)
+    elif args.command == "economy":
+        handle_economy(args)
     elif args.command == "author":
         handle_author(args)
     elif args.command == "state":

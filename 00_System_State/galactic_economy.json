@@ -1,24 +1,184 @@
 {
   "commodity_market": {
-    "Photonic Prism Crystals": {
-      "base_price_credits": 120,
-      "current_price": 125,
-      "market_trend": "HIGH_DEMAND"
+    "Solarite Ore": {
+      "base_price_credits": 85,
+      "current_price": 85,
+      "unit": "ton",
+      "category": "RAW_ORES_AND_ENERGETICS",
+      "market_trend": "STABLE",
+      "description": "Raw photonic solar crystal ore mined from sunward mesas."
     },
     "Phase-Resonant Basalt": {
       "base_price_credits": 145,
       "current_price": 140,
       "market_trend": "STABLE"
     },
+    "Cryo-Methane Ice": {
+      "base_price_credits": 60,
+      "current_price": 72,
+      "market_trend": "RISING"
+    },
+    "Silicon Plasma-Silk": {
+      "base_price_credits": 210,
+      "current_price": 210,
+      "unit": "spool",
+      "category": "RAW_ORES_AND_ENERGETICS",
+      "market_trend": "STABLE",
+      "description": "Electromagnetic mineral filaments harvested from silicon-weaver webs."
+    },
+    "Raw Bismuth-Chalcogenide": {
+      "base_price_credits": 115,
+      "current_price": 115,
+      "unit": "ton",
+      "category": "RAW_ORES_AND_ENERGETICS",
+      "market_trend": "STABLE",
+      "description": "Iridescent heavy crystal ore used in thermoelectric generators."
+    },
+    "Heavy Thorium Fuel Pebble": {
+      "base_price_credits": 320,
+      "current_price": 320,
+      "unit": "canister",
+      "category": "RAW_ORES_AND_ENERGETICS",
+      "market_trend": "STABLE",
+      "description": "Clean fission isotope pebbles for deep-space long-haul freighters."
+    },
+    "Photonic Prism Crystals": {
+      "base_price_credits": 120,
+      "current_price": 220,
+      "market_trend": "RISING"
+    },
     "High-Torque Precision Brass": {
       "base_price_credits": 95,
       "current_price": 98,
       "market_trend": "STABLE"
     },
-    "Cryo-Methane Ice": {
-      "base_price_credits": 60,
-      "current_price": 72,
-      "market_trend": "RISING"
+    "Tachyon Chrono-Cells": {
+      "base_price_credits": 450,
+      "current_price": 450,
+      "unit": "cell",
+      "category": "REFINED_TECHNOLOGY_AND_PRECISION",
+      "market_trend": "STABLE",
+      "description": "Harmonic energy cells capable of temporal phase synchronization."
+    },
+    "Superconducting Ceramic Rails": {
+      "base_price_credits": 180,
+      "current_price": 180,
+      "unit": "segment",
+      "category": "REFINED_TECHNOLOGY_AND_PRECISION",
+      "market_trend": "STABLE",
+      "description": "Zero-resistance tracks for planetary mag-levs and launch catapults."
+    },
+    "Magnetic Flux Coils": {
+      "base_price_credits": 260,
+      "current_price": 260,
+      "unit": "coil",
+      "category": "REFINED_TECHNOLOGY_AND_PRECISION",
+      "market_trend": "STABLE",
+      "description": "High-induction magnetic confinement rings for coronal plasma containment."
+    },
+    "Subspace Acoustic Pitch-Pipes": {
+      "base_price_credits": 140,
+      "current_price": 140,
+      "unit": "set",
+      "category": "REFINED_TECHNOLOGY_AND_PRECISION",
+      "market_trend": "STABLE",
+      "description": "Precision brass whistle sets used to calibrate subspace communication relays."
+    },
+    "Luminescent Sea Spores": {
+      "base_price_credits": 75,
+      "current_price": 75,
+      "unit": "barrel",
+      "category": "BIOTECH_ORGANICS_AND_AGRO",
+      "market_trend": "STABLE",
+      "description": "Phosphorescent oceanic algae providing natural, non-electric habitat lighting."
+    },
+    "Medicinal Star-Bloom Salves": {
+      "base_price_credits": 190,
+      "current_price": 190,
+      "unit": "jar",
+      "category": "BIOTECH_ORGANICS_AND_AGRO",
+      "market_trend": "STABLE",
+      "description": "Curative soothing balm extracted from high-canopy midnight orchids."
+    },
+    "Symbiotic Living Chitin": {
+      "base_price_credits": 230,
+      "current_price": 230,
+      "unit": "sheet",
+      "category": "BIOTECH_ORGANICS_AND_AGRO",
+      "market_trend": "STABLE",
+      "description": "Self-healing bio-armor plating grown in bio-alchemical nurseries."
+    },
+    "Succulent Desert Nectar": {
+      "base_price_credits": 80,
+      "current_price": 80,
+      "unit": "keg",
+      "category": "BIOTECH_ORGANICS_AND_AGRO",
+      "market_trend": "STABLE",
+      "description": "Nutrient-rich golden nectar pressed from solar-blooming succulents."
+    },
+    "Aerostat Buoyancy Gas": {
+      "base_price_credits": 90,
+      "current_price": 90,
+      "unit": "canister",
+      "category": "BIOTECH_ORGANICS_AND_AGRO",
+      "market_trend": "STABLE",
+      "description": "Lighter-than-air atmospheric gas for cloud-archipelago sky-barges."
+    },
+    "Bioluminescent Coral Plugs": {
+      "base_price_credits": 135,
+      "current_price": 135,
+      "unit": "crate",
+      "category": "BIOTECH_ORGANICS_AND_AGRO",
+      "market_trend": "STABLE",
+      "description": "Cultured coral seed colonies for undersea station oxygenation."
+    },
+    "Singing Quartz Goblets": {
+      "base_price_credits": 280,
+      "current_price": 280,
+      "unit": "pair",
+      "category": "CULTURAL_AND_LUXURY_GOODS",
+      "market_trend": "STABLE",
+      "description": "Hand-carved resonant drinking vessels that chime in harmony with wavefront crests."
+    },
+    "Solar Spice Honey Mead": {
+      "base_price_credits": 110,
+      "current_price": 110,
+      "unit": "case",
+      "category": "CULTURAL_AND_LUXURY_GOODS",
+      "market_trend": "STABLE",
+      "description": "Warm golden spiced beverage shared during solar solstice festivals."
+    },
+    "Umbral Eclipse Tapestries": {
+      "base_price_credits": 340,
+      "current_price": 340,
+      "unit": "piece",
+      "category": "CULTURAL_AND_LUXURY_GOODS",
+      "market_trend": "STABLE",
+      "description": "Intricate hand-woven basalt-silk tapestries depicting celestial alignments."
+    },
+    "Precision Astrolabe Pocket Watches": {
+      "base_price_credits": 500,
+      "current_price": 500,
+      "unit": "piece",
+      "category": "CULTURAL_AND_LUXURY_GOODS",
+      "market_trend": "STABLE",
+      "description": "Masterwork pocket chronometers tracking all 74 world rotations."
+    },
+    "Star-Bloom Perfume": {
+      "base_price_credits": 175,
+      "current_price": 175,
+      "unit": "vial",
+      "category": "CULTURAL_AND_LUXURY_GOODS",
+      "market_trend": "STABLE",
+      "description": "Delicate fragrant essence favored across diplomatic embassies."
+    },
+    "Golden Sun Votive Bells": {
+      "base_price_credits": 160,
+      "current_price": 160,
+      "unit": "trio",
+      "category": "CULTURAL_AND_LUXURY_GOODS",
+      "market_trend": "STABLE",
+      "description": "Tuned brass chimes rung during morning observatory dawn services."
     }
   },
   "active_trade_convoys": [
@@ -308,6 +468,150 @@
       "status": "EN_ROUTE",
       "departure_gut": 100,
       "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-25",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-26",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-27",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-28",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-29",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-30",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-31",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-32",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-33",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-34",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-35",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-36",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
       "progress_percent": 0.0
     }
   ],

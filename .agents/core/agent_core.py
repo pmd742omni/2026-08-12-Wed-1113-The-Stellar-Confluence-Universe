@@ -336,7 +336,7 @@ def format_book_dossier_terminal(book_id: int) -> str:
     return "\n".join(lines)
 
 def search_universe(query: str) -> Dict[str, Any]:
-    """Performs a global search across all 74 storylines, characters, factions, worlds, relics, and items."""
+    """Performs a global search across all 74 storylines, characters, factions, worlds, relics, items, creatures, and biomes."""
     q = query.lower().strip()
     chars = get_all_characters()
     
@@ -384,13 +384,67 @@ def search_universe(query: str) -> Dict[str, Any]:
                 if q in itm_name.lower():
                     matched_items.append({"book": b_key, "item": itm})
 
+    # Search Xenobiology Creatures & Biomes
+    matched_creatures = []
+    try:
+        import galactic_scale_generator
+        for c in galactic_scale_generator.ALIEN_CREATURE_CATALOG:
+            if (q in c["species_name"].lower() or 
+                q in c["biome_niche"].lower() or 
+                q in c["sensory_capability"].lower() or
+                q in c["temperament"].lower()):
+                matched_creatures.append(c)
+    except Exception:
+        pass
+
+    # Search Galactic Transport Vehicles
+    matched_vehicles = []
+    try:
+        import galactic_transport_engine
+        for v in galactic_transport_engine.get_all_vehicles():
+            if (q in v.get("vehicle_id", "").lower() or
+                q in v.get("name", "").lower() or
+                q in v.get("propulsion_type", "").lower() or
+                q in v.get("cockpit_vibe", "").lower()):
+                matched_vehicles.append(v)
+    except Exception:
+        pass
+
+    # Search Governance Models & Politics
+    matched_governance = []
+    try:
+        import galactic_sociology_politics_engine
+        for g in galactic_sociology_politics_engine.GOVERNANCE_ARCHETYPES:
+            if (q in g.get("model_id", "").lower() or
+                q in g.get("name", "").lower() or
+                q in g.get("legal_charter", "").lower() or
+                q in g.get("leadership_structure", "").lower()):
+                matched_governance.append(g)
+    except Exception:
+        pass
+
+    # Search Commodities
+    matched_commodities = []
+    try:
+        import galactic_trade_economy
+        eco_m = galactic_trade_economy.get_market_prices().get("market", {})
+        for comm_name, comm_data in eco_m.items():
+            if q in comm_name.lower() or q in comm_data.get("description", "").lower() or q in comm_data.get("category", "").lower():
+                matched_commodities.append({"name": comm_name, **comm_data})
+    except Exception:
+        pass
+
     return {
         "query": query,
-        "total_results": len(matched_books) + len(matched_relics) + len(matched_transits) + len(matched_items),
+        "total_results": len(matched_books) + len(matched_relics) + len(matched_transits) + len(matched_items) + len(matched_creatures) + len(matched_vehicles) + len(matched_governance) + len(matched_commodities),
         "matched_storylines": matched_books,
         "matched_relics": matched_relics,
         "matched_transits": matched_transits,
-        "matched_inventory_items": matched_items
+        "matched_inventory_items": matched_items,
+        "matched_creatures": matched_creatures,
+        "matched_vehicles": matched_vehicles,
+        "matched_governance": matched_governance,
+        "matched_commodities": matched_commodities
     }
 
 # Ensure standard output uses UTF-8 if available
@@ -486,7 +540,7 @@ def generate_terminal_overview() -> str:
 
     lines.extend([
         sep,
-        f" {colorize('Hub Quick Commands:', TermColor.DIM)} 'hub.py author prepare' | 'hub.py test' | 'hub.py doctor'",
+        f" {colorize('Hub Quick Commands:', TermColor.DIM)} 'hub.py author prepare' | 'hub.py cosmos explore' | 'hub.py doctor'",
         sep,
         ""
     ])

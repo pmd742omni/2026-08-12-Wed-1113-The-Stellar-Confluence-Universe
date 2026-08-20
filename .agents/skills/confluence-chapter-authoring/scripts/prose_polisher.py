@@ -2,7 +2,7 @@
 """
 Autonomous Chapter Prose Polisher & Tone Stylist for The Stellar Confluence Universe
 Enhances sensory imagery, tunes read-aloud sentence cadence (targeting Grade 4-6 readability),
-and sharpens character dialogue in the spirit of Studio Ghibli, Avatar: TLA, and Ender's Game.
+and sharpens character dialogue across all 44+ faction cultures and alien creature encounters.
 """
 
 import os
@@ -55,6 +55,48 @@ FACTION_SENSORY_ENHANCERS = {
         r"\barmor\b": "photosynthetic chitin carapace",
         r"\bgrow\b": "rapid photosynthetic bloom",
         r"\bforest\b": "glowing symbiotic canopy"
+    },
+    "Crystal-Singers": {
+        r"\bcrystal\b": "resonant quartz crystal",
+        r"\bsound\b": "harmonic singing chime",
+        r"\bstone\b": "piezoelectric prism rock",
+        r"\bring\b": "pure acoustic resonance"
+    },
+    "Tide-Wardens": {
+        r"\bwater\b": "deep bioluminescent ocean swell",
+        r"\bwave\b": "surging hydro-kinetic current",
+        r"\bdepth\b": "abyssal oceanic depths",
+        r"\bhelm\b": "pressure-forged diving shell"
+    },
+    "Magnetar-Leapers": {
+        r"\bspark\b": "crackling magnetic arc",
+        r"\bleap\b": "electromagnetic polarity leap",
+        r"\bpower\b": "surging high-flux voltage",
+        r"\bboots\b": "polarized magnetic boots"
+    },
+    "Nebula-Weavers": {
+        r"\bthread\b": "plasma silk filament",
+        r"\bnet\b": "interwoven magnetic web",
+        r"\bglow\b": "iridescent phosphor mist",
+        r"\bweave\b": "precision loom weave"
+    },
+    "Gravity-Surfers": {
+        r"\bwave\b": "graviton well wave",
+        r"\bsurf\b": "relativistic orbit dive",
+        r"\bcurve\b": "smooth singularity curve",
+        r"\bsail\b": "inertial dampener sail"
+    },
+    "Plasma-Shepherds": {
+        r"\bflame\b": "roaring coronal plasma flock",
+        r"\btool\b": "magnetic lasso crook",
+        r"\bflare\b": "superheated solar flare loop",
+        r"\bshield\b": "electromagnetic containment cage"
+    },
+    "Chrono-Navigators": {
+        r"\btime\b": "temporal tachyon interval",
+        r"\bclock\b": "precision probability chronometer",
+        r"\bpath\b": "optimal navigational vector",
+        r"\bwatch\b": "calculate temporal cadence"
     }
 }
 
@@ -126,11 +168,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Autonomous Prose Polisher & Tone Stylist")
     parser.add_argument("--file", help="Path to markdown chapter file")
     parser.add_argument("--save", action="store_true", help="Overwrite file with polished prose")
+    parser.add_argument("--faction", default="Sun-Forged", help="Faction sensory palette")
 
     args = parser.parse_args()
     if args.file:
         res = polish_chapter_file(args.file, save=args.save)
     else:
         sample = """Caelum looked at the sun. He felt hot metal under his hands. The machine started to make a humming noise."""
-        res = polish_prose_text(sample)
+        res = polish_prose_text(sample, faction=args.faction)
     print(json.dumps(res, indent=2))

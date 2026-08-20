@@ -209,6 +209,70 @@
       {
         "name": "Photonic Calibration Chisel",
         "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
+      },
+      {
+        "name": "Photonic Prism Lens",
+        "description": "Focuses solar beam"
+      },
+      {
+        "name": "Photonic Calibration Chisel",
+        "description": "Precision tuning tool"
       }
     ],
     "condition": "PEAK_HEALTH",

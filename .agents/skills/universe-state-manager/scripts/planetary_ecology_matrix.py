@@ -3,12 +3,22 @@
 74-World Planetary Ecology, Astrophysics & Resource Dependency Matrix
 Catalogs gravity levels (g), atmospheric compositions, diurnal cycle lengths (GUT),
 ecological biomes, key resource exports, and trade vulnerabilities across all 74 homeworlds.
+Deeply integrated with galactic_scale_generator.py for boundless planetary discovery.
 """
 
 import os
 import sys
 import json
 import argparse
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
+
+try:
+    import galactic_scale_generator
+except ImportError:
+    galactic_scale_generator = None
 
 PLANETARY_CATALOG = {
     "Helios Prime": {
@@ -170,6 +180,38 @@ PLANETARY_CATALOG = {
         "key_exports": ["Medicinal Spore Salves", "Photosynthetic Chitin Armor", "Living Seed Pods"],
         "critical_vulnerabilities": ["Dehydration during high Zenith heatwaves", "Parasitic blight outbreaks"],
         "trade_synergies": ["Exports healing balms and oxygen canisters", "Imports focusing prism lenses from Helios Prime"]
+    },
+    "Crystal-Ridge Shallows": {
+        "world_name": "Crystal-Ridge Shallows",
+        "primary_faction": "Crystal-Singers",
+        "astrophysics": {
+            "stellar_type": "Luminous A-Type Star",
+            "surface_gravity_g": 0.92,
+            "atmospheric_pressure_atm": 1.02,
+            "atmosphere_mix": "78% N2, 21% O2, 1% Crystalline Dust",
+            "diurnal_cycle_gut": 16,
+            "axial_tilt_deg": 6.0
+        },
+        "biome": "Resonant Quartz Spires, Singing Crystal Cliffs, Reflective Sound-Basins",
+        "key_exports": ["Harmonic Resonator Crystals", "Acoustic Dampening Gel", "Piezoelectric Prism Nodes"],
+        "critical_vulnerabilities": ["Shattering harmonic feedback during supercharged wavefront surges"],
+        "trade_synergies": ["Exports acoustic tuning prisms to Astrolabes", "Imports brass mounts from Aethelgard"]
+    },
+    "Abyssal Beacon Station": {
+        "world_name": "Abyssal Beacon Station",
+        "primary_faction": "Tide-Wardens",
+        "astrophysics": {
+            "stellar_type": "Deep Ocean World with Hydrothermal Vents",
+            "surface_gravity_g": 1.08,
+            "atmospheric_pressure_atm": 1.25,
+            "atmosphere_mix": "75% N2, 23% O2, 2% Saline Aerosol",
+            "diurnal_cycle_gut": 30,
+            "axial_tilt_deg": 12.0
+        },
+        "biome": "Bioluminescent Abyssal Coral Reefs, Floating Beacon Platforms, Hydro-Thermal Geysers",
+        "key_exports": ["Hydro-Kinetic Cells", "Sub-Surface Navigation Beacons", "Pressure-Forged Shell Armor"],
+        "critical_vulnerabilities": ["Tidal storm surges during planetary conjunctions"],
+        "trade_synergies": ["Exports deep-sea navigation charts", "Imports photonic beacons from Sun-Forged Hegemony"]
     }
 }
 
@@ -185,12 +227,36 @@ PROCEDURAL_BIOME_ARCHETYPES = [
 def get_planetary_profile(world_or_book_id):
     query_str = str(world_or_book_id).strip()
     
-    # Check by exact/partial world name
+    # 1. Check by exact/partial world name in catalog
     for k, v in PLANETARY_CATALOG.items():
         if query_str.lower() in k.lower() or k.lower() in query_str.lower():
             return v
 
-    # Procedural generation for remaining worlds
+    # 2. Use Galactic Scale Generator if coordinates or arbitrary world name
+    if galactic_scale_generator:
+        coords = query_str if ("[" in query_str and "]" in query_str) else f"[{abs(hash(query_str)) % 100}, {abs(hash(query_str)) % 50}, 0]"
+        sys_gen = galactic_scale_generator.generate_star_system(coords, query_str)
+        if sys_gen and sys_gen.get("planets"):
+            p = sys_gen["planets"][0]
+            return {
+                "world_name": query_str,
+                "primary_faction": "Sector Exploration Faction",
+                "astrophysics": {
+                    "stellar_type": sys_gen["stellar_classification"],
+                    "surface_gravity_g": p["surface_gravity_g"],
+                    "atmospheric_pressure_atm": 1.0,
+                    "atmosphere_mix": p["atmospheric_mix"],
+                    "diurnal_cycle_gut": p["diurnal_cycle_gut"],
+                    "axial_tilt_deg": p["axial_tilt_deg"]
+                },
+                "biome": p["biome_title"] + ": " + p["terrain_summary"],
+                "key_exports": p["key_exports"],
+                "critical_vulnerabilities": ["Confluence Wavefront tidal oscillations"],
+                "trade_synergies": ["Linked to regional Gateway Transit routes"],
+                "indigenous_creature": p.get("indigenous_creature")
+            }
+
+    # 3. Procedural Fallback
     try:
         book_num = int(query_str)
     except ValueError:
