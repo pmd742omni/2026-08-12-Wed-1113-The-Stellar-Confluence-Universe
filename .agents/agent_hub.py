@@ -103,10 +103,18 @@ def handle_cosmos(args):
     import galactic_scale_generator
     if args.action in ["explore", "system"]:
         res = galactic_scale_generator.generate_star_system(args.coords or "[0, 0, 0]", args.name)
+    elif args.action == "system-full":
+        res = galactic_scale_generator.generate_full_planetary_system(args.coords or "[0, 0, 0]", args.name)
     elif args.action == "creature":
         res = galactic_scale_generator.generate_creature_encounter(args.biome, args.name or "wild")
     elif args.action == "culture":
         res = galactic_scale_generator.generate_cultural_profile(args.faction or args.name or "Universal")
+    elif args.action == "anomaly":
+        res = galactic_scale_generator.generate_cosmic_anomaly(args.coords or "[0, 0, 0]", args.name)
+    elif args.action == "ecosystem":
+        res = galactic_scale_generator.generate_xenobiology_ecosystem(args.biome, args.name or "eco")
+    elif args.action == "enclave":
+        res = galactic_scale_generator.generate_subfaction_enclave(args.faction or "Sun-Forged Hegemony", args.name or "enclave")
     else:
         res = {"error": f"Unknown cosmos action: {args.action}"}
     print(json.dumps(res, indent=2))
@@ -204,6 +212,10 @@ def handle_author(args):
     elif args.action == "draft":
         import story_generator
         res = story_generator.generate_full_chapter_prose(args.book_id or 1, args.chapter or 1, save=args.save if hasattr(args, "save") else False, plot_style=getattr(args, "style", None))
+        print(json.dumps(res, indent=2))
+    elif args.action == "dual-layer":
+        import story_generator
+        res = story_generator.generate_dual_layer_annotated_chapter(args.book_id or 1, args.chapter or 1, plot_style=getattr(args, "style", None))
         print(json.dumps(res, indent=2))
     elif args.action == "quest":
         import galactic_adventure_engine
@@ -421,6 +433,14 @@ def handle_transport(args):
         res = galactic_transport_engine.calculate_transit_kinetics(args.vehicle, args.dist or 10.0, args.speed or 1.0, args.cargo or 0.0)
     elif args.action == "faction":
         res = galactic_transport_engine.get_faction_vehicle_preference(args.name or "Sun-Forged Hegemony")
+    elif args.action == "trip":
+        res = galactic_transport_engine.simulate_multiscale_journey(
+            origin_coords=args.coords or "[10, 5, 0]",
+            dest_coords=getattr(args, "dest_coords", "[-12, 4, 2]") or "[-12, 4, 2]",
+            origin_world=args.origin or "Helios Prime",
+            dest_world=args.dest or "Aethelgard Gear-City",
+            pilot_name=getattr(args, "pilot", "Caelum") or "Caelum"
+        )
     else:
         res = {"error": f"Unknown transport action: {args.action}"}
     print(json.dumps(res, indent=2))
@@ -434,6 +454,12 @@ def handle_politics(args):
         res = galactic_sociology_politics_engine.get_governance_model(args.faction or "Sun-Forged Hegemony")
     elif args.action == "treaties":
         res = galactic_sociology_politics_engine.get_diplomatic_treaties(args.faction1 or "Sun-Forged Hegemony", args.faction2 or "Astrolabe Engineers")
+    elif args.action == "summit":
+        res = galactic_sociology_politics_engine.simulate_diplomatic_summit(
+            args.faction1 or "Sun-Forged Hegemony",
+            args.faction2 or "Void-Bound Monks",
+            args.topic or "Shared Stargate Corridors & Navigational Beacons"
+        )
     else:
         res = {"error": f"Unknown politics action: {args.action}"}
     print(json.dumps(res, indent=2))
@@ -462,6 +488,8 @@ def handle_economy(args):
         res = galactic_trade_economy.trigger_market_fluctuation(args.commodity or "Photonic Prism Crystals", args.delta or 10.0, args.reason or "Command hub manual update")
     elif args.action == "stockpile":
         res = galactic_trade_economy.get_planetary_stockpile(args.world or "Helios Prime")
+    elif args.action == "route":
+        res = galactic_trade_economy.analyze_trade_route(args.origin or "Helios Prime", args.dest or "Aethelgard Gear-City", args.cargo or "Photonic Prism Crystals", args.tonnage or 500)
     else:
         res = {"error": f"Unknown economy action: {args.action}"}
     print(json.dumps(res, indent=2))
@@ -497,6 +525,16 @@ def handle_search(args):
             print(f" {colorize('MATCHED COMMODITY MARKET GOODS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
             for cm in res["matched_commodities"][:3]:
                 print(f"   |-- {colorize(cm.get('name', 'Good'), TermColor.BRIGHT_GREEN)} [{cm.get('current_price')} Credits/{cm.get('unit')}] -> {cm.get('description')[:45]}...")
+        if res.get("matched_anomalies"):
+            print(sub_sep)
+            print(f" {colorize('MATCHED COSMIC ANOMALIES & WONDERS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for an in res["matched_anomalies"][:3]:
+                print(f"   |-- {colorize(an.get('name', 'Anomaly'), TermColor.BRIGHT_CYAN)} [{an.get('anomaly_id')}] -> {an.get('scientific_basis')[:45]}...")
+        if res.get("matched_culinary"):
+            print(sub_sep)
+            print(f" {colorize('MATCHED CULINARY TRADITIONS & CIVICS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
+            for cul in res["matched_culinary"][:3]:
+                print(f"   |-- {colorize(cul.get('name', 'Cuisine'), TermColor.BRIGHT_YELLOW)} [{cul.get('culture_group')}] -> {cul.get('description')[:45]}...")
         if res["matched_relics"]:
             print(sub_sep)
             print(f" {colorize('MATCHED MASTER RELICS:', TermColor.BOLD, TermColor.BRIGHT_WHITE)}")
@@ -586,7 +624,7 @@ def build_parser():
 
     # 7. cosmos (Galactic Scale Generator)
     p_cosmos = subparsers.add_parser("cosmos", help="Galactic Scale Engine commands for infinite star systems, biomes, creatures & cultures")
-    p_cosmos.add_argument("action", choices=["explore", "system", "creature", "culture", "faction"], help="Cosmos action")
+    p_cosmos.add_argument("action", choices=["explore", "system", "system-full", "creature", "culture", "anomaly", "ecosystem", "enclave"], help="Cosmos action")
     p_cosmos.add_argument("--coords", default="[125, -42, 88]", help="3D Sector coordinates")
     p_cosmos.add_argument("--name", help="System or entity name")
     p_cosmos.add_argument("--biome", help="Biome ID filter")
@@ -594,19 +632,25 @@ def build_parser():
 
     # 8. transport (Galactic Mobility)
     p_trans = subparsers.add_parser("transport", help="Galactic Transport & Multi-Scale Mobility Engine")
-    p_trans.add_argument("action", choices=["catalog", "info", "simulate", "faction"], help="Transport action")
+    p_trans.add_argument("action", choices=["catalog", "info", "simulate", "faction", "trip"], help="Transport action")
     p_trans.add_argument("--vehicle", help="Vehicle ID or name")
     p_trans.add_argument("--dist", type=float, default=10.0, help="Distance units")
     p_trans.add_argument("--speed", type=float, default=1.0, help="Speed multiplier")
     p_trans.add_argument("--cargo", type=float, default=0.0, help="Cargo tonnage")
     p_trans.add_argument("--name", help="Faction name for preference lookup")
+    p_trans.add_argument("--origin", help="Origin world name")
+    p_trans.add_argument("--dest", help="Destination world name")
+    p_trans.add_argument("--coords", default="[10, 5, 0]", help="Origin coordinates")
+    p_trans.add_argument("--dest-coords", default="[-12, 4, 2]", help="Destination coordinates")
+    p_trans.add_argument("--pilot", default="Caelum", help="Pilot name")
 
     # 9. politics (Galactic Governance & Treaties)
     p_pol = subparsers.add_parser("politics", help="Interstellar Politics & Governance Engine")
-    p_pol.add_argument("action", choices=["list", "governance", "treaties"], help="Politics action")
+    p_pol.add_argument("action", choices=["list", "governance", "treaties", "summit"], help="Politics action")
     p_pol.add_argument("--faction", help="Faction name for governance model")
-    p_pol.add_argument("--faction1", help="Primary faction for treaties")
-    p_pol.add_argument("--faction2", help="Secondary faction for treaties")
+    p_pol.add_argument("--faction1", help="Primary faction for treaties or summit")
+    p_pol.add_argument("--faction2", help="Secondary faction for treaties or summit")
+    p_pol.add_argument("--topic", help="Summit agenda topic")
 
     # 10. sociology (Sociological Profiles & Traditions)
     p_soc = subparsers.add_parser("sociology", help="Interstellar Sociology & Civilizations Engine")
@@ -618,7 +662,7 @@ def build_parser():
 
     # 11. economy (Trade Economy & Market)
     p_eco = subparsers.add_parser("economy", help="Galactic Trade Economy & Currency Engine")
-    p_eco.add_argument("action", choices=["market", "convert", "dispatch", "fluctuate", "stockpile"], help="Economy action")
+    p_eco.add_argument("action", choices=["market", "convert", "dispatch", "fluctuate", "stockpile", "route"], help="Economy action")
     p_eco.add_argument("--category", help="Commodity category filter")
     p_eco.add_argument("--amount", type=float, default=100.0, help="Currency amount to convert")
     p_eco.add_argument("--from-curr", default="SOL_CREDIT", help="Origin currency")
@@ -638,7 +682,7 @@ def build_parser():
     p_author.add_argument("action", choices=[
         "cycle", "prepare", "complete", "evaluate", "polish", "storyboard", "audiobook", "compile",
         "simulate", "resonance", "voice", "encounter", "physics", "faction", "diplomacy",
-        "relic", "soundscape", "draft", "quest"
+        "relic", "soundscape", "draft", "dual-layer", "quest"
     ], help="Authoring action")
     p_author.add_argument("--synopsis", help="Chapter synopsis for 'complete' or 'cycle'")
     p_author.add_argument("--gut-delta", type=int, default=1, help="GUT delta for 'complete' or 'cycle'")

@@ -434,9 +434,29 @@ def search_universe(query: str) -> Dict[str, Any]:
     except Exception:
         pass
 
+    # Search Cosmic Anomalies
+    matched_anomalies = []
+    try:
+        import galactic_scale_generator
+        for a in getattr(galactic_scale_generator, "COSMIC_ANOMALIES_CATALOG", []):
+            if q in a.get("name", "").lower() or q in a.get("anomaly_id", "").lower() or q in a.get("scientific_basis", "").lower():
+                matched_anomalies.append(a)
+    except Exception:
+        pass
+
+    # Search Culinary Traditions
+    matched_culinary = []
+    try:
+        import galactic_sociology_politics_engine
+        for c in galactic_sociology_politics_engine.SOCIOLOGICAL_SYSTEMS.get("culinary_traditions", []):
+            if q in c.get("name", "").lower() or q in c.get("description", "").lower():
+                matched_culinary.append(c)
+    except Exception:
+        pass
+
     return {
         "query": query,
-        "total_results": len(matched_books) + len(matched_relics) + len(matched_transits) + len(matched_items) + len(matched_creatures) + len(matched_vehicles) + len(matched_governance) + len(matched_commodities),
+        "total_results": len(matched_books) + len(matched_relics) + len(matched_transits) + len(matched_items) + len(matched_creatures) + len(matched_vehicles) + len(matched_governance) + len(matched_commodities) + len(matched_anomalies) + len(matched_culinary),
         "matched_storylines": matched_books,
         "matched_relics": matched_relics,
         "matched_transits": matched_transits,
@@ -444,7 +464,9 @@ def search_universe(query: str) -> Dict[str, Any]:
         "matched_creatures": matched_creatures,
         "matched_vehicles": matched_vehicles,
         "matched_governance": matched_governance,
-        "matched_commodities": matched_commodities
+        "matched_commodities": matched_commodities,
+        "matched_anomalies": matched_anomalies,
+        "matched_culinary": matched_culinary
     }
 
 # Ensure standard output uses UTF-8 if available

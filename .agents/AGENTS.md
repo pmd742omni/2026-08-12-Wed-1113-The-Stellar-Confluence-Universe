@@ -92,25 +92,31 @@ python .agents/hub.py quickstart
 # 2. Transport & Multi-Scale Mobility
 python .agents/hub.py transport catalog
 python .agents/hub.py transport simulate --vehicle "SOLAR_SAIL_CUTTER" --dist 15.0
+python .agents/hub.py transport trip --origin "Helios Prime" --dest "Aethelgard Gear-City"
 
 # 3. Interstellar Politics, Governance & Sociology
 python .agents/hub.py politics governance --faction "Sun-Forged Hegemony"
+python .agents/hub.py politics summit --faction1 "Sun-Forged Hegemony" --faction2 "Void-Bound Monks"
 python .agents/hub.py sociology profile --world "Helios Prime"
 
 # 4. Galactic Trade Economy, Markets & Currencies
 python .agents/hub.py economy market
+python .agents/hub.py economy route --origin "Helios Prime" --dest "Aethelgard Gear-City" --cargo "Photonic Prism Crystals"
 python .agents/hub.py economy convert --amount 100 --from-curr SOL_CREDIT --to-curr GUILD_SCRIP
 
 # 5. Procedural Cosmos & Sector Exploration
 python .agents/hub.py cosmos explore --coords "[125, -42, 88]"
+python .agents/hub.py cosmos anomaly --coords "[125, -42, 88]"
+python .agents/hub.py cosmos system-full --coords "[15, -8, 42]" --name "Solaria Tertius"
 python .agents/hub.py cosmos creature --biome "CRYSTAL_SPIRE_FOREST"
 
 # 6. Inspect individual 360-degree storyline dossier or global search
 python .agents/hub.py book 1
-python .agents/hub.py search "Skimmer"
+python .agents/hub.py search "Tea"
 
-# 7. One-Shot Authoring Cycle (prepare -> draft -> evaluate -> polish -> complete)
+# 7. One-Shot Authoring Cycle & Dual-Layer Companion Generation
 python .agents/hub.py author cycle --book-id 1
+python .agents/hub.py author dual-layer --book-id 1 --chapter 1
 
 # Or Step-by-Step Manual Authoring & 25+ Adventure Quests:
 python .agents/hub.py author quest --book-id 1
@@ -118,7 +124,7 @@ python .agents/hub.py author draft --book-id 1 --chapter 1 --style EXPLORATION_D
 python .agents/hub.py author evaluate --file "01_Books_Library/Book_01_The_Solar_Crucible/Book_01_Chapter_01.md"
 python .agents/hub.py author complete --synopsis "<1-2 sentence summary>" --gut-delta 1
 
-# 8. Run comprehensive system doctor & 131+ test sanity suite
+# 8. Run comprehensive system doctor & 151+ test sanity suite
 python .agents/hub.py test
 python .agents/hub.py doctor
 ```
@@ -158,9 +164,9 @@ The Stellar Confluence Universe/
     │   ├── agent_core.py          <-- Centralized shared foundation: paths, safe IO, ANSI styling, terminal dossiers, global search
     │   └── __init__.py
     └── skills/
-        ├── confluence-chapter-authoring/ (19 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics, quest)
+        ├── confluence-chapter-authoring/ (19 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics, quest, dual-layer)
         ├── universe-state-manager/       (21 scripts: transport engine, politics & sociology, scale generator, ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
-        ├── world-engine-audit/           (4 scripts: 131+ test regression suite, continuity, paradox, physics, doctor)
+        ├── world-engine-audit/           (4 scripts: 151+ test regression suite, continuity, paradox, physics, doctor)
         ├── document-now/                 (2 scripts: version registry & 100+ Ndebele lexicon)
         └── prompt-response-flow/         (1 script: interaction journal logging)
 ```
@@ -183,10 +189,10 @@ Whenever the developer states **"document now"**, **"document progress"**, or re
 
 Whenever testing system health or before major release commits:
 ```bash
-# Instant in-process regression suite (131+ sanity checks in ~1s)
+# Instant in-process regression suite (151+ sanity checks in ~1.5s)
 python .agents/hub.py test
 
 # Full system diagnostic sweep (State + Physics + Paradoxes + Tests)
 python .agents/hub.py doctor
 ```
-*(Runs **131+ automated sanity checks** across all skills with 100% PASS verification)*
+*(Runs **151+ automated sanity checks** across all skills with 100% PASS verification)*

@@ -44,7 +44,7 @@
     },
     "Photonic Prism Crystals": {
       "base_price_credits": 120,
-      "current_price": 220,
+      "current_price": 385,
       "market_trend": "RISING"
     },
     "High-Torque Precision Brass": {
@@ -604,6 +604,102 @@
     },
     {
       "convoy_id": "CONVOY-36",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-37",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-38",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-39",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-40",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-41",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-42",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Umbra Chasm",
+      "cargo": "Solarite Ore",
+      "tonnage": 1200,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 108,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-43",
+      "fleet_name": "Helios Prime Commercial Convoy",
+      "origin_world": "Helios Prime",
+      "dest_world": "Aethelgard Gear-City",
+      "cargo": "Photonic Prism Crystals",
+      "tonnage": 400,
+      "status": "EN_ROUTE",
+      "departure_gut": 100,
+      "eta_gut": 106,
+      "progress_percent": 0.0
+    },
+    {
+      "convoy_id": "CONVOY-44",
       "fleet_name": "Helios Prime Commercial Convoy",
       "origin_world": "Helios Prime",
       "dest_world": "Umbra Chasm",

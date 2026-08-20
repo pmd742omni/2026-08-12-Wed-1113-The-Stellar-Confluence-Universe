@@ -182,6 +182,18 @@ def evaluate_prose(text, expected_constraint=None):
     if synonym_suggestions:
         recommendations.append(f"Consider simplifying {len(synonym_suggestions)} complex word(s) using Grade 4-6 alternatives.")
 
+    # Dual-Audience Scoring:
+    # 1. Child accessibility score (0-100)
+    fkgl_score = max(0, 100 - abs(fkgl - 5.2) * 25)
+    cadence_score = 95.0 if 3.0 <= audio_cadence.get("sentence_length_std_dev", 0.0) <= 7.0 else 70.0
+    child_accessibility_score = round((fkgl_score * 0.6) + (cadence_score * 0.4), 1)
+
+    # 2. Intellectual & Scientific Realism score (0-100)
+    realism_penalties = len(jargon_found) * 20
+    intellectual_rigor_score = max(50.0, min(100.0, 95.0 - realism_penalties))
+
+    dual_audience_score = round((child_accessibility_score * 0.55) + (intellectual_rigor_score * 0.45), 1)
+
     return {
         "status": "PASS" if is_grade_appropriate and not jargon_found else "WARNING",
         "total_words": total_words,
@@ -190,6 +202,9 @@ def evaluate_prose(text, expected_constraint=None):
         "flesch_reading_ease": fre,
         "flesch_kincaid_grade_level": fkgl,
         "target_age_group": "Ages 9-12 (Target Met)" if is_grade_appropriate else "Out of Target",
+        "dual_audience_score": f"{dual_audience_score} / 100 (Grade 4-6 Accessibility + Scientific Rigor)",
+        "child_accessibility_score": f"{child_accessibility_score} / 100",
+        "intellectual_rigor_score": f"{intellectual_rigor_score} / 100",
         "dialogue_percentage": f"{dialogue_pct}%",
         "sensory_word_density": f"{sensory_density}%",
         "audio_cadence": audio_cadence,

@@ -247,13 +247,76 @@ Across the vast reaches of the galaxy, the next storyline in the grand rotation 
         "prose_preview": full_prose[:400] + "..."
     }
 
+def generate_dual_layer_annotated_chapter(book_id: int, chapter_num: int = 1, plot_style: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Generates a dual-layer story artifact:
+    - Layer 1: Sensory-rich, warm, non-violent story accessible to a 10-year-old child (Grade 4-6).
+    - Layer 2: Deep intellectual companion breakdown explaining the astrophysics, propulsion kinetics,
+      macroeconomics, and civic philosophy for smart readers and students.
+    """
+    draft = generate_full_chapter_prose(book_id, chapter_num, save=False, plot_style=plot_style)
+    if "error" in draft:
+        return draft
+
+    char_info = chapter_engine.get_character_info(book_id)
+    clock_info = chapter_engine.get_clockwork_state(book_id)
+    facing_angle = clock_info["facing_angle"] if clock_info else 15.0
+    loc_type = clock_info["loc_type"] if clock_info else char_info["loc_type"]
+    sector = clock_info["sector"] if clock_info else char_info["sector"]
+
+    planet = planetary_ecology_matrix.get_planetary_profile(draft["world"])
+    res = calculate_resonance(facing_angle, draft["faction"], loc_type)
+    wave_state = calculate_wavefront_state(sector, clock_info["gut"] if clock_info else 100)
+
+    # Transport profile
+    v_profile = None
+    if galactic_transport_engine:
+        v_profile = galactic_transport_engine.get_vehicle_profile(draft["vehicle_deployed"])
+
+    # Sociological profile
+    soc_profile = None
+    if galactic_sociology_politics_engine:
+        soc_profile = galactic_sociology_politics_engine.get_sociological_profile(draft["faction"])
+
+    companion_breakdown = {
+        "layer_1_child_wonder_summary": f"In this chapter, {draft['hero']} demonstrates courage, steady focus, and kindness by solving an emergency alongside {draft['creature_encounter']} and their mentor {draft['mentor']}.",
+        "layer_2_astrophysics_and_kinetics": {
+            "stellar_and_planetary_physics": f"World {draft['world']} operates with {planet.get('astrophysics', {}).get('surface_gravity_g', 1.0)}g surface gravity and a {planet.get('astrophysics', {}).get('diurnal_cycle_gut', 24)} GUT day-night cycle under a {planet.get('astrophysics', {}).get('stellar_type', 'G-type')} star.",
+            "confluence_wavefront_mechanics": f"Facing angle of {facing_angle:.1f}° places the hero in {res['resonance_state']} with a wavefront intensity factor of {wave_state['wave_intensity_factor']}.",
+            "propulsion_physics": v_profile.get("intuitive_explanation", "Photonic and kinetic momentum.") if v_profile else "Kinetic propulsion."
+        },
+        "layer_3_macroeconomics_and_trade": {
+            "export_surplus": planet.get("key_exports", ["Solarite Ore", "Precision Tech"]),
+            "market_role": f"{draft['world']} acts as a primary supply hub, connecting to interstellar trade lanes via commercial convoys."
+        },
+        "layer_4_civics_and_philosophy": {
+            "governance_model": soc_profile.get("governance_model", "Artificer Council") if soc_profile else "Regional Council",
+            "hospitality_and_ethics": soc_profile.get("hospitality_ritual", {}).get("name", "Welcoming tea and peaceful fellowship") if soc_profile else "Hospitality greeting"
+        }
+    }
+
+    return {
+        "status": "DUAL_LAYER_CHAPTER_GENERATED",
+        "book_id": book_id,
+        "chapter_num": chapter_num,
+        "hero": draft["hero"],
+        "title": draft["title"],
+        "story_prose_layer_1": draft["chapter_prose"],
+        "intellectual_companion_layer_2": companion_breakdown
+    }
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Autonomous Multi-Faction Chapter Story Generator")
     parser.add_argument("--book-id", type=int, default=1, help="Book ID (1-74)")
     parser.add_argument("--chapter", type=int, default=1, help="Chapter number")
     parser.add_argument("--save", action="store_true", help="Save chapter markdown to library")
     parser.add_argument("--style", help="Plot style: EXPLORATION_DISCOVERY, HIGH_STAKES_RESCUE, CREATURE_ALLIANCE, ENGINEERING_EMERGENCY")
+    parser.add_argument("--dual-layer", action="store_true", help="Generate dual-layer story and educational companion breakdown")
 
     args = parser.parse_args()
-    res = generate_full_chapter_prose(args.book_id, args.chapter, save=args.save, plot_style=args.style)
+    if args.dual_layer:
+        res = generate_dual_layer_annotated_chapter(args.book_id, args.chapter, plot_style=args.style)
+    else:
+        res = generate_full_chapter_prose(args.book_id, args.chapter, save=args.save, plot_style=args.style)
     print(json.dumps(res, indent=2))
+

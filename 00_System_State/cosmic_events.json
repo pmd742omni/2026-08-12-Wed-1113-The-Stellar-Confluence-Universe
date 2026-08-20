@@ -482,5 +482,49 @@
     "duration_gut": 10,
     "expiry_gut": 110,
     "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0045",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0046",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0047",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
+  },
+  {
+    "id": "EVT-0048",
+    "event_type": "BEACON_PULSE",
+    "source_book": "Book 04",
+    "origin_sector": "[15, 6, 0]",
+    "blast_radius": 5.0,
+    "start_gut": 100,
+    "duration_gut": 10,
+    "expiry_gut": 110,
+    "description": "Test Solar Flare"
   }
 ]

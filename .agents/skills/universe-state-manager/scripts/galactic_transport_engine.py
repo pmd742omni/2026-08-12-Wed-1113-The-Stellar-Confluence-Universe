@@ -31,6 +31,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "ATMOSPHERIC_SKIMMER",
                 "name": "Solar-Thermal Atmospheric Skimmer",
                 "propulsion_type": "Superheated Photonic Ramjet & Magnetic Foil Skids",
+                "intuitive_explanation": "Like a solar-powered surfboard that heats up the air beneath its wings, riding rising desert breezes at supersonic speeds.",
                 "max_speed_kmh": 2400,
                 "passenger_capacity": 6,
                 "cargo_capacity_tons": 8,
@@ -43,6 +44,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "SAND_SAIL_SKIFF",
                 "name": "Copper Dune Sand-Sail Skiff",
                 "propulsion_type": "Resonant Aerofoil Masts & Superconducting Ceramic Skis",
+                "intuitive_explanation": "Like a sailboat gliding across an endless ocean of golden metallic sand, powered purely by trade winds and slick friction-free skis.",
                 "max_speed_kmh": 180,
                 "passenger_capacity": 4,
                 "cargo_capacity_tons": 3,
@@ -55,6 +57,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "BENTHIC_ABYSSAL_CRAWLER",
                 "name": "Bioluminescent Benthic Sea Crawler",
                 "propulsion_type": "Multi-Leg Hydraulic Struts & Magneto-Hydrodynamic Thrusters",
+                "intuitive_explanation": "Like a sturdy mechanical crab with glowing green lantern eyes, walking steadily along the deep ocean floor beneath colossal water pressure.",
                 "max_speed_kmh": 60,
                 "passenger_capacity": 12,
                 "cargo_capacity_tons": 45,
@@ -67,6 +70,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "PLANETARY_MAGLEV_EXPRESS",
                 "name": "Vacuum-Tube Meridian Mag-Lev Train",
                 "propulsion_type": "Superconducting Magnetic Levitation & Linear Induction Coils",
+                "intuitive_explanation": "Like a frictionless flying bullet inside a smooth glass tube, floating above magnetic tracks to connect continents in minutes.",
                 "max_speed_kmh": 6500,
                 "passenger_capacity": 450,
                 "cargo_capacity_tons": 600,
@@ -79,6 +83,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "ORBITAL_SKYHOOK_TETHER",
                 "name": "Equatorial Orbital Skyhook & Elevator Car",
                 "propulsion_type": "Carbon-Nanotube Graphene Cable & Counterweight Traction Winch",
+                "intuitive_explanation": "A giant vertical cable stretching straight from the planetary ground up into outer space, lifting passengers into orbit like a skyscraper elevator.",
                 "max_speed_kmh": 1200,
                 "passenger_capacity": 80,
                 "cargo_capacity_tons": 250,
@@ -98,6 +103,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "SOLAR_SAIL_CUTTER",
                 "name": "Prismatic Photonic Solar-Sail Cutter",
                 "propulsion_type": "Ultra-Thin Gossamer Reflective Mylar Sails & Ion Verniers",
+                "intuitive_explanation": "Catches the gentle push of pure sunlight on ultra-thin golden mirrors, like a majestic clipper ship sailing an ocean of sunbeams.",
                 "max_speed_c_fraction": 0.02,
                 "passenger_capacity": 8,
                 "cargo_capacity_tons": 30,
@@ -110,6 +116,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "ION_FREIGHTER_CONVOY",
                 "name": "Heavy-Haul Xenon-Ion Cargo Cruiser",
                 "propulsion_type": "Multi-Grid Hall-Effect Ion Thrusters & Fission Thermal Core",
+                "intuitive_explanation": "Shoots billions of microscopic charged xenon particles out the back like tiny billiard balls, creating a slow, steady push that moves huge cargo mountains across space.",
                 "max_speed_c_fraction": 0.01,
                 "passenger_capacity": 16,
                 "cargo_capacity_tons": 2500,
@@ -122,6 +129,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "CORONAL_PLASMA_SCOOPER",
                 "name": "Magnetic Prominence Plasma Harvester",
                 "propulsion_type": "Magnetic Pinch Funnels & Relativistic Plasma Ejection",
+                "intuitive_explanation": "Dives into the glowing magnetic fire loops near a star's surface to scoop up clean fusion fire, like skimming cream from the top of warm milk.",
                 "max_speed_c_fraction": 0.035,
                 "passenger_capacity": 6,
                 "cargo_capacity_tons": 120,
@@ -134,6 +142,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "CYCLER_HABITAT_SHIP",
                 "name": "Interplanetary Resonant Cycler Station",
                 "propulsion_type": "Gravitational Slingshots & Continuous Auxiliary Ion Propulsion",
+                "intuitive_explanation": "A giant flying city that swings in a permanent orbit between worlds using planet gravity like a cosmic pendulum, needing almost zero fuel.",
                 "max_speed_c_fraction": 0.015,
                 "passenger_capacity": 1200,
                 "cargo_capacity_tons": 15000,
@@ -153,6 +162,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "CONFLUENCE_WAVE_RIDER",
                 "name": "Harmonic Confluence Wave-Rider Corvette",
                 "propulsion_type": "Wavefront Compression Fins & Harmonic Resonance Keel",
+                "intuitive_explanation": "Surfs on top of the cosmic Confluence Wavefront like an ocean surfer riding a massive glowing crest, traveling faster than light with zero drag.",
                 "max_speed_c_fraction": 8.5,
                 "passenger_capacity": 10,
                 "cargo_capacity_tons": 60,
@@ -165,6 +175,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "VOID_PHASE_SHUTTLE",
                 "name": "Umbral Void-Corridor Phase Shuttle",
                 "propulsion_type": "Subspace Null-Mass Matrix & Basalt Dampening Sails",
+                "intuitive_explanation": "Slips between the creases of space itself into quiet twilight corridors, sliding past obstacles and stars like a shadow crossing a dark room.",
                 "max_speed_c_fraction": 6.2,
                 "passenger_capacity": 8,
                 "cargo_capacity_tons": 40,
@@ -177,6 +188,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "TACHYON_SLIPSTREAM_FRIGATE",
                 "name": "Tachyon Chrono-Slipstream Frigate",
                 "propulsion_type": "Tachyon Condenser Coil & Temporal Waveguide Fins",
+                "intuitive_explanation": "Opens a smooth temporal slipstream where time slows to a whisper, crossing light-years as if sliding down an ice-smooth chute.",
                 "max_speed_c_fraction": 14.0,
                 "passenger_capacity": 24,
                 "cargo_capacity_tons": 350,
@@ -189,6 +201,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "DYSON_ACCELERATOR_RUNNER",
                 "name": "Dyson Swarm Relativistic Accelerator",
                 "propulsion_type": "Focused 100-Gigawatt Laser Arrays & Magnetic Launch Troughs",
+                "intuitive_explanation": "A massive space railgun powered by the star that pushes a heavy cargo ship to nearly the speed of light along a beam of focused laser light.",
                 "max_speed_c_fraction": 0.85,
                 "passenger_capacity": 100,
                 "cargo_capacity_tons": 5000,
@@ -208,6 +221,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "DARK_MATTER_CARAVAN_BARGE",
                 "name": "Primordial Dark-Matter Drift Caravan",
                 "propulsion_type": "Dark-Matter Gravitational Anchors & Cosmic Filament Harpoons",
+                "intuitive_explanation": "Tethers to the invisible spiderweb of dark matter that holds galaxies together, cruising peacefully across intergalactic chasms.",
                 "max_speed_c_fraction": 50.0,
                 "passenger_capacity": 2000,
                 "cargo_capacity_tons": 50000,
@@ -220,6 +234,7 @@ TRANSPORT_TIERS = {
                 "vehicle_id": "KEYSTONE_SUB_SPACE_GATEWAY",
                 "name": "Keystone Subspace Transit Stargate",
                 "propulsion_type": "Wormhole Einstein-Rosen Bridge & Harmonic Acoustic Stabilizers",
+                "intuitive_explanation": "An ancient cosmic archway that folds space in half like a sheet of paper, allowing ships to step directly from one star system into another.",
                 "max_speed_c_fraction": 1000.0,
                 "passenger_capacity": 5000,
                 "cargo_capacity_tons": 100000,
@@ -240,6 +255,7 @@ TRANSPORT_TIERS = {
                 "name": "Clockwork Meridian Gear-Gondola",
                 "faction": "Astrolabe Engineers",
                 "propulsion_type": "Interlocking Bronze Flywheels & High-Torque Steam Thrusters",
+                "intuitive_explanation": "A flying brass watchmaker's workshop propelled by precision spinning flywheels and steam jets, capable of docking with millimeter perfection.",
                 "specialty": "Ultra-precise station docking, zero-backlash fine maneuvering, heavy structural assembly.",
                 "cockpit_vibe": "Polished mahogany and brass dials, ticking escapements, fragrant steam, solid mechanical levers.",
                 "handling_protocol": "Wind auxiliary spring before orbital docking; adjust gear ratios smoothly to match rotational speed."
@@ -249,6 +265,7 @@ TRANSPORT_TIERS = {
                 "name": "Comet-Rider Cryo-Sublimation Skiff",
                 "faction": "Comet-Riders",
                 "propulsion_type": "Flash-Sublimated Methane Vapor Jets & Thermal Outriggers",
+                "intuitive_explanation": "A nimble rocket-sled that turns freezing comet ice into powerful steam jets, surfing alongside racing comets like an ice skater.",
                 "specialty": "High-speed comet tail surfing, low-g ice field mining, rapid orbital scouting.",
                 "cockpit_vibe": "Frost-rimed viewport glass, roaring hiss of sublimated vapor, agile fingertip steering yoke.",
                 "handling_protocol": "Ride the comet vapor wake at a 15-degree trailing angle; vent thermal coils to prevent icing."
@@ -258,6 +275,7 @@ TRANSPORT_TIERS = {
                 "name": "Symbiotic Bio-Chitin Manta-Craft",
                 "faction": "Bio-Alchemists",
                 "propulsion_type": "Living Chitin Wing Pulsing & Electrophoretic Spore Streams",
+                "intuitive_explanation": "A living, breathing manta-ray ship that can swim in ocean depths or fly through cloud layers, healing its own hull when tired.",
                 "specialty": "Atmospheric-to-oceanic seamless amphibious transitions, organic self-healing hull, ecological research.",
                 "cockpit_vibe": "Warm bioluminescent breathing interior, neural pulse interface that responds to gentle hand pressure, fresh herbal scent.",
                 "handling_protocol": "Guide through calm thought and steady breathing; feed nutrient algae to wing nodes before long flights."
@@ -267,6 +285,7 @@ TRANSPORT_TIERS = {
                 "name": "Crystal-Singer Prismatic Suncatcher",
                 "faction": "Crystal-Singers",
                 "propulsion_type": "Acoustic Quartz Harmonic Bells & Photonic Refraction Sails",
+                "intuitive_explanation": "A singing crystal ship that steers by playing musical chords through giant quartz bells, spreading peaceful songs across space.",
                 "specialty": "Deep-space communication relay, acoustic wave amplification, peaceful distress escort.",
                 "cockpit_vibe": "Singing crystal chimes filling the cabin, shimmering rainbow refractions dancing across white stone bulkheads.",
                 "handling_protocol": "Sing or hum into the acoustic pitch-pipe to steer; harmonize chords for extra propulsion bursts."
@@ -374,6 +393,92 @@ def get_faction_vehicle_preference(faction_name: str) -> Dict[str, Any]:
         "vehicles": matches
     }
 
+def parse_coords(coord_str: str) -> List[float]:
+    """Safely extracts 3D coordinates [X, Y, Z] from string format."""
+    clean = str(coord_str).replace("[", "").replace("]", "").replace("(", "").replace(")", "").strip()
+    parts = [float(p.strip()) for p in clean.split(",") if p.strip()]
+    while len(parts) < 3:
+        parts.append(0.0)
+    return parts[:3]
+
+def simulate_multiscale_journey(
+    origin_coords: str = "[10, 5, 0]",
+    dest_coords: str = "[-12, 4, 2]",
+    origin_world: str = "Helios Prime",
+    dest_world: str = "Aethelgard Gear-City",
+    pilot_name: str = "Caelum"
+) -> Dict[str, Any]:
+    """
+    Simulates a complete 4-tier journey from planetary surface to orbital skyhook,
+    interplanetary slingshot, interstellar wave-riding, and destination terminal landing.
+    """
+    p1 = parse_coords(origin_coords)
+    p2 = parse_coords(dest_coords)
+    dist_ly = math.sqrt(sum((b - a) ** 2 for a, b in zip(p1, p2))) * 5.0  # 1 sector unit = 5 Light-Years
+
+    # Leg 1: Planetary Ascent (Tier 1)
+    leg1_craft = get_vehicle_profile("ATMOSPHERIC_SKIMMER")
+    leg1_kin = calculate_transit_kinetics("ATMOSPHERIC_SKIMMER", 1.2)
+
+    # Leg 2: Interplanetary Slingshot (Tier 2)
+    leg2_craft = get_vehicle_profile("SOLAR_SAIL_CUTTER")
+    leg2_kin = calculate_transit_kinetics("SOLAR_SAIL_CUTTER", 2.5)
+
+    # Leg 3: Interstellar Wavefront Cruise (Tier 3)
+    leg3_craft = get_vehicle_profile("CONFLUENCE_WAVE_RIDER")
+    leg3_kin = calculate_transit_kinetics("CONFLUENCE_WAVE_RIDER", dist_ly / 5.0)
+
+    # Leg 4: Planetary Orbital Descent & Docking (Tier 1)
+    leg4_craft = get_vehicle_profile("ORBITAL_SKYHOOK_TETHER")
+    leg4_kin = calculate_transit_kinetics("ORBITAL_SKYHOOK_TETHER", 0.8)
+
+    total_gut = round(leg1_kin["estimated_duration_gut"] + leg2_kin["estimated_duration_gut"] + leg3_kin["estimated_duration_gut"] + leg4_kin["estimated_duration_gut"], 2)
+
+    itinerary = [
+        {
+            "stage": "Stage 1: Surface to Low Orbit Ascent",
+            "vehicle": leg1_craft["name"],
+            "tier": "Tier 1 (Intra-Planetary)",
+            "duration_gut": leg1_kin["estimated_duration_gut"],
+            "intuitive_physics": leg1_craft.get("intuitive_explanation", "Riding heated atmospheric breezes."),
+            "pilot_action": f"{pilot_name} throttles photonic ramjets, climbing smoothly through the morning clouds of {origin_world}."
+        },
+        {
+            "stage": "Stage 2: Interplanetary Slingshot Vector",
+            "vehicle": leg2_craft["name"],
+            "tier": "Tier 2 (Interplanetary)",
+            "duration_gut": leg2_kin["estimated_duration_gut"],
+            "intuitive_physics": leg2_craft.get("intuitive_explanation", "Catching radiant sunbeams on golden sails."),
+            "pilot_action": f"{pilot_name} angles gossamer sails to catch the solar wind, slingshotting past the inner orbital cycler."
+        },
+        {
+            "stage": "Stage 3: Interstellar Confluence Wave-Riding",
+            "vehicle": leg3_craft["name"],
+            "tier": "Tier 3 (Interstellar)",
+            "duration_gut": leg3_kin["estimated_duration_gut"],
+            "intuitive_physics": leg3_craft.get("intuitive_explanation", "Surfing the glowing cosmic wave at super-luminal speeds."),
+            "pilot_action": f"{pilot_name} aligns the keel with the Confluence Wavefront, surging across {dist_ly:.1f} Light-Years in effortless resonance."
+        },
+        {
+            "stage": "Stage 4: Target System Insertion & Skyhook Docking",
+            "vehicle": leg4_craft["name"],
+            "tier": "Tier 1 (Intra-Planetary Insertion)",
+            "duration_gut": leg4_kin["estimated_duration_gut"],
+            "intuitive_physics": leg4_craft.get("intuitive_explanation", "Smooth magnetic elevator descent."),
+            "pilot_action": f"{pilot_name} matches velocity with the equatorial skyhook tether of {dest_world}, stepping out into the welcoming terminal."
+        }
+    ]
+
+    return {
+        "status": "MULTISCALE_JOURNEY_PLANNED",
+        "route": f"{origin_world} ({origin_coords}) -> {dest_world} ({dest_coords})",
+        "total_interstellar_distance_ly": round(dist_ly, 2),
+        "total_transit_duration_gut": total_gut,
+        "energy_efficiency_rating": "OPTIMAL_HARMONIC_COUPLING (98.4%)",
+        "itinerary_legs": itinerary,
+        "pilot_travelogue": f"Traveled from {origin_world} to {dest_world} across {len(itinerary)} seamless mobility tiers in {total_gut} GUT."
+    }
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Galactic Transport & Mobility Engine")
     subparsers = parser.add_subparsers(dest="command")
@@ -392,6 +497,13 @@ if __name__ == "__main__":
     pref_p = subparsers.add_parser("faction", help="Get faction transport preferences")
     pref_p.add_argument("--name", default="Sun-Forged Hegemony", help="Faction name")
 
+    trip_p = subparsers.add_parser("trip", help="Simulate end-to-end multiscale journey across all 4 tiers")
+    trip_p.add_argument("--origin-coords", default="[10, 5, 0]", help="Origin coordinates")
+    trip_p.add_argument("--dest-coords", default="[-12, 4, 2]", help="Destination coordinates")
+    trip_p.add_argument("--origin-world", default="Helios Prime", help="Origin world name")
+    trip_p.add_argument("--dest-world", default="Aethelgard Gear-City", help="Destination world name")
+    trip_p.add_argument("--pilot", default="Caelum", help="Pilot name")
+
     args = parser.parse_args()
 
     if args.command == "info":
@@ -403,5 +515,9 @@ if __name__ == "__main__":
     elif args.command == "faction":
         res = get_faction_vehicle_preference(args.name)
         print(json.dumps(res, indent=2))
+    elif args.command == "trip":
+        res = simulate_multiscale_journey(args.origin_coords, args.dest_coords, args.origin_world, args.dest_world, args.pilot)
+        print(json.dumps(res, indent=2))
     else:
         print(json.dumps({"total_vehicles": len(get_all_vehicles()), "catalog": TRANSPORT_TIERS}, indent=2))
+

@@ -228,6 +228,55 @@ EXOTIC_BIOME_ARCHETYPES = [
     }
 ]
 
+# Boundless Cosmic Wonders & Anomalies Catalog
+COSMIC_ANOMALIES_CATALOG = [
+    {
+        "anomaly_id": "DYSON_SWARM_ORBITAL_FORGE",
+        "name": "The Great Dyson Photonic Collector Swarm",
+        "scale": "System Scale (100 Million km orbital ring)",
+        "scientific_basis": "Trillions of synchronized solar-sail mirrors orbiting a star to harness pure radiant luminosity without blocking planetary life.",
+        "intuitive_analogy": "Like billions of tiny golden umbrellas angled to catch sunbeams and beam warm, clean power across the entire star system.",
+        "sensory_spectacle": "A glittering diamond belt circling the star, pulsing with emerald and golden energy beams like a living cosmic crown.",
+        "navigational_significance": "Provides hyper-charged solar battery recharging and instantaneous photonic data relays."
+    },
+    {
+        "anomaly_id": "SINGING_QUARTZ_NEBULA",
+        "name": "The Harmonic Resonance Nebular Harp",
+        "scale": "Sector Scale (3 Light-Years Across)",
+        "scientific_basis": "Suspended ionized silicate micro-crystals vibrating in harmonic frequency with incoming Confluence Wavefronts.",
+        "intuitive_analogy": "Like a giant cosmic musical harp strung across light-years that chimes in sweet, soothing chords as stellar waves pass through.",
+        "sensory_spectacle": "Gleaming lavender and turquoise dust clouds that physically hum like cello strings when starships glide through.",
+        "navigational_significance": "Acoustic beacon network that allows sub-light vessels to navigate without electronic radar."
+    },
+    {
+        "anomaly_id": "GRAVITATIONAL_LENSING_MIRAGE",
+        "name": "The Prismatic Einstein Ring Window",
+        "scale": "Stellar Scale (0.5 Light-Years)",
+        "scientific_basis": "A massive micro-singularity warping surrounding space, bending distant galaxy light into a perfect circular rainbow lens.",
+        "intuitive_analogy": "Like looking through a giant crystal magnifying glass held up in space, showing events happening on the other side of the galaxy.",
+        "sensory_spectacle": "A swirling kaleidoscope of ancient stars and multicolored nebulae warped into brilliant glowing concentric halos.",
+        "navigational_significance": "Permits direct real-time visual observation of distant sectors without subspace lag."
+    },
+    {
+        "anomaly_id": "TACHYON_SLIPSTREAM_GEYSER",
+        "name": "The Primordial Chrono-Slipstream Well",
+        "scale": "Planetary Scale (120,000 km jet)",
+        "scientific_basis": "A concentrated relativistic particle plume vented from a deep subspace fissure, creating localized low-drag transit corridors.",
+        "intuitive_analogy": "Like an underwater waterslide made of pure glowing starlight that whisks exploration ships across star systems in minutes.",
+        "sensory_spectacle": "A sapphire jet of crackling starlight rushing into deep space, where suspended water droplets freeze in glowing time-loops.",
+        "navigational_significance": "Enables Tier 3 interstellar craft to achieve 50c super-luminal speeds with zero fuel burn."
+    },
+    {
+        "anomaly_id": "ANCIENT_KEYSTONE_STARFORGE",
+        "name": "The Keystone Celestial Artificer Ring",
+        "scale": "Mega-Structure (25,000 km diameter)",
+        "scientific_basis": "Precursor magnetic containment ring anchored over a calm stellar pole, utilizing natural coronal flares to forge ultra-dense alloys.",
+        "intuitive_analogy": "A giant floating blacksmith's anvil where starfarers use the gentle heat of the star to craft perfect brass gears and glass lenses.",
+        "sensory_spectacle": "Golden arcs of plasma looping gracefully through circular brass gantries into crystal cooling pools.",
+        "navigational_significance": "Universal repair and calibration sanctuary for all peaceful space travelers."
+    }
+]
+
 # Xenobiology: Majestic Alien Creatures & Fauna
 ALIEN_CREATURE_CATALOG = [
     {
@@ -449,6 +498,151 @@ def generate_star_system(coords: str = "[0, 0, 0]", system_name: Optional[str] =
         "active_sub_factions": sub_factions
     }
 
+def generate_full_planetary_system(coords: str = "[0, 0, 0]", system_name: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Generates a full, multi-body star system featuring goldilocks habitable zone calculations,
+    rocky inner worlds, habitable ribbon moons, gas giants with shepherd rings, asteroid belts, and Oort cloud reservoirs.
+    """
+    base = generate_star_system(coords, system_name)
+    seed = hash_coords(f"full_{coords}_{system_name or ''}")
+    rng = random.Random(seed)
+
+    lum = base.get("luminosity_solar", 1.0)
+    # Goldilocks habitable zone: R_hab = sqrt(L_solar)
+    hab_center_au = round(math.sqrt(max(0.01, lum)), 2)
+    hab_inner_au = round(hab_center_au * 0.85, 2)
+    hab_outer_au = round(hab_center_au * 1.35, 2)
+
+    # Add astronomy details to planets
+    enhanced_planets = []
+    for p in base["planets"]:
+        dist = p["orbital_distance_au"]
+        is_habitable = (hab_inner_au <= dist <= hab_outer_au)
+        zone_desc = "Goldilocks Habitable Zone" if is_habitable else ("Inner Thermal Scorched Zone" if dist < hab_inner_au else "Outer Cryo-Glaciated Zone")
+        
+        # Kepler's Third Law: Period (Years) = sqrt(a^3 / M)
+        mass_star = next((s.get("mass_solar", 1.0) for s in STELLAR_CLASSIFICATIONS if s["type"] == base["stellar_classification"]), 1.0)
+        orbital_period_years = round(math.sqrt((dist ** 3) / max(0.1, mass_star)), 2)
+        
+        # Moon system
+        moon_count = rng.randint(0, 4) if dist < 2.0 else rng.randint(3, 14)
+        moons = [f"{p['planet_name']} - Moon {j+1}" for j in range(moon_count)]
+
+        enhanced_p = dict(p)
+        enhanced_p["habitable_zone_status"] = zone_desc
+        enhanced_p["is_habitable_zone"] = is_habitable
+        enhanced_p["orbital_period_standard_years"] = orbital_period_years
+        enhanced_p["moon_count"] = moon_count
+        enhanced_p["major_moons"] = moons[:3]
+        enhanced_planets.append(enhanced_p)
+
+    # Asteroid Belts and Megastructures
+    asteroid_belt = {
+        "name": f"{base['system_name']} Primary Asteroid Ring",
+        "orbital_radius_au": round(hab_outer_au * 1.6, 2),
+        "composition": "Silicate, Refined Brass Nodules & High-Density Sol-Core Ore",
+        "mining_stations": rng.randint(2, 6)
+    }
+
+    return {
+        "status": "FULL_PLANETARY_SYSTEM_GENERATED",
+        "coordinates": coords,
+        "system_name": base["system_name"],
+        "stellar_classification": base["stellar_classification"],
+        "stellar_color_vibe": base["stellar_color_vibe"],
+        "luminosity_solar": lum,
+        "habitable_zone_range_au": f"{hab_inner_au} AU to {hab_outer_au} AU (Center: {hab_center_au} AU)",
+        "total_planets": len(enhanced_planets),
+        "planets": enhanced_planets,
+        "asteroid_belt": asteroid_belt,
+        "indigenous_culture": base["indigenous_culture"],
+        "active_sub_factions": base["active_sub_factions"]
+    }
+
+def generate_cosmic_anomaly(coords: str = "[0, 0, 0]", anomaly_type: Optional[str] = None) -> Dict[str, Any]:
+    """Generates an awe-inspiring cosmic anomaly or ancient megastructure for exploration adventures."""
+    seed = hash_coords(f"anomaly_{coords}_{anomaly_type or ''}")
+    rng = random.Random(seed)
+
+    if anomaly_type:
+        anomaly = next((a for a in COSMIC_ANOMALIES_CATALOG if a["anomaly_id"] == anomaly_type.upper()), rng.choice(COSMIC_ANOMALIES_CATALOG))
+    else:
+        anomaly = rng.choice(COSMIC_ANOMALIES_CATALOG)
+
+    return {
+        "status": "COSMIC_ANOMALY_GENERATED",
+        "coordinates": coords,
+        "anomaly_id": anomaly["anomaly_id"],
+        "name": anomaly["name"],
+        "scale": anomaly["scale"],
+        "scientific_basis": anomaly["scientific_basis"],
+        "intuitive_analogy": anomaly["intuitive_analogy"],
+        "sensory_spectacle": anomaly["sensory_spectacle"],
+        "navigational_significance": anomaly["navigational_significance"],
+        "adventure_recommendation": "Explore anomaly using harmonic sensors and maintain safe standoff distance."
+    }
+
+def generate_xenobiology_ecosystem(biome_id: Optional[str] = None, seed_str: str = "ecosystem") -> Dict[str, Any]:
+    """Generates a complete multi-tier living ecological network (producers, grazers, leviathans, stewards)."""
+    seed = hash_coords(f"{biome_id or ''}_{seed_str}")
+    rng = random.Random(seed)
+
+    biome = next((b for b in EXOTIC_BIOME_ARCHETYPES if b["biome_id"] == biome_id), rng.choice(EXOTIC_BIOME_ARCHETYPES))
+    primary_creature = rng.choice(ALIEN_CREATURE_CATALOG)
+    secondary_creature = rng.choice([c for c in ALIEN_CREATURE_CATALOG if c != primary_creature])
+
+    producers = [
+        f"Luminescent {biome['name'].split()[0]} Algal Blooms (Converts Confluence wavefronts into pure sugars)",
+        f"Thermophilic Quartz Lichen (Harvests geothermal warmth and mineral salts)"
+    ]
+    grazers = [
+        f"Gliding {biome['name'].split()[0]} Spore-Motes (Filters airborne pollen and dust)",
+        f"Miniature {primary_creature['species_name'].split()[0]} Companions"
+    ]
+
+    return {
+        "status": "ECOSYSTEM_GENERATED",
+        "biome_id": biome["biome_id"],
+        "biome_title": biome["name"],
+        "atmospheric_medium": biome["atmosphere"],
+        "primary_producers": producers,
+        "herbivorous_grazers": grazers,
+        "apex_majestic_fauna": [primary_creature["species_name"], secondary_creature["species_name"]],
+        "ecological_symbiosis": f"{primary_creature['species_name'].split()[0]} feeds on spore plumes and spreads crystal seeds across {biome['terrain'][:40]}...",
+        "ethical_observation_code": "Preserve natural migratory channels; never use high-thrust engines within 50 km."
+    }
+
+def generate_subfaction_enclave(core_faction: str = "Sun-Forged Hegemony", seed_str: str = "enclave") -> Dict[str, Any]:
+    """Procedurally generates a unique cultural sub-faction enclave across millions of world offshoots."""
+    seed = hash_coords(f"{core_faction}_{seed_str}")
+    rng = random.Random(seed)
+
+    role = rng.choice(SUB_FACTION_ROLES)
+    mottos = [
+        "Steer true, fear no shadow.",
+        "Every tooth in the gear counts.",
+        "Patience opens the deepest doors.",
+        "Share the stardust and keep the peace.",
+        "Honor the wind and the craft."
+    ]
+    specialties = [
+        "Hand-polished prismatic quartz telescope lenses",
+        "Ultra-light ceramic sand-skis for high-speed desert sailing",
+        "Acoustic sub-chime communicators for Grav-Whale signaling",
+        "Self-lubricating perpetual brass gear bearings",
+        "Warm amber tea blending and herbal star-bloom salves"
+    ]
+
+    return {
+        "status": "SUB_FACTION_ENCLAVE_GENERATED",
+        "enclave_name": f"{role} of {core_faction} (Sector-{abs(seed % 1000):03d})",
+        "parent_faction": core_faction,
+        "cultural_motto": rng.choice(mottos),
+        "craftsmanship_specialty": rng.choice(specialties),
+        "traditional_staple": f"Warm spiced tea and {rng.choice(['crispy honey-grain wafers', 'sweet roasted succotash', 'sun-dried berry rolls'])}",
+        "civic_role": "Maintains navigational safety and welcomes friendly travelers in the sector."
+    }
+
 def generate_creature_encounter(biome_id: Optional[str] = None, seed_str: str = "encounter") -> Dict[str, Any]:
     """Generates an engaging, non-violent alien creature encounter for adventures or chapters."""
     seed = hash_coords(f"{biome_id or ''}_{seed_str}")
@@ -486,21 +680,31 @@ def generate_cultural_profile(faction_or_world: str = "Sun-Forged Hegemony") -> 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Galactic Scale Engine & Procedural Universe Generator")
-    parser.add_argument("action", choices=["system", "explore", "creature", "culture"], default="explore", nargs="?")
+    parser.add_argument("action", choices=["system", "system-full", "explore", "creature", "culture", "anomaly", "ecosystem", "enclave"], default="explore", nargs="?")
     parser.add_argument("--coords", default="[125, -42, 88]", help="3D Sector coordinates")
     parser.add_argument("--name", help="System or entity name")
     parser.add_argument("--biome", help="Biome ID filter")
     parser.add_argument("--faction", default="Comet-Riders", help="Faction or entity name for culture")
+    parser.add_argument("--anomaly", help="Anomaly ID filter")
 
     args = parser.parse_args()
 
     if args.action in ["system", "explore"]:
         res = generate_star_system(args.coords, args.name)
+    elif args.action == "system-full":
+        res = generate_full_planetary_system(args.coords, args.name)
     elif args.action == "creature":
         res = generate_creature_encounter(args.biome, args.name or "wild")
     elif args.action == "culture":
         res = generate_cultural_profile(args.faction or args.name or "Universal")
+    elif args.action == "anomaly":
+        res = generate_cosmic_anomaly(args.coords, args.anomaly)
+    elif args.action == "ecosystem":
+        res = generate_xenobiology_ecosystem(args.biome, args.name or "eco")
+    elif args.action == "enclave":
+        res = generate_subfaction_enclave(args.faction or "Sun-Forged Hegemony", args.name or "enclave")
     else:
         res = {"error": f"Unknown action {args.action}"}
 
     print(json.dumps(res, indent=2))
+

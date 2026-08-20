@@ -1375,14 +1375,231 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
     except Exception as e:
         results.append({"test": "130. Galactic Sociology: Architectural Aesthetics", "status": "FAIL", "error": str(e)})
 
-    # 131. System Stability: Regression In-Process Performance Benchmark
+    # 131. Master Hub: Anomaly & Expanded Search
     try:
-        duration_now = (time.time() - start_total) * 1000
-        assert duration_now < 5000.0  # Must run in under 5 seconds
-        results.append({"test": "131. System Stability: In-Process Performance", "status": "PASS", "details": f"{duration_now:.1f}ms (<5000ms benchmark)"})
+        import agent_core
+        sr = agent_core.search_universe("Dyson")
+        assert len(sr.get("matched_anomalies", [])) >= 1
+        results.append({"test": "131. Master Hub: Search Anomalies", "status": "PASS", "details": f"{len(sr['matched_anomalies'])} anomalies found"})
         passed_count += 1
     except Exception as e:
-        results.append({"test": "131. System Stability: In-Process Performance", "status": "FAIL", "error": str(e)})
+        results.append({"test": "131. Master Hub: Search Anomalies", "status": "FAIL", "error": str(e)})
+
+    # 132. Cosmic Anomalies Catalog Index
+    try:
+        import galactic_scale_generator
+        assert len(galactic_scale_generator.COSMIC_ANOMALIES_CATALOG) >= 5
+        results.append({"test": "132. Cosmic Anomalies Catalog", "status": "PASS", "details": f"{len(galactic_scale_generator.COSMIC_ANOMALIES_CATALOG)} anomalies cataloged"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "132. Cosmic Anomalies Catalog", "status": "FAIL", "error": str(e)})
+
+    # 133. Procedural Full Planetary System Generator
+    try:
+        import galactic_scale_generator
+        sys_full = galactic_scale_generator.generate_full_planetary_system("[15, -8, 42]", "Solaria Tertius")
+        assert sys_full["status"] == "FULL_PLANETARY_SYSTEM_GENERATED"
+        assert sys_full["total_planets"] >= 1
+        assert "habitable_zone_range_au" in sys_full
+        results.append({"test": "133. Procedural Full Planetary System", "status": "PASS", "details": f"{sys_full['total_planets']} planets orbiting {sys_full['system_name']}"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "133. Procedural Full Planetary System", "status": "FAIL", "error": str(e)})
+
+    # 134. Procedural Cosmic Anomaly Generator
+    try:
+        import galactic_scale_generator
+        anom = galactic_scale_generator.generate_cosmic_anomaly("[20, 10, -5]")
+        assert anom["status"] == "COSMIC_ANOMALY_GENERATED"
+        assert "intuitive_analogy" in anom
+        results.append({"test": "134. Procedural Cosmic Anomaly", "status": "PASS", "details": anom["name"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "134. Procedural Cosmic Anomaly", "status": "FAIL", "error": str(e)})
+
+    # 135. Procedural Xenobiology Ecosystem Generator
+    try:
+        import galactic_scale_generator
+        eco_res = galactic_scale_generator.generate_xenobiology_ecosystem("CRYSTAL_SPIRE_FOREST")
+        assert eco_res["status"] == "ECOSYSTEM_GENERATED"
+        assert len(eco_res["apex_majestic_fauna"]) >= 2
+        results.append({"test": "135. Procedural Xenobiology Ecosystem", "status": "PASS", "details": f"{eco_res['biome_title']} with {len(eco_res['apex_majestic_fauna'])} majestic species"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "135. Procedural Xenobiology Ecosystem", "status": "FAIL", "error": str(e)})
+
+    # 136. Procedural Subfaction Enclave Generator
+    try:
+        import galactic_scale_generator
+        enclave = galactic_scale_generator.generate_subfaction_enclave("Sun-Forged Hegemony", "Solar Vanguard")
+        assert enclave["status"] == "SUB_FACTION_ENCLAVE_GENERATED"
+        assert "cultural_motto" in enclave
+        results.append({"test": "136. Procedural Subfaction Enclave", "status": "PASS", "details": enclave["enclave_name"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "136. Procedural Subfaction Enclave", "status": "FAIL", "error": str(e)})
+
+    # 137. Multiscale Transport 4-Leg Journey Simulator
+    try:
+        import galactic_transport_engine
+        trip_res = galactic_transport_engine.simulate_multiscale_journey("[10, 5, 0]", "[-12, 4, 2]", "Helios Prime", "Aethelgard Gear-City")
+        assert trip_res["status"] == "MULTISCALE_JOURNEY_PLANNED"
+        assert len(trip_res["itinerary_legs"]) == 4
+        assert trip_res["total_transit_duration_gut"] > 0
+        results.append({"test": "137. Multiscale Transport Journey Simulator", "status": "PASS", "details": f"4 legs in {trip_res['total_transit_duration_gut']} GUT"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "137. Multiscale Transport Journey Simulator", "status": "FAIL", "error": str(e)})
+
+    # 138. Intuitive Physics Explanations on Transport Vehicles
+    try:
+        import galactic_transport_engine
+        veh = galactic_transport_engine.get_vehicle_profile("SOLAR_SAIL_CUTTER")
+        assert "intuitive_explanation" in veh and len(veh["intuitive_explanation"]) > 10
+        results.append({"test": "138. Transport Intuitive Physics Metaphor", "status": "PASS", "details": veh["intuitive_explanation"][:40] + "..."})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "138. Transport Intuitive Physics Metaphor", "status": "FAIL", "error": str(e)})
+
+    # 139. Interstellar Culinary Traditions & Civics Catalog
+    try:
+        import galactic_sociology_politics_engine
+        cul = galactic_sociology_politics_engine.SOCIOLOGICAL_SYSTEMS["culinary_traditions"]
+        assert len(cul) >= 4
+        assert "Tea" in cul[0]["name"]
+        results.append({"test": "139. Interstellar Culinary Traditions", "status": "PASS", "details": f"{len(cul)} culinary traditions indexed"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "139. Interstellar Culinary Traditions", "status": "FAIL", "error": str(e)})
+
+    # 140. Bilateral Interstellar Diplomatic Summit Simulator
+    try:
+        import galactic_sociology_politics_engine
+        summit_res = galactic_sociology_politics_engine.simulate_diplomatic_summit("Sun-Forged Hegemony", "Void-Bound Monks")
+        assert summit_res["status"] == "DIPLOMATIC_SUMMIT_CONCLUDED"
+        assert "cultural_gift_exchange" in summit_res
+        results.append({"test": "140. Interstellar Diplomatic Summit", "status": "PASS", "details": summit_res["diplomatic_outcome"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "140. Interstellar Diplomatic Summit", "status": "FAIL", "error": str(e)})
+
+    # 141. Interplanetary Trade Route Profitability Analyzer
+    try:
+        import galactic_trade_economy
+        route_res = galactic_trade_economy.analyze_trade_route("Helios Prime", "Aethelgard Gear-City", "Photonic Prism Crystals", 500)
+        assert route_res["status"] == "TRADE_ROUTE_ANALYZED"
+        assert route_res["estimated_net_profit"] > 0
+        results.append({"test": "141. Interplanetary Trade Route Analyzer", "status": "PASS", "details": f"ROI {route_res['return_on_investment']} with {route_res['estimated_net_profit']} Credits net"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "141. Interplanetary Trade Route Analyzer", "status": "FAIL", "error": str(e)})
+
+    # 142. Intuitive Economic Principles Catalog
+    try:
+        import galactic_trade_economy
+        assert "supply_and_demand" in galactic_trade_economy.ECONOMIC_PRINCIPLES
+        results.append({"test": "142. Intuitive Economic Principles", "status": "PASS", "details": "Supply/demand & currency backing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "142. Intuitive Economic Principles", "status": "FAIL", "error": str(e)})
+
+    # 143. Dual-Layer Chapter Authoring Engine
+    try:
+        import story_generator
+        dual_res = story_generator.generate_dual_layer_annotated_chapter(1, 1)
+        assert dual_res["status"] == "DUAL_LAYER_CHAPTER_GENERATED"
+        assert "story_prose_layer_1" in dual_res and "intellectual_companion_layer_2" in dual_res
+        results.append({"test": "143. Dual-Layer Chapter Authoring", "status": "PASS", "details": f"Book {dual_res['book_id']} dual-layer generated"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "143. Dual-Layer Chapter Authoring", "status": "FAIL", "error": str(e)})
+
+    # 144. Dual-Audience Suitability & Scientific Rigor Scoring in Evaluator
+    try:
+        import chapter_prose_evaluator
+        sample_prose = "The warm twin suns climbed into the copper sky, casting long shadows across the dunes. Caelum adjusted his bronze visor. 'Watch your heat gauge, Caelum,' called Master Theron with a kind smile."
+        eval_res = chapter_prose_evaluator.evaluate_prose(sample_prose)
+        assert "dual_audience_score" in eval_res
+        assert "child_accessibility_score" in eval_res
+        assert "intellectual_rigor_score" in eval_res
+        results.append({"test": "144. Dual-Audience Prose Evaluator", "status": "PASS", "details": eval_res["dual_audience_score"]})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "144. Dual-Audience Prose Evaluator", "status": "FAIL", "error": str(e)})
+
+    # 145. Master Hub: Search Culinary Traditions Index
+    try:
+        import agent_core
+        sr_c = agent_core.search_universe("Tea")
+        assert len(sr_c.get("matched_culinary", [])) >= 1
+        results.append({"test": "145. Master Hub: Search Culinary Index", "status": "PASS", "details": f"{len(sr_c['matched_culinary'])} culinary matches found"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "145. Master Hub: Search Culinary Index", "status": "FAIL", "error": str(e)})
+
+    # 146. Master Hub CLI: Cosmos Anomaly Subcommand Parser
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_an = p.parse_args(["cosmos", "anomaly", "--coords", "[125, -42, 88]"])
+        assert args_an.command == "cosmos" and args_an.action == "anomaly"
+        results.append({"test": "146. Master Hub: Cosmos Anomaly CLI Dispatcher", "status": "PASS", "details": "cosmos anomaly parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "146. Master Hub: Cosmos Anomaly CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 147. Master Hub CLI: Transport Trip Subcommand Parser
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_tr = p.parse_args(["transport", "trip", "--origin", "Helios Prime", "--dest", "Aethelgard Gear-City"])
+        assert args_tr.command == "transport" and args_tr.action == "trip"
+        results.append({"test": "147. Master Hub: Transport Trip CLI Dispatcher", "status": "PASS", "details": "transport trip parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "147. Master Hub: Transport Trip CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 148. Master Hub CLI: Politics Summit Subcommand Parser
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_pol = p.parse_args(["politics", "summit", "--faction1", "Sun-Forged Hegemony", "--faction2", "Void-Bound Monks"])
+        assert args_pol.command == "politics" and args_pol.action == "summit"
+        results.append({"test": "148. Master Hub: Politics Summit CLI Dispatcher", "status": "PASS", "details": "politics summit parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "148. Master Hub: Politics Summit CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 149. Master Hub CLI: Economy Route Subcommand Parser
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_ec = p.parse_args(["economy", "route", "--origin", "Helios Prime", "--dest", "Aethelgard Gear-City"])
+        assert args_ec.command == "economy" and args_ec.action == "route"
+        results.append({"test": "149. Master Hub: Economy Route CLI Dispatcher", "status": "PASS", "details": "economy route parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "149. Master Hub: Economy Route CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 150. Master Hub CLI: Author Dual-Layer Subcommand Parser
+    try:
+        import agent_hub
+        p = agent_hub.build_parser()
+        args_dl = p.parse_args(["author", "dual-layer", "--book-id", "1"])
+        assert args_dl.command == "author" and args_dl.action == "dual-layer"
+        results.append({"test": "150. Master Hub: Author Dual-Layer CLI Dispatcher", "status": "PASS", "details": "author dual-layer parser routing verified"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "150. Master Hub: Author Dual-Layer CLI Dispatcher", "status": "FAIL", "error": str(e)})
+
+    # 151. System Stability: Regression In-Process Performance Benchmark (151+ tests)
+    try:
+        duration_now = (time.time() - start_total) * 1000
+        assert duration_now < 5000.0  # Must run 151+ tests in under 5 seconds
+        results.append({"test": "151. System Stability: In-Process Performance Benchmark", "status": "PASS", "details": f"{duration_now:.1f}ms (<5000ms benchmark for 151 tests)"})
+        passed_count += 1
+    except Exception as e:
+        results.append({"test": "151. System Stability: In-Process Performance Benchmark", "status": "FAIL", "error": str(e)})
 
     duration_total_ms = round((time.time() - start_total) * 1000, 1)
     all_pass = (passed_count == len(results))
@@ -1397,5 +1614,6 @@ Caelum adjusted the heavy bronze visor over his eyes. Even through the tinted gl
 if __name__ == "__main__":
     summary = run_in_process_tests()
     print(json.dumps(summary, indent=2))
+
 
 

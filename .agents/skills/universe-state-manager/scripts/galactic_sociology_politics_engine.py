@@ -185,6 +185,33 @@ SOCIOLOGICAL_SYSTEMS = {
             "materials": "Grown ironwood trunks, glowing canopy leaves, molded bioluminescent chitin",
             "philosophy": "Architecture that grows naturally with the planetary forest without harming a single root."
         }
+    ],
+    "culinary_traditions": [
+        {
+            "name": "Amber Spice Succulent Tea & Honey-Grain Flatbread",
+            "culture_group": "Sun-Forged & Solar Worlds",
+            "description": "Warm, invigorating spiced infusion paired with sun-baked grain cakes that melt pleasantly on the tongue."
+        },
+        {
+            "name": "Bioluminescent Canyon Moss Broth & Steamed Sea Tubers",
+            "culture_group": "Void-Bound & Abyssal Worlds",
+            "description": "Mild, soothing herbal broth glowing with gentle emerald bioluminescence, offering deep physical restoration."
+        },
+        {
+            "name": "Precision Meridian Roasted Nut Paste & Crystallized Nectar Sticks",
+            "culture_group": "Astrolabe & Clockwork Worlds",
+            "description": "Nutrient-dense savory spread crafted with exact caloric ratios, favored by workshop artisans and gearwrights."
+        },
+        {
+            "name": "Comet Methane-Frost Mint Sorbet & Sparkling Glider Punch",
+            "culture_group": "Comet-Riders & Nomad Flotillas",
+            "description": "Crisp, sweet cooling treat that crackles with refreshing effervescence like a burst of fresh mountain air."
+        }
+    ],
+    "ethics_of_discovery": [
+        "First Do No Harm: Every new world must be observed with gentleness and curiosity, leaving its living biomes pristine.",
+        "The Open Light: Astronomical maps and navigation routes must be shared freely with all traveling wayfarers.",
+        "Non-Intrusive Wonder: Alien creatures are allies and teachers; observe their migratory song without disturbing their young."
     ]
 }
 
@@ -197,7 +224,7 @@ def get_governance_model(faction_or_world: str) -> Dict[str, Any]:
     return GOVERNANCE_ARCHETYPES[2]
 
 def get_sociological_profile(faction_or_world: str = "Sun-Forged Hegemony") -> Dict[str, Any]:
-    """Returns a full sociological profile including rites of passage, hospitality, taboos, and architecture."""
+    """Returns a full sociological profile including rites of passage, hospitality, taboos, culinary traditions, and architecture."""
     gov = get_governance_model(faction_or_world)
     
     # Pick matching architecture
@@ -205,6 +232,13 @@ def get_sociological_profile(faction_or_world: str = "Sun-Forged Hegemony") -> D
     for a in SOCIOLOGICAL_SYSTEMS["architectural_philosophies"]:
         if any(w.lower() in faction_or_world.lower() for w in a["faction_group"].split("&")):
             arch = a
+            break
+
+    # Pick culinary tradition
+    cuisine = SOCIOLOGICAL_SYSTEMS["culinary_traditions"][0]
+    for c in SOCIOLOGICAL_SYSTEMS["culinary_traditions"]:
+        if any(w.lower() in faction_or_world.lower() for w in c["culture_group"].split("&")):
+            cuisine = c
             break
 
     return {
@@ -217,7 +251,9 @@ def get_sociological_profile(faction_or_world: str = "Sun-Forged Hegemony") -> D
         "social_strata_hierarchy": SOCIOLOGICAL_SYSTEMS["social_strata"],
         "signature_rite_of_passage": random.choice(SOCIOLOGICAL_SYSTEMS["rites_of_passage"]),
         "hospitality_ritual": random.choice(SOCIOLOGICAL_SYSTEMS["hospitality_customs"]),
+        "culinary_staple": cuisine,
         "sacred_taboos": SOCIOLOGICAL_SYSTEMS["sacred_cosmic_taboos"],
+        "ethics_of_discovery": SOCIOLOGICAL_SYSTEMS["ethics_of_discovery"],
         "architectural_style": arch
     }
 
@@ -240,6 +276,40 @@ def get_diplomatic_treaties(faction_a: str, faction_b: str) -> Dict[str, Any]:
         ],
         "core_shared_principle": common_ground,
         "dispute_resolution_mechanism": "Arbitration before a joint panel of High Artificers and Meridian Arbiters."
+    }
+
+def simulate_diplomatic_summit(
+    faction_a: str = "Sun-Forged Hegemony",
+    faction_b: str = "Void-Bound Monks",
+    agenda_topic: str = "Shared Stargate Corridors & Navigational Beacons"
+) -> Dict[str, Any]:
+    """
+    Simulates a high-stakes, peaceful interstellar diplomatic summit between two factions,
+    featuring cultural hospitality rites, mutual gift exchanges, treaty ratifications, and shared stardust toasts.
+    """
+    prof_a = get_sociological_profile(faction_a)
+    prof_b = get_sociological_profile(faction_b)
+    treaties = get_diplomatic_treaties(faction_a, faction_b)
+
+    gift_a = f"A polished golden solar lens reflecting the {prof_a['governance_model']}'s commitment to open light."
+    gift_b = f"A carved basalt acoustic chime that sings soothing harmonic chords in the quiet."
+
+    resolution = f"Both delegations unanimously ratify '{treaties['active_treaties'][0]}' and commit to joint patrol schedules."
+
+    return {
+        "status": "DIPLOMATIC_SUMMIT_CONCLUDED",
+        "host_faction": faction_a,
+        "guest_faction": faction_b,
+        "summit_location": f"The Grand Meridian Neutral Assembly Hall (Sector [0, 0, 0])",
+        "agenda_topic": agenda_topic,
+        "opening_hospitality_rite": prof_a["hospitality_ritual"]["name"],
+        "cultural_gift_exchange": {
+            f"{faction_a}_offers": gift_a,
+            f"{faction_b}_offers": gift_b
+        },
+        "summit_resolution": resolution,
+        "shared_banquet_cuisine": f"{prof_a['culinary_staple']['name']} served alongside {prof_b['culinary_staple']['name']}",
+        "diplomatic_outcome": "POSITIVE_PEACE_ACCORD (Friction reduced by 15 points, trade routes stabilized)"
     }
 
 def generate_civic_interaction(faction_a: str, faction_b: str, interaction_type: str = "HOSPITALITY_MEETING") -> Dict[str, Any]:
@@ -275,6 +345,11 @@ if __name__ == "__main__":
     dip_p.add_argument("--a", default="Sun-Forged Hegemony", help="Faction A")
     dip_p.add_argument("--b", default="Astrolabe Engineers", help="Faction B")
 
+    sum_p = subparsers.add_parser("summit", help="Simulate diplomatic peace summit")
+    sum_p.add_argument("--faction1", default="Sun-Forged Hegemony", help="Host faction")
+    sum_p.add_argument("--faction2", default="Void-Bound Monks", help="Guest faction")
+    sum_p.add_argument("--topic", default="Shared Stargate Corridors & Navigational Beacons", help="Agenda topic")
+
     args = parser.parse_args()
 
     if args.command == "governance":
@@ -286,5 +361,9 @@ if __name__ == "__main__":
     elif args.command == "treaties":
         res = get_diplomatic_treaties(args.a, args.b)
         print(json.dumps(res, indent=2))
+    elif args.command == "summit":
+        res = simulate_diplomatic_summit(args.faction1, args.faction2, args.topic)
+        print(json.dumps(res, indent=2))
     else:
         print(json.dumps({"total_archetypes": len(GOVERNANCE_ARCHETYPES), "archetypes": GOVERNANCE_ARCHETYPES}, indent=2))
+

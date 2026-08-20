@@ -245,6 +245,57 @@ def trigger_market_fluctuation(commodity_name: str, delta_percent: float, reason
         "reason": reason
     }
 
+ECONOMIC_PRINCIPLES = {
+    "supply_and_demand": "When a planet has lots of crystal ore, the price drops so everyone can build lenses. When a storm slows down mining, prices rise to encourage careful use.",
+    "currency_backing": "Every credit represents something real and useful—like pure stored sunlight or precision metal—so money always holds true value for all worlds.",
+    "trade_route_friction": "Longer shipping distances require fuel and pilot care; trading between close neighbor systems keeps goods cheap and fresh."
+}
+
+def analyze_trade_route(
+    origin_world: str = "Helios Prime",
+    dest_world: str = "Aethelgard Gear-City",
+    commodity: str = "Photonic Prism Crystals",
+    tonnage: int = 500
+) -> Dict[str, Any]:
+    """
+    Analyzes trade lane profitability, price differential, transport costs, and currency arbitrage.
+    """
+    eco = load_economy()
+    market = eco.get("commodity_market", get_default_market())
+
+    # Find commodity
+    item = next((v for k, v in market.items() if commodity.lower() in k.lower()), list(market.values())[0])
+    base_p = item["current_price"]
+
+    # Origin and destination price factors
+    origin_stock = get_planetary_stockpile(origin_world)["stockpiles"]
+    has_origin_surplus = any(commodity.lower() in k.lower() for k in origin_stock)
+    
+    buy_price = round(base_p * (0.85 if has_origin_surplus else 1.0))
+    sell_price = round(base_p * (1.30 if "Aethelgard" in dest_world or "Umbra" in dest_world else 1.15))
+    
+    gross_revenue = sell_price * tonnage
+    cargo_cost = buy_price * tonnage
+    transport_shipping_cost = round(tonnage * 12.5)  # 12.5 Credits per ton transit cost
+    net_profit = gross_revenue - cargo_cost - transport_shipping_cost
+    roi_percent = round((net_profit / max(1, cargo_cost + transport_shipping_cost)) * 100, 1)
+
+    return {
+        "status": "TRADE_ROUTE_ANALYZED",
+        "route": f"{origin_world} -> {dest_world}",
+        "commodity": item.get("name", commodity),
+        "cargo_tonnage": tonnage,
+        "origin_buy_price_per_unit": f"{buy_price} Credits",
+        "dest_sell_price_per_unit": f"{sell_price} Credits",
+        "total_cargo_investment": cargo_cost,
+        "estimated_freight_transit_cost": transport_shipping_cost,
+        "estimated_gross_revenue": gross_revenue,
+        "estimated_net_profit": net_profit,
+        "return_on_investment": f"{roi_percent}%",
+        "economic_recommendation": "HIGH_PROFIT_TRADE_CORRIDOR" if roi_percent > 15.0 else "MODERATE_TRADE_CORRIDOR",
+        "intuitive_market_context": f"{origin_world} produces abundant {commodity}, which {dest_world} eagerly needs for high-precision engineering."
+    }
+
 def get_planetary_stockpile(world_name: str) -> Dict[str, Any]:
     eco = load_economy()
     stockpiles = eco.get("planetary_stockpiles", {})
@@ -292,6 +343,13 @@ if __name__ == "__main__":
     stock_p = subparsers.add_parser("stockpile", help="Get world resource stockpile")
     stock_p.add_argument("--world", required=True)
 
+    # Route
+    route_p = subparsers.add_parser("route", help="Analyze trade route profitability")
+    route_p.add_argument("--origin", default="Helios Prime")
+    route_p.add_argument("--dest", default="Aethelgard Gear-City")
+    route_p.add_argument("--cargo", default="Photonic Prism Crystals")
+    route_p.add_argument("--tonnage", type=int, default=500)
+
     args = parser.parse_args()
 
     if args.command == "convert":
@@ -302,5 +360,8 @@ if __name__ == "__main__":
         print(json.dumps(trigger_market_fluctuation(args.commodity, args.delta, args.reason), indent=2))
     elif args.command == "stockpile":
         print(json.dumps(get_planetary_stockpile(args.world), indent=2))
+    elif args.command == "route":
+        print(json.dumps(analyze_trade_route(args.origin, args.dest, args.cargo, args.tonnage), indent=2))
     else:
         print(json.dumps(get_market_prices(getattr(args, "category", None)), indent=2))
+
