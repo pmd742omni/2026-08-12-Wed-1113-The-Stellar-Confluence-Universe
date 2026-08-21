@@ -212,8 +212,30 @@ SOCIOLOGICAL_SYSTEMS = {
         "First Do No Harm: Every new world must be observed with gentleness and curiosity, leaving its living biomes pristine.",
         "The Open Light: Astronomical maps and navigation routes must be shared freely with all traveling wayfarers.",
         "Non-Intrusive Wonder: Alien creatures are allies and teachers; observe their migratory song without disturbing their young."
-    ]
+    ],
+    "the_untuned_dynamics": {
+        "definition": "Baseline un-augmented humans living without bio-piezoelectric quartz bone implants or retinal cone enhancements.",
+        "frontier_economic_realities": "In heavy radiation belts or coronal frontiers, baseline workers rely on leaded bronze aprons, insulated suits, and mechanical chronometers rather than internal bio-resonance.",
+        "philosophical_movement": "The Natural Accord: A vocal interstellar faction championing un-tuned human bodily integrity and pure mechanical craftsmanship.",
+        "lattice_rejection_mastery": "Individuals whose biology rejects crystal grafting become the galaxy's most revered master clocksmiths, optical lens polishers, and acoustic wave navigators.",
+        "societal_integration": "Respected as essential anchors of grounding, reminding the tuned artificers of baseline human perseverance and non-resonant wisdom."
+    }
 }
+
+def get_untuned_sociological_profile(world_or_colony: str = "Aethel-Prime Frontier") -> Dict[str, Any]:
+    """Returns the sociological profile and cultural status of the Un-Tuned on a target world."""
+    return {
+        "world_or_colony": world_or_colony,
+        "population_classification": "Baseline Humanity (The Un-Tuned)",
+        "dynamics": SOCIOLOGICAL_SYSTEMS["the_untuned_dynamics"],
+        "primary_vocations": [
+            "Master Escapement Gearwright",
+            "Acoustic Subspace Signal Calibrator",
+            "Heavy Radiation Shielding Fabricator",
+            "Planetary Trade Route Arbiter"
+        ],
+        "cultural_respect_index": "94 / 100 (Revered for unaugmented precision & mechanical mastery)"
+    }
 
 def get_governance_model(faction_or_world: str) -> Dict[str, Any]:
     """Retrieves or generates the governance model and political structure for a faction or world."""
@@ -254,6 +276,7 @@ def get_sociological_profile(faction_or_world: str = "Sun-Forged Hegemony") -> D
         "culinary_staple": cuisine,
         "sacred_taboos": SOCIOLOGICAL_SYSTEMS["sacred_cosmic_taboos"],
         "ethics_of_discovery": SOCIOLOGICAL_SYSTEMS["ethics_of_discovery"],
+        "untuned_dynamics": SOCIOLOGICAL_SYSTEMS["the_untuned_dynamics"],
         "architectural_style": arch
     }
 

@@ -1,0 +1,310 @@
+{
+  "version": "1.0",
+  "core_energies": {
+    "CONFLUENCE_WAVEFRONT": {
+      "name": "Confluence Wavefront Standing Wave",
+      "category": "Spacetime Harmonic",
+      "source": "Primordial Trinary Singularity Dynamo at Galactic Core",
+      "frequency_band": "15 deg / 60 deg / Storm Crests (144.0 MHz Base)",
+      "base_wavelength_ly": 5.0,
+      "base_intensity_w_m2": 1500.0,
+      "primary_application": "Propulsion, solar sail amplification, clockwork resonance",
+      "physical_constraint": "Dependent on Facing Angle (theta); high heat at Zenith, blocked at Nadir",
+      "drive_compatibility": [
+        "SOLAR_SAIL_CUTTER",
+        "CONFLUENCE_WAVE_RIDER",
+        "ASTROLABE_GEAR_GONDOLA"
+      ]
+    },
+    "CORONAL_PLASMA_FLUX": {
+      "name": "Coronal Prominence Plasma Flux",
+      "category": "Stellar Thermal / Magnetic",
+      "source": "Stellar magnetic burst loops and flare eruptions",
+      "frequency_band": "High-energy magnetohydrodynamic thermal (450-800 THz)",
+      "base_wavelength_ly": 0.001,
+      "base_intensity_w_m2": 8500.0,
+      "primary_application": "Kinetic plasma thrust, thermal smelting, laser charging, heat shields",
+      "physical_constraint": "Rapid radiator overheating; requires magnetic containment",
+      "drive_compatibility": [
+        "ATMOSPHERIC_SKIMMER",
+        "CORONAL_PLASMA_SCOOPER",
+        "DYSON_ACCELERATOR_RUNNER"
+      ]
+    },
+    "DARK_MATTER_DRIFT": {
+      "name": "Primordial Dark Matter Drift",
+      "category": "Sub-Spatial Gravitational",
+      "source": "Intergalactic dark matter currents between spiral arms",
+      "frequency_band": "Non-baryonic low-frequency gravitational current (0.01-10 Hz)",
+      "base_wavelength_ly": 25.0,
+      "base_intensity_w_m2": 320.0,
+      "primary_application": "Silent vacuum gliding, soundless stealth, cold shadow phasing",
+      "physical_constraint": "Extreme cold exhaustion; physical weapon vulnerability",
+      "drive_compatibility": [
+        "VOID_PHASE_SHUTTLE",
+        "DARK_MATTER_CARAVAN_BARGE"
+      ]
+    },
+    "TACHYON_CHRONO_FLUX": {
+      "name": "Tachyon Chrono-Flux",
+      "category": "Temporal Slipstream",
+      "source": "Cosmic vacuum density pockets and frame-dragging ripples",
+      "frequency_band": "Superluminal phase-velocity slipstream (1.2-5.8 GHz)",
+      "base_wavelength_ly": 12.0,
+      "base_intensity_w_m2": 2100.0,
+      "primary_application": "Accelerated transit slipstreams, precision chronometer synchronization",
+      "physical_constraint": "Temporal dilation strain; navigation sensor displacement",
+      "drive_compatibility": [
+        "TACHYON_SLIPSTREAM_FRIGATE",
+        "COMET_SUBLIMATION_SKIFF"
+      ]
+    },
+    "BIOPHOTONIC_LIFE_FORCE": {
+      "name": "Aetheric Biophotonic Life-Force",
+      "category": "Organic Xenobiological",
+      "source": "Living canopy forests, bioluminescent coral colossi, grav-whales",
+      "frequency_band": "Bio-electric photonic chlorophyll resonance (520-565 nm)",
+      "base_wavelength_ly": 0.05,
+      "base_intensity_w_m2": 650.0,
+      "primary_application": "Organic hull regeneration, neuro-spore mind-links, living ship growth",
+      "physical_constraint": "Requires sunlight/nutrient feeding; vulnerable to radiation poisoning",
+      "drive_compatibility": [
+        "BENTHIC_ABYSSAL_CRAWLER",
+        "BIO_ALCHEMIST_MANTA_CRAFT"
+      ]
+    },
+    "SINGULARITY_GRAV_TORSION": {
+      "name": "Singularity Grav-Torsion",
+      "category": "Micro-Singularity Rotational",
+      "source": "Artificial micro-black hole containment vessels and core dynamos",
+      "frequency_band": "High-torque gravitational frame-dragging (10-100 kHz)",
+      "base_wavelength_ly": 0.2,
+      "base_intensity_w_m2": 12000.0,
+      "primary_application": "Planetary-scale tractor beams, artificial gravity plating, core drills",
+      "physical_constraint": "Critical containment rupture risk; immense mass drag",
+      "drive_compatibility": [
+        "CYCLER_HABITAT_SHIP",
+        "ION_FREIGHTER_CONVOY"
+      ]
+    },
+    "VACUUM_ZERO_POINT": {
+      "name": "Vacuum Zero-Point Ground State",
+      "category": "Subspace Neutral Baseline",
+      "source": "Keystone Subspace Gateways and wormhole tunnels",
+      "frequency_band": "Quantum vacuum ground state (Re = 0.5, Neutral)",
+      "base_wavelength_ly": 0.0,
+      "base_intensity_w_m2": 500.0,
+      "primary_application": "Standard non-resonant kinetics, baseline mechanical calibration",
+      "physical_constraint": "All Wavefront amplification completely decoupled",
+      "drive_compatibility": [
+        "KEYSTONE_SUB_SPACE_GATEWAY",
+        "PLANETARY_MAGLEV_EXPRESS"
+      ]
+    },
+    "PIEZOGRAVITIC_HARMONIC": {
+      "name": "Piezogravitic Mantle Lattice Harmonic",
+      "category": "Geological Piezoelectric / Acoustic",
+      "source": "Deep planetary quartz spires compressed by gravitational tides",
+      "frequency_band": "Sub-acoustic seismic piezoelectric pulses (12-48 Hz)",
+      "base_wavelength_ly": 0.02,
+      "base_intensity_w_m2": 3800.0,
+      "primary_application": "Clean planetary power grids, geothermal elevators, acoustic shielding",
+      "physical_constraint": "Requires seismic stabilization jackets; risk of crystal shear under overtension",
+      "drive_compatibility": [
+        "ORBITAL_SKYHOOK_TETHER",
+        "SAND_SAIL_SKIFF"
+      ]
+    },
+    "MAGNETAR_POLAR_JET": {
+      "name": "Magnetar Relativistic Synchrotron Pulse",
+      "category": "High-B Synchrotron Radiation",
+      "source": "Ultra-dense neutron star magnetic poles (>10^11 Tesla)",
+      "frequency_band": "Relativistic synchrotron X-ray/Gamma burst (10^18 Hz)",
+      "base_wavelength_ly": 0.0001,
+      "base_intensity_w_m2": 25000.0,
+      "primary_application": "Deep-space slingshot acceleration, extreme alloy forging, magnetic catapults",
+      "physical_constraint": "Lethal ionization without triple magnetic shielding; destroys unprotected electronics",
+      "drive_compatibility": [
+        "DYSON_ACCELERATOR_RUNNER",
+        "CORONAL_PLASMA_SCOOPER"
+      ]
+    },
+    "CHRONO_SPATIAL_PHASE": {
+      "name": "Chrono-Spatial Phase Harmonic",
+      "category": "Sub-Quantum Acoustic Waveguide",
+      "source": "Ancient Keystone Orrery alignments and resonance bells",
+      "frequency_band": "Prismatic acoustic octave harmonics (432-864 Hz)",
+      "base_wavelength_ly": 8.0,
+      "base_intensity_w_m2": 1850.0,
+      "primary_application": "Subspace beacon synchronization, long-range distress singing, peaceful navigation",
+      "physical_constraint": "Requires precise pitch matching; dissonant chords cause signal dispersal",
+      "drive_compatibility": [
+        "CRYSTAL_RESONANCE_CRUISER",
+        "CONFLUENCE_WAVE_RIDER"
+      ]
+    }
+  },
+  "discovered_energies": {
+    "ENG-2D1F-38F8": {
+      "energy_id": "ENG-2D1F-38F8",
+      "name": "Void Pulse Flare",
+      "frequency_ghz": 240.5,
+      "coordinates": [
+        10,
+        20,
+        30
+      ],
+      "description": "Exotic grav-radiation flare",
+      "discovery": {
+        "discoverer": "Dr. Vance",
+        "book_id": 1,
+        "timestamp": "2026-08-21T08:47:29.058243"
+      },
+      "harnessing_discipline": "Resonant Spectrometry & Field Containment"
+    }
+  },
+  "forces": {
+    "CONFLUENCE_WAVEFRONT": {
+      "name": "Confluence Wavefront Standing Wave",
+      "category": "Spacetime Harmonic",
+      "source": "Primordial Trinary Singularity Dynamo at Galactic Core",
+      "frequency_band": "15 deg / 60 deg / Storm Crests (144.0 MHz Base)",
+      "base_wavelength_ly": 5.0,
+      "base_intensity_w_m2": 1500.0,
+      "primary_application": "Propulsion, solar sail amplification, clockwork resonance",
+      "physical_constraint": "Dependent on Facing Angle (theta); high heat at Zenith, blocked at Nadir",
+      "drive_compatibility": [
+        "SOLAR_SAIL_CUTTER",
+        "CONFLUENCE_WAVE_RIDER",
+        "ASTROLABE_GEAR_GONDOLA"
+      ]
+    },
+    "CORONAL_PLASMA_FLUX": {
+      "name": "Coronal Prominence Plasma Flux",
+      "category": "Stellar Thermal / Magnetic",
+      "source": "Stellar magnetic burst loops and flare eruptions",
+      "frequency_band": "High-energy magnetohydrodynamic thermal (450-800 THz)",
+      "base_wavelength_ly": 0.001,
+      "base_intensity_w_m2": 8500.0,
+      "primary_application": "Kinetic plasma thrust, thermal smelting, laser charging, heat shields",
+      "physical_constraint": "Rapid radiator overheating; requires magnetic containment",
+      "drive_compatibility": [
+        "ATMOSPHERIC_SKIMMER",
+        "CORONAL_PLASMA_SCOOPER",
+        "DYSON_ACCELERATOR_RUNNER"
+      ]
+    },
+    "DARK_MATTER_DRIFT": {
+      "name": "Primordial Dark Matter Drift",
+      "category": "Sub-Spatial Gravitational",
+      "source": "Intergalactic dark matter currents between spiral arms",
+      "frequency_band": "Non-baryonic low-frequency gravitational current (0.01-10 Hz)",
+      "base_wavelength_ly": 25.0,
+      "base_intensity_w_m2": 320.0,
+      "primary_application": "Silent vacuum gliding, soundless stealth, cold shadow phasing",
+      "physical_constraint": "Extreme cold exhaustion; physical weapon vulnerability",
+      "drive_compatibility": [
+        "VOID_PHASE_SHUTTLE",
+        "DARK_MATTER_CARAVAN_BARGE"
+      ]
+    },
+    "TACHYON_CHRONO_FLUX": {
+      "name": "Tachyon Chrono-Flux",
+      "category": "Temporal Slipstream",
+      "source": "Cosmic vacuum density pockets and frame-dragging ripples",
+      "frequency_band": "Superluminal phase-velocity slipstream (1.2-5.8 GHz)",
+      "base_wavelength_ly": 12.0,
+      "base_intensity_w_m2": 2100.0,
+      "primary_application": "Accelerated transit slipstreams, precision chronometer synchronization",
+      "physical_constraint": "Temporal dilation strain; navigation sensor displacement",
+      "drive_compatibility": [
+        "TACHYON_SLIPSTREAM_FRIGATE",
+        "COMET_SUBLIMATION_SKIFF"
+      ]
+    },
+    "BIOPHOTONIC_LIFE_FORCE": {
+      "name": "Aetheric Biophotonic Life-Force",
+      "category": "Organic Xenobiological",
+      "source": "Living canopy forests, bioluminescent coral colossi, grav-whales",
+      "frequency_band": "Bio-electric photonic chlorophyll resonance (520-565 nm)",
+      "base_wavelength_ly": 0.05,
+      "base_intensity_w_m2": 650.0,
+      "primary_application": "Organic hull regeneration, neuro-spore mind-links, living ship growth",
+      "physical_constraint": "Requires sunlight/nutrient feeding; vulnerable to radiation poisoning",
+      "drive_compatibility": [
+        "BENTHIC_ABYSSAL_CRAWLER",
+        "BIO_ALCHEMIST_MANTA_CRAFT"
+      ]
+    },
+    "SINGULARITY_GRAV_TORSION": {
+      "name": "Singularity Grav-Torsion",
+      "category": "Micro-Singularity Rotational",
+      "source": "Artificial micro-black hole containment vessels and core dynamos",
+      "frequency_band": "High-torque gravitational frame-dragging (10-100 kHz)",
+      "base_wavelength_ly": 0.2,
+      "base_intensity_w_m2": 12000.0,
+      "primary_application": "Planetary-scale tractor beams, artificial gravity plating, core drills",
+      "physical_constraint": "Critical containment rupture risk; immense mass drag",
+      "drive_compatibility": [
+        "CYCLER_HABITAT_SHIP",
+        "ION_FREIGHTER_CONVOY"
+      ]
+    },
+    "VACUUM_ZERO_POINT": {
+      "name": "Vacuum Zero-Point Ground State",
+      "category": "Subspace Neutral Baseline",
+      "source": "Keystone Subspace Gateways and wormhole tunnels",
+      "frequency_band": "Quantum vacuum ground state (Re = 0.5, Neutral)",
+      "base_wavelength_ly": 0.0,
+      "base_intensity_w_m2": 500.0,
+      "primary_application": "Standard non-resonant kinetics, baseline mechanical calibration",
+      "physical_constraint": "All Wavefront amplification completely decoupled",
+      "drive_compatibility": [
+        "KEYSTONE_SUB_SPACE_GATEWAY",
+        "PLANETARY_MAGLEV_EXPRESS"
+      ]
+    },
+    "PIEZOGRAVITIC_HARMONIC": {
+      "name": "Piezogravitic Mantle Lattice Harmonic",
+      "category": "Geological Piezoelectric / Acoustic",
+      "source": "Deep planetary quartz spires compressed by gravitational tides",
+      "frequency_band": "Sub-acoustic seismic piezoelectric pulses (12-48 Hz)",
+      "base_wavelength_ly": 0.02,
+      "base_intensity_w_m2": 3800.0,
+      "primary_application": "Clean planetary power grids, geothermal elevators, acoustic shielding",
+      "physical_constraint": "Requires seismic stabilization jackets; risk of crystal shear under overtension",
+      "drive_compatibility": [
+        "ORBITAL_SKYHOOK_TETHER",
+        "SAND_SAIL_SKIFF"
+      ]
+    },
+    "MAGNETAR_POLAR_JET": {
+      "name": "Magnetar Relativistic Synchrotron Pulse",
+      "category": "High-B Synchrotron Radiation",
+      "source": "Ultra-dense neutron star magnetic poles (>10^11 Tesla)",
+      "frequency_band": "Relativistic synchrotron X-ray/Gamma burst (10^18 Hz)",
+      "base_wavelength_ly": 0.0001,
+      "base_intensity_w_m2": 25000.0,
+      "primary_application": "Deep-space slingshot acceleration, extreme alloy forging, magnetic catapults",
+      "physical_constraint": "Lethal ionization without triple magnetic shielding; destroys unprotected electronics",
+      "drive_compatibility": [
+        "DYSON_ACCELERATOR_RUNNER",
+        "CORONAL_PLASMA_SCOOPER"
+      ]
+    },
+    "CHRONO_SPATIAL_PHASE": {
+      "name": "Chrono-Spatial Phase Harmonic",
+      "category": "Sub-Quantum Acoustic Waveguide",
+      "source": "Ancient Keystone Orrery alignments and resonance bells",
+      "frequency_band": "Prismatic acoustic octave harmonics (432-864 Hz)",
+      "base_wavelength_ly": 8.0,
+      "base_intensity_w_m2": 1850.0,
+      "primary_application": "Subspace beacon synchronization, long-range distress singing, peaceful navigation",
+      "physical_constraint": "Requires precise pitch matching; dissonant chords cause signal dispersal",
+      "drive_compatibility": [
+        "CRYSTAL_RESONANCE_CRUISER",
+        "CONFLUENCE_WAVE_RIDER"
+      ]
+    }
+  }
+}

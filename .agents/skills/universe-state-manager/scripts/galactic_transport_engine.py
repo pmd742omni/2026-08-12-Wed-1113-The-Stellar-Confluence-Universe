@@ -319,15 +319,19 @@ def calculate_transit_kinetics(
     vehicle_id: str,
     distance_units: float,
     speed_multiplier: float = 1.0,
-    cargo_tonnage: float = 0.0
+    cargo_tonnage: float = 0.0,
+    thermal_ambient_k: float = 2.7
 ) -> Dict[str, Any]:
     """
-    Calculates travel time, energy expenditure, acceleration profile,
-    and pilot experience for any transport journey across the universe.
+    Calculates travel time, relativistic kinematics (Lorentz factor gamma, proper time tau),
+    energy expenditure, thermal heat-sink saturation, and pilot handling protocols.
     """
     v_prof = get_vehicle_profile(vehicle_id) or get_all_vehicles()[0]
-    
     tier = v_prof.get("tier_category", "TIER_1_INTRA_PLANETARY")
+    
+    lorentz_gamma = 1.0
+    time_dilation_ratio = 1.0
+    c_fraction = 0.0
     
     if "INTRA_PLANETARY" in tier:
         # Distance in km; standard 1 unit = 1,000 km
@@ -335,22 +339,41 @@ def calculate_transit_kinetics(
         speed_kmh = max(10, v_prof.get("max_speed_kmh", 1000) * speed_multiplier)
         time_hours = dist_km / speed_kmh
         gut_time = max(0.1, round(time_hours / 24.0, 2))
+        c_fraction = (speed_kmh / 3600.0) / 299792.458
+        lorentz_gamma = 1.0
     elif "INTERPLANETARY" in tier:
         # Distance in AU; standard 1 unit = 1 AU
-        c_frac = max(0.005, v_prof.get("max_speed_c_fraction", 0.02) * speed_multiplier)
-        gut_time = max(0.2, round((distance_units * 0.6) / (c_frac / 0.01), 2))
+        c_fraction = max(0.005, min(0.99, v_prof.get("max_speed_c_fraction", 0.02) * speed_multiplier))
+        gut_time = max(0.2, round((distance_units * 0.6) / (c_fraction / 0.01), 2))
+        lorentz_gamma = round(1.0 / math.sqrt(max(0.0001, 1.0 - (c_fraction ** 2))), 4)
     elif "INTERSTELLAR" in tier:
         # Distance in Light-Years or Sector Units (1 Sector unit = 5 LY)
-        c_frac = max(1.0, v_prof.get("max_speed_c_fraction", 8.0) * speed_multiplier)
-        gut_time = max(0.5, round((distance_units * 5.0) / c_frac, 2))
+        c_fraction = max(0.5, v_prof.get("max_speed_c_fraction", 8.0) * speed_multiplier)
+        gut_time = max(0.5, round((distance_units * 5.0) / c_fraction, 2))
+        # Superluminal wave-riding or sub-light relativistic
+        if c_fraction < 1.0:
+            lorentz_gamma = round(1.0 / math.sqrt(max(0.0001, 1.0 - (c_fraction ** 2))), 4)
+        else:
+            lorentz_gamma = 1.0 # Wavefront phase compression keeps proper frame stable
     else: # INTERGALACTIC / CULTURAL
-        c_frac = max(10.0, v_prof.get("max_speed_c_fraction", 50.0) * speed_multiplier)
-        gut_time = max(0.1, round(distance_units / c_frac, 2))
+        c_fraction = max(1.0, v_prof.get("max_speed_c_fraction", 50.0) * speed_multiplier)
+        gut_time = max(0.1, round(distance_units / c_fraction, 2))
+        lorentz_gamma = 1.0
 
-    # Weight penalty
+    # Cargo weight penalty
     max_cargo = max(1.0, v_prof.get("cargo_capacity_tons", 50.0))
     load_ratio = min(1.5, cargo_tonnage / max_cargo) if cargo_tonnage > 0 else 0.0
     effective_gut = round(gut_time * (1.0 + (load_ratio * 0.25)), 2)
+    
+    # Proper ship time vs coordinate galactic time (Relativistic time dilation)
+    proper_time_gut = round(effective_gut / max(1.0, lorentz_gamma), 2)
+
+    # Thermal heat-sink accumulation (0-100%)
+    base_thermal = min(85.0, round(15.0 + (c_fraction * 25.0) + (distance_units * 1.5), 1))
+    thermal_status = "NOMINAL_COOLING" if base_thermal < 50.0 else ("ELEVATED_WARMTH" if base_thermal < 75.0 else "MANDATORY_VENTING_REQUIRED")
+
+    # Energy expenditure in Gigajoules
+    energy_expended_gj = round(max(10.0, distance_units * 450.0 * (1.0 + load_ratio)), 1)
 
     return {
         "vehicle_id": v_prof["vehicle_id"],
@@ -359,7 +382,14 @@ def calculate_transit_kinetics(
         "distance_units": distance_units,
         "cargo_tonnage": cargo_tonnage,
         "load_factor": f"{round(load_ratio * 100, 1)}%",
+        "velocity_c_fraction": round(c_fraction, 4),
+        "lorentz_gamma_factor": lorentz_gamma,
+        "coordinate_time_gut": effective_gut,
+        "crew_proper_time_gut": proper_time_gut,
         "estimated_duration_gut": effective_gut,
+        "energy_expended_gj": energy_expended_gj,
+        "thermal_sink_saturation_pct": f"{base_thermal}%",
+        "thermal_status": thermal_status,
         "propulsion_type": v_prof["propulsion_type"],
         "energy_source": v_prof.get("energy_source", "Confluence Harmonic Array"),
         "cockpit_sensory_feel": v_prof.get("cockpit_vibe", "Steady flight instrumentation."),

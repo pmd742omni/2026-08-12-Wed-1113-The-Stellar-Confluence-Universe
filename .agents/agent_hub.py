@@ -210,13 +210,13 @@ def handle_author(args):
         res = sensory_audio_director.analyze_soundscape(sample)
         print(json.dumps(res, indent=2))
     elif args.action == "draft":
-        import story_generator
-        res = story_generator.generate_full_chapter_prose(args.book_id or 1, args.chapter or 1, save=args.save if hasattr(args, "save") else False, plot_style=getattr(args, "style", None))
+        import chapter_authoring_orchestrator
+        res = chapter_authoring_orchestrator.prepare_authoring_brief(args.book_id or 1, args.chapter or 1)
         print(json.dumps(res, indent=2))
     elif args.action == "dual-layer":
-        import story_generator
-        res = story_generator.generate_dual_layer_annotated_chapter(args.book_id or 1, args.chapter or 1, plot_style=getattr(args, "style", None))
-        print(json.dumps(res, indent=2))
+        import model_prompt_architect
+        ctx = model_prompt_architect.build_model_authoring_context(args.book_id or 1, args.chapter or 1)
+        print(json.dumps({"dual_layer_brief": ctx}, indent=2))
     elif args.action == "quest":
         import galactic_adventure_engine
         gut_val = getattr(args, "gut", 100) or 100
@@ -231,21 +231,27 @@ def handle_author(args):
             prompt_str = model_prompt_architect.generate_model_authoring_prompt(args.book_id or 1, args.chapter or 1, getattr(args, "gut", None))
             print(prompt_str)
     elif args.action == "write":
-        import chapter_engine
+        import chapter_authoring_orchestrator
         b_id = args.book_id or 1
         c_num = args.chapter or 1
         content = args.text or ""
         if args.file and os.path.exists(args.file):
             with open(args.file, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
-        char_info = chapter_engine.get_character_info(b_id)
-        title_slug = chapter_engine.slugify(char_info["title"])
-        book_folder = os.path.join(BOOKS_LIB_DIR, f"Book_{b_id:02d}_{title_slug}")
-        os.makedirs(book_folder, exist_ok=True)
-        target_file = os.path.join(book_folder, f"Book_{b_id:02d}_Chapter_{c_num:02d}.md")
-        with open(target_file, "w", encoding="utf-8") as f:
-            f.write(content)
-        print(json.dumps({"status": "saved", "book_id": b_id, "chapter": c_num, "saved_to": target_file}, indent=2))
+        res = chapter_authoring_orchestrator.save_authored_chapter(b_id, c_num, content, edition=getattr(args, "edition", None))
+        print(json.dumps(res, indent=2))
+    elif args.action == "evaluate":
+        import chapter_prose_evaluator
+        if args.file and os.path.exists(args.file):
+            res = chapter_prose_evaluator.evaluate_chapter_file(args.file)
+        else:
+            sample = args.text or "The golden lens hummed with light. Caelum adjusted his copper goggles calmly."
+            res = chapter_prose_evaluator.evaluate_chapter_prose(sample)
+        print(json.dumps(res, indent=2))
+    elif args.action == "complete":
+        import chapter_engine
+        res = chapter_engine.complete_chapter_generation(synopsis=args.synopsis or "Chapter Completed", gut_delta=args.gut_delta or 1)
+        print(json.dumps(res, indent=2))
     else:
         print(json.dumps({"error": f"Unknown author action: {args.action}"}, indent=2))
 
@@ -495,6 +501,8 @@ def handle_sociology(args):
         res = galactic_sociology_politics_engine.get_sociological_profile(args.world or "Helios Prime")
     elif args.action == "interaction":
         res = galactic_sociology_politics_engine.generate_civic_interaction(args.faction1 or "Sun-Forged Hegemony", args.faction2 or "Void-Bound Monks", args.type or "HOSPITALITY_MEETING")
+    elif args.action == "untuned":
+        res = galactic_sociology_politics_engine.get_untuned_sociological_profile(args.world or "Aethel-Prime Frontier")
     else:
         res = {"error": f"Unknown sociology action: {args.action}"}
     print(json.dumps(res, indent=2))
@@ -502,18 +510,28 @@ def handle_sociology(args):
 def handle_economy(args):
     """Dispatches galactic trade economy, commodities, and currency conversion commands."""
     import galactic_trade_economy
+    ed_flag = getattr(args, "edition", None)
     if args.action == "market":
-        res = galactic_trade_economy.get_market_prices(args.category)
+        res = galactic_trade_economy.get_market_prices(args.category, edition=ed_flag)
     elif args.action == "convert":
         res = galactic_trade_economy.convert_currency(args.amount or 100.0, args.from_curr or "SOL_CREDIT", args.to_curr or "GUILD_SCRIP")
     elif args.action == "dispatch":
         res = galactic_trade_economy.dispatch_convoy(args.origin or "Helios Prime", args.dest or "Aethelgard Gear-City", args.cargo or "Photonic Prism Crystals", args.tonnage or 500, args.gut or 100)
     elif args.action == "fluctuate":
-        res = galactic_trade_economy.trigger_market_fluctuation(args.commodity or "Photonic Prism Crystals", args.delta or 10.0, args.reason or "Command hub manual update")
+        res = galactic_trade_economy.trigger_market_fluctuation(args.commodity or "Photonic Prism Crystals", args.delta or 10.0, args.reason or "Command hub manual update", edition=ed_flag)
     elif args.action == "stockpile":
         res = galactic_trade_economy.get_planetary_stockpile(args.world or "Helios Prime")
     elif args.action == "route":
         res = galactic_trade_economy.analyze_trade_route(args.origin or "Helios Prime", args.dest or "Aethelgard Gear-City", args.cargo or "Photonic Prism Crystals", args.tonnage or 500)
+    elif args.action == "crisis":
+        res = galactic_trade_economy.trigger_economic_crisis(
+            crisis_type=getattr(args, "crisis_type", "SOLAR_FLARE_EMBARGO") or "SOLAR_FLARE_EMBARGO",
+            affected_commodity=getattr(args, "commodity", "Photonic Prism Crystals") or "Photonic Prism Crystals",
+            price_delta_pct=getattr(args, "delta", 45.0) or 45.0,
+            description=getattr(args, "desc", "Stellar corridor temporary closure") or "Stellar corridor temporary closure",
+            current_gut=getattr(args, "gut", 100) or 100,
+            edition=ed_flag
+        )
     else:
         res = {"error": f"Unknown economy action: {args.action}"}
     print(json.dumps(res, indent=2))
@@ -642,13 +660,11 @@ def handle_read(args):
     else:
         chap_num = args.chapter or 1
         target_file = os.path.join(book_folder, f"Book_{book_id:02d}_Chapter_{chap_num:02d}.md")
-        if not os.path.exists(target_file):
-            import story_generator
-            story_generator.generate_full_chapter_prose(book_id, chap_num, save=True)
 
     if not os.path.exists(target_file):
-        print(colorize(f"Error: Manuscript file {target_file} could not be loaded.", TermColor.BRIGHT_RED))
-        sys.exit(1)
+        print(colorize(f"Notice: Chapter file {target_file} not yet written.", TermColor.BRIGHT_YELLOW))
+        print(colorize(f"To author this chapter, run: python .agents/hub.py author prompt --book-id {book_id} --chapter {args.chapter or 1}", TermColor.BRIGHT_CYAN))
+        sys.exit(0)
 
     with open(target_file, "r", encoding="utf-8", errors="ignore") as f:
         content = f.read()
@@ -671,7 +687,6 @@ def handle_read(args):
         elif line.startswith("---"):
             print(colorize("-" * w, TermColor.DIM))
         elif '"' in line:
-            # Highlight dialogue in quotes with yellow
             parts = line.split('"')
             colored_line = ""
             for idx, p in enumerate(parts):
@@ -732,18 +747,8 @@ def handle_library(args=None):
     print(sep + "\n")
 
 def handle_story(args):
-    """Dispatches story simulation, review, and compilation actions."""
-    if args.action == "simulate":
-        import universe_simulation_loop
-        res = universe_simulation_loop.run_simulation(
-            steps=args.steps,
-            target_chapter=args.target_chapter,
-            gut_delta=args.gut_delta or 1,
-            dry_run=args.dry_run,
-            auto_compile=not args.no_compile
-        )
-        print(json.dumps(res, indent=2))
-    elif args.action == "compile-all":
+    """Dispatches story review and compilation actions."""
+    if args.action == "compile-all":
         import anthology_compiler
         res = anthology_compiler.compile_all_books(edition=getattr(args, "edition", None))
         print(json.dumps(res, indent=2))
@@ -786,6 +791,114 @@ def handle_story(args):
         }, indent=2))
     else:
         print(json.dumps({"error": f"Unknown story action: {args.action}"}, indent=2))
+
+def handle_encyclopedia(args):
+    """Dispatches Universal Encyclopedia Network actions."""
+    import universal_encyclopedia_network
+    ed_flag = getattr(args, "edition", None)
+    if args.action == "discover":
+        coords = [int(x.strip()) for x in args.coords.strip("[]()").split(",")] if getattr(args, "coords", None) else [15, -8, 42]
+        res = universal_encyclopedia_network.register_discovery(
+            entity_type=args.type or "species",
+            name=args.name or "Photonic Light-Moth",
+            hero=args.hero or "Caelum Dawnrunner",
+            book_id=getattr(args, "book_id", 1) or 1,
+            world=getattr(args, "world", "Helios Prime") or "Helios Prime",
+            coords=coords,
+            gut=getattr(args, "gut", 100) or 100,
+            edition=ed_flag
+        )
+        print(json.dumps(res, indent=2))
+    elif args.action == "list":
+        res = universal_encyclopedia_network.list_discoveries(entity_type=getattr(args, "type", None), edition=ed_flag)
+        print(json.dumps(res, indent=2))
+    elif args.action == "search":
+        res = universal_encyclopedia_network.search_encyclopedia(args.query or "", edition=ed_flag)
+        print(json.dumps(res, indent=2))
+    elif args.action == "sample":
+        res = universal_encyclopedia_network.update_sample_custody(
+            catalog_id=args.catalog_id,
+            status=args.status or "IN_SPECTROMETER",
+            findings=args.findings or "Analysis completed in vessel research bay.",
+            edition=ed_flag
+        )
+        print(json.dumps(res, indent=2))
+    else:
+        print(json.dumps({"error": f"Unknown encyclopedia action: {args.action}"}, indent=2))
+
+def handle_energy(args):
+    """Dispatches Cosmic Energy Matrix actions."""
+    import cosmic_energy_matrix
+    ed_flag = getattr(args, "edition", None)
+    if args.action == "catalog":
+        res = cosmic_energy_matrix.load_energy_matrix(edition=ed_flag)
+        print(json.dumps(res, indent=2))
+    elif args.action == "discover":
+        coords = [int(x.strip()) for x in args.coords.strip("[]()").split(",")] if getattr(args, "coords", None) else [0, 0, 0]
+        res = cosmic_energy_matrix.discover_new_energy(
+            name=args.name or "Tachyon Harmonic Rift",
+            coords=coords,
+            frequency_ghz=getattr(args, "frequency", 144.5) or 144.5,
+            description=args.description or "Naturally occurring high-frequency resonance field.",
+            discoverer=getattr(args, "discoverer", "Caelum Dawnrunner") or "Caelum Dawnrunner",
+            book_id=getattr(args, "book_id", 1) or 1,
+            edition=ed_flag
+        )
+        print(json.dumps(res, indent=2))
+    elif args.action == "simulate":
+        res = cosmic_energy_matrix.simulate_energy_interaction(
+            energy_1=args.energy1 or "CONFLUENCE_WAVEFRONT",
+            energy_2=args.energy2 or "CORONAL_PLASMA_FLUX",
+            facing_angle=getattr(args, "facing", 45.0) or 45.0
+        )
+        print(json.dumps(res, indent=2))
+    elif args.action == "propagate":
+        res = cosmic_energy_matrix.calculate_field_propagation(
+            energy_key=getattr(args, "energy", "CONFLUENCE_WAVEFRONT") or "CONFLUENCE_WAVEFRONT",
+            distance_units=getattr(args, "dist", 5.0) or 5.0,
+            facing_angle=getattr(args, "facing", 30.0) or 30.0,
+            source_power_mw=getattr(args, "power", 1000.0) or 1000.0
+        )
+        print(json.dumps(res, indent=2))
+    elif args.action == "efficiency":
+        res = cosmic_energy_matrix.calculate_drive_efficiency(
+            energy_key=getattr(args, "energy", "CONFLUENCE_WAVEFRONT") or "CONFLUENCE_WAVEFRONT",
+            vehicle_id=getattr(args, "vehicle", "CONFLUENCE_WAVE_RIDER") or "CONFLUENCE_WAVE_RIDER",
+            thermal_sink_pct=getattr(args, "sink", 30.0) or 30.0,
+            facing_angle=getattr(args, "facing", 30.0) or 30.0
+        )
+        print(json.dumps(res, indent=2))
+    else:
+        print(json.dumps({"error": f"Unknown energy action: {args.action}"}, indent=2))
+
+def handle_lore(args):
+    """Dispatches Deep World Lore and foundational science lookups."""
+    from core.edition_manager import get_state_file
+    lore_file = get_state_file("universe_lore.md", getattr(args, "edition", None))
+    if not os.path.exists(lore_file):
+        print(colorize("Notice: universe_lore.md not yet found in edition state.", TermColor.BRIGHT_YELLOW))
+        return
+
+    with open(lore_file, "r", encoding="utf-8", errors="ignore") as f:
+        content = f.read()
+
+    topic = getattr(args, "topic", "all") or "all"
+    if topic == "all":
+        print(content)
+    else:
+        # Search for section header
+        topic_lower = topic.lower()
+        sections = content.split("## ")
+        matched = False
+        for sec in sections[1:]:
+            title = sec.splitlines()[0].lower()
+            if topic_lower in title:
+                print("## " + sec)
+                matched = True
+                break
+        if not matched:
+            print(colorize(f"Topic '{topic}' not found in universe_lore.md. Showing full document:\n", TermColor.DIM))
+            print(content)
 
 def handle_quickstart(args=None):
     """Displays an interactive quickstart guide with clear action suggestions."""
@@ -878,7 +991,7 @@ def build_parser():
 
     # 10. sociology (Sociological Profiles & Traditions)
     p_soc = subparsers.add_parser("sociology", help="Interstellar Sociology & Civilizations Engine")
-    p_soc.add_argument("action", choices=["profile", "interaction"], help="Sociology action")
+    p_soc.add_argument("action", choices=["profile", "interaction", "untuned"], help="Sociology action")
     p_soc.add_argument("--world", help="World or faction name")
     p_soc.add_argument("--faction1", help="Host faction")
     p_soc.add_argument("--faction2", help="Guest faction")
@@ -886,7 +999,7 @@ def build_parser():
 
     # 11. economy (Trade Economy & Market)
     p_eco = subparsers.add_parser("economy", help="Galactic Trade Economy & Currency Engine")
-    p_eco.add_argument("action", choices=["market", "convert", "dispatch", "fluctuate", "stockpile", "route"], help="Economy action")
+    p_eco.add_argument("action", choices=["market", "convert", "dispatch", "fluctuate", "stockpile", "route", "crisis"], help="Economy action")
     p_eco.add_argument("--category", help="Commodity category filter")
     p_eco.add_argument("--amount", type=float, default=100.0, help="Currency amount to convert")
     p_eco.add_argument("--from-curr", default="SOL_CREDIT", help="Origin currency")
@@ -900,6 +1013,9 @@ def build_parser():
     p_eco.add_argument("--reason", help="Reason for price change")
     p_eco.add_argument("--world", help="World for stockpile query")
     p_eco.add_argument("--gut", type=int, default=100, help="GUT timestamp")
+    p_eco.add_argument("--crisis-type", default="SOLAR_FLARE_EMBARGO", help="Type of economic crisis")
+    p_eco.add_argument("--desc", help="Description of crisis or reason")
+    p_eco.add_argument("--edition", help="Edition folder name or path")
 
     # 12. author
     p_author = subparsers.add_parser("author", help="Confluence Chapter Authoring commands")
@@ -994,29 +1110,64 @@ def build_parser():
 
     # 17. edition (Timestamped Version Folders in 01_Books_Library)
     p_ed = subparsers.add_parser("edition", help="Manage timestamped book editions in 01_Books_Library")
-    p_ed.add_argument("action", choices=["list", "info", "new", "set", "migrate"], help="Edition action")
+    p_ed.add_argument("action", choices=["list", "info", "new", "set", "migrate", "manifesto"], help="Edition action")
     p_ed.add_argument("--name", default="Iterative Edition", help="Name or description for new edition")
 
-    # 18. read (Terminal Story Reader)
+    # 18. encyclopedia (Universal Encyclopedia Network - UEN)
+    p_enc = subparsers.add_parser("encyclopedia", help="Universal Encyclopedia Network (UEN) discoveries, scanning, and specimen custody")
+    p_enc.add_argument("action", choices=["discover", "scan", "sample", "list", "search", "register"], help="Encyclopedia action")
+    p_enc.add_argument("--type", choices=["planet", "biome", "species", "mineral", "anomaly", "energy"], help="Entity type")
+    p_enc.add_argument("--name", help="Entity common or scientific name")
+    p_enc.add_argument("--hero", help="Discovering character name")
+    p_enc.add_argument("--book-id", type=int, default=1, help="Book ID of discoverer")
+    p_enc.add_argument("--world", help="World where entity was discovered")
+    p_enc.add_argument("--coords", help="Sector 3D coordinates, e.g. '[15, -8, 42]'")
+    p_enc.add_argument("--gut", type=int, help="GUT timestamp of discovery")
+    p_enc.add_argument("--catalog-id", help="Catalog ID for specimen/scanning update")
+    p_enc.add_argument("--status", help="Specimen custody status (COLLECTED, IN_SPECTROMETER, UNDER_CRYO_ANALYSIS, ARCHIVED_IN_ROYAL_VAULT)")
+    p_enc.add_argument("--findings", help="Laboratory testing findings")
+    p_enc.add_argument("--query", help="Search query")
+    p_enc.add_argument("--edition", help="Edition folder name or path")
+
+    # 19. energy (Cosmic Energy Matrix & Dynamic Discovery)
+    p_eng = subparsers.add_parser("energy", help="Cosmic Energy Matrix and Dynamic Discovery Engine")
+    p_eng.add_argument("action", choices=["catalog", "discover", "simulate", "propagate", "efficiency"], help="Energy action")
+    p_eng.add_argument("--name", help="Exotic energy name")
+    p_eng.add_argument("--energy", default="CONFLUENCE_WAVEFRONT", help="Target energy force key")
+    p_eng.add_argument("--coords", help="Sector 3D coordinates")
+    p_eng.add_argument("--frequency", type=float, help="Frequency in GHz")
+    p_eng.add_argument("--description", help="Physical description of energy force")
+    p_eng.add_argument("--discoverer", help="Discoverer name")
+    p_eng.add_argument("--book-id", type=int, default=1, help="Book ID")
+    p_eng.add_argument("--energy1", help="Primary energy field for interaction simulation")
+    p_eng.add_argument("--energy2", help="Secondary energy field for interaction simulation")
+    p_eng.add_argument("--facing", type=float, default=45.0, help="Facing angle for simulation")
+    p_eng.add_argument("--dist", type=float, default=5.0, help="Distance units in Light-Years")
+    p_eng.add_argument("--power", type=float, default=1000.0, help="Source power in MW")
+    p_eng.add_argument("--vehicle", default="CONFLUENCE_WAVE_RIDER", help="Vehicle ID for efficiency")
+    p_eng.add_argument("--sink", type=float, default=30.0, help="Thermal sink saturation %")
+    p_eng.add_argument("--edition", help="Edition folder name or path")
+
+    # 20. lore (Deep World Lore & Foundational Science)
+    p_lore = subparsers.add_parser("lore", help="Inspect deep world lore, foundational geology, bio-engineering, and history")
+    p_lore.add_argument("topic", nargs="?", default="all", choices=["all", "wavefront", "geology", "bio-engineering", "orreries", "un-tuned", "energies", "traditions"], help="Lore topic to inspect")
+    p_lore.add_argument("--edition", help="Edition folder name or path")
+
+    # 21. read (Terminal Story Reader)
     p_read = subparsers.add_parser("read", help="Read chapters or full book manuscripts with rich terminal formatting")
     p_read.add_argument("--book", type=int, default=1, help="Book ID number (1-74)")
     p_read.add_argument("--chapter", type=int, default=1, help="Chapter number (1-20)")
     p_read.add_argument("--full", action="store_true", help="Read full compiled manuscript")
     p_read.add_argument("--edition", help="Edition folder name or path")
 
-    # 19. library (Master 74-Book Library Directory)
+    # 22. library (Master 74-Book Library Directory)
     p_lib = subparsers.add_parser("library", help="Display full 74-book library index with word counts and chapters")
     p_lib.add_argument("--edition", help="Edition folder name or path")
 
-    # 20. story (Multi-Book Story Simulation, Quality Review & Compilation)
-    p_story = subparsers.add_parser("story", help="Multi-Book Story Simulation, Review & Compilation")
-    p_story.add_argument("action", choices=["simulate", "review", "compile-all"], help="Story action")
+    # 23. story (Multi-Book Story Review & Compilation)
+    p_story = subparsers.add_parser("story", help="Multi-Book Story Review & Compilation")
+    p_story.add_argument("action", choices=["review", "compile-all"], help="Story action")
     p_story.add_argument("--book", type=int, default=1, help="Book ID for review")
-    p_story.add_argument("--steps", type=int, help="Sequential chapters to simulate")
-    p_story.add_argument("--target-chapter", type=int, default=20, help="Target chapter across all books (e.g. 20 for full 1,480 chapters)")
-    p_story.add_argument("--gut-delta", type=int, default=1, help="GUT ticks to advance per chapter")
-    p_story.add_argument("--dry-run", action="store_true", help="Simulate without writing files")
-    p_story.add_argument("--no-compile", action="store_true", help="Skip manuscript compilation")
     p_story.add_argument("--edition", help="Edition folder name or path")
 
     return parser
@@ -1042,6 +1193,12 @@ def main():
         handle_quickstart(args)
     elif args.command == "edition":
         handle_edition(args)
+    elif args.command == "encyclopedia":
+        handle_encyclopedia(args)
+    elif args.command == "energy":
+        handle_energy(args)
+    elif args.command == "lore":
+        handle_lore(args)
     elif args.command == "read":
         handle_read(args)
     elif args.command == "library":

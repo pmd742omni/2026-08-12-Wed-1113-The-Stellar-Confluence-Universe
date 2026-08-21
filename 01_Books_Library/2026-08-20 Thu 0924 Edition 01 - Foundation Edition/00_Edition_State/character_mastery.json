@@ -4,9 +4,9 @@
     "hero_name": "Caelum Dawnrunner",
     "faction": "Sun-Forged Hegemony",
     "rank": "High Artificer",
-    "level": 132,
-    "mastery_points": 13170,
-    "stamina_pool": 2065,
+    "level": 110,
+    "mastery_points": 10920,
+    "stamina_pool": 1735,
     "unlocked_techniques": [
       "Solar Beam Focusing",
       "Photonic Prism Refraction"
@@ -341,81 +341,6 @@
         "chapter": 20,
         "gut": 1506,
         "event": "+150 XP: Completed Book 1 Chapter 20: Caelum Dawnrunner (High Artificer) maste (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
-      },
-      {
-        "chapter": 1,
-        "gut": 102,
-        "event": "+150 XP: Calibrated Ancient Solar Array (Rank: High Artificer)"
       },
       {
         "chapter": 1,

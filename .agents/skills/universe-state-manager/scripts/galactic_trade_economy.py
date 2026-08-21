@@ -127,12 +127,19 @@ DEFAULT_ECONOMY = {
     "active_economic_crises": []
 }
 
-def load_economy() -> Dict[str, Any]:
-    if os.path.exists(ECONOMY_STATE_JSON):
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+AGENTS_DIR = os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT_DIR)))
+if AGENTS_DIR not in sys.path:
+    sys.path.insert(0, AGENTS_DIR)
+
+from core.edition_manager import get_state_file
+
+def load_economy(edition: Optional[str] = None) -> Dict[str, Any]:
+    state_file = get_state_file("galactic_economy.json", edition)
+    if os.path.exists(state_file):
         try:
-            with open(ECONOMY_STATE_JSON, "r", encoding="utf-8") as f:
+            with open(state_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                # Ensure all 25+ commodities exist in market
                 if len(data.get("commodity_market", {})) < 20:
                     default_m = get_default_market()
                     default_m.update(data.get("commodity_market", {}))
@@ -142,13 +149,55 @@ def load_economy() -> Dict[str, Any]:
             return DEFAULT_ECONOMY
     return DEFAULT_ECONOMY
 
-def save_economy(eco: Dict[str, Any]):
-    os.makedirs(SYSTEM_STATE_DIR, exist_ok=True)
-    with open(ECONOMY_STATE_JSON, "w", encoding="utf-8") as f:
+def save_economy(eco: Dict[str, Any], edition: Optional[str] = None):
+    state_file = get_state_file("galactic_economy.json", edition)
+    os.makedirs(os.path.dirname(state_file), exist_ok=True)
+    with open(state_file, "w", encoding="utf-8") as f:
         json.dump(eco, f, indent=2)
 
-def get_market_prices(category: Optional[str] = None) -> Dict[str, Any]:
-    eco = load_economy()
+def trigger_economic_crisis(
+    crisis_type: str = "SOLAR_FLARE_EMBARGO",
+    affected_worlds: Optional[List[str]] = None,
+    affected_commodity: str = "Photonic Prism Crystals",
+    price_delta_pct: float = 45.0,
+    description: str = "Coronal flare storm temporarily closes primary transit corridor.",
+    current_gut: int = 100,
+    duration_gut: int = 8,
+    edition: Optional[str] = None
+) -> Dict[str, Any]:
+    """Simulates an interstellar trade crisis, blockade, or supply shock."""
+    eco = load_economy(edition)
+    crisis_id = f"CRISIS-{len(eco.get('active_economic_crises', [])) + 1:02d}"
+    worlds = affected_worlds or ["Helios Prime", "Aethelgard Gear-City"]
+    
+    # Apply market fluctuation
+    fl_res = trigger_market_fluctuation(affected_commodity, price_delta_pct, reason=description, edition=edition)
+    
+    crisis_entry = {
+        "crisis_id": crisis_id,
+        "crisis_type": crisis_type,
+        "affected_worlds": worlds,
+        "affected_commodity": affected_commodity,
+        "price_shift": f"{price_delta_pct:+.1f}%",
+        "description": description,
+        "start_gut": current_gut,
+        "expiry_gut": current_gut + duration_gut,
+        "status": "ACTIVE_CRISIS"
+    }
+    
+    if "active_economic_crises" not in eco:
+        eco["active_economic_crises"] = []
+    eco["active_economic_crises"].append(crisis_entry)
+    save_economy(eco, edition)
+    
+    return {
+        "status": "ECONOMIC_CRISIS_TRIGGERED",
+        "crisis": crisis_entry,
+        "market_impact": fl_res
+    }
+
+def get_market_prices(category: Optional[str] = None, edition: Optional[str] = None) -> Dict[str, Any]:
+    eco = load_economy(edition)
     market = eco.get("commodity_market", get_default_market())
     if category:
         filtered = {k: v for k, v in market.items() if category.upper() in v.get("category", "")}
@@ -157,6 +206,7 @@ def get_market_prices(category: Optional[str] = None) -> Dict[str, Any]:
     return {
         "total_commodities": len(filtered),
         "active_convoys_count": len(eco.get("active_trade_convoys", [])),
+        "active_crises_count": len(eco.get("active_economic_crises", [])),
         "currencies": eco.get("currencies", GALACTIC_CURRENCIES),
         "market": filtered
     }
@@ -173,13 +223,14 @@ def convert_currency(amount: float, from_currency: str = "SOL_CREDIT", to_curren
     return {
         "original_amount": amount,
         "from_currency": from_curr["name"],
+        "base_sol_credits": round(amount_in_sc, 2),
         "converted_amount": converted,
         "to_currency": to_curr["name"],
         "effective_exchange_rate": round(from_curr["exchange_rate_to_sc"] / to_curr["exchange_rate_to_sc"], 4)
     }
 
-def dispatch_convoy(origin: str, dest: str, cargo: str, tonnage: int, current_gut: int = 100, transit_duration: int = 6) -> Dict[str, Any]:
-    eco = load_economy()
+def dispatch_convoy(origin: str, dest: str, cargo: str, tonnage: int, current_gut: int = 100, transit_duration: int = 6, edition: Optional[str] = None) -> Dict[str, Any]:
+    eco = load_economy(edition)
     cid = f"CONVOY-{len(eco.get('active_trade_convoys', [])) + 1:02d}"
     
     new_convoy = {
@@ -198,7 +249,7 @@ def dispatch_convoy(origin: str, dest: str, cargo: str, tonnage: int, current_gu
     if "active_trade_convoys" not in eco:
         eco["active_trade_convoys"] = []
     eco["active_trade_convoys"].append(new_convoy)
-    save_economy(eco)
+    save_economy(eco, edition)
 
     return {
         "status": "CONVOY_DISPATCHED",
@@ -209,9 +260,9 @@ def dispatch_convoy(origin: str, dest: str, cargo: str, tonnage: int, current_gu
         "eta_gut": int(current_gut) + int(transit_duration)
     }
 
-def trigger_market_fluctuation(commodity_name: str, delta_percent: float, reason: str = "Interstellar Supply Shift") -> Dict[str, Any]:
+def trigger_market_fluctuation(commodity_name: str, delta_percent: float, reason: str = "Interstellar Supply Shift", edition: Optional[str] = None) -> Dict[str, Any]:
     """Dynamically adjusts commodity prices according to supply shocks or trade booms."""
-    eco = load_economy()
+    eco = load_economy(edition)
     market = eco.get("commodity_market", get_default_market())
 
     # Find commodity
@@ -234,7 +285,7 @@ def trigger_market_fluctuation(commodity_name: str, delta_percent: float, reason
     item["current_price"] = new_p
     item["market_trend"] = trend
 
-    save_economy(eco)
+    save_economy(eco, edition)
     return {
         "status": "MARKET_UPDATED",
         "commodity": found_key,

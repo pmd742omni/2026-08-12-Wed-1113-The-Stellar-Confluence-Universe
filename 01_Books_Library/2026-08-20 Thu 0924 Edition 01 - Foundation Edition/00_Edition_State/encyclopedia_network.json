@@ -1,0 +1,166 @@
+{
+  "version": "1.0",
+  "entities": {
+    "MIN-984E-A61A": {
+      "catalog_id": "MIN-984E-A61A",
+      "entity_type": "mineral",
+      "universal_standard_name": "Piezogravitic Quartz",
+      "faction_common_names": {
+        "Sun-Forged Hegemony": "Dawn-Resonator Pillar",
+        "Void-Bound Monks": "Singing Basalt Spire",
+        "Astrolabe Engineers": "Natural Escapement Core"
+      },
+      "discovery": {
+        "discoverer": "Dr. Elian Vance",
+        "book_id": 1,
+        "world": "Aethel-Prime",
+        "coordinates": [
+          0,
+          0,
+          0
+        ],
+        "gut_timestamp": 1,
+        "registration_date": "2026-08-20T21:58:25.161907"
+      },
+      "scientific_telemetry": {
+        "piezoelectric_voltage": "10,000V induction",
+        "crystal_age": "4.2 Billion Years"
+      },
+      "specimen_custody": {
+        "sample_id": "SAMP-A61A-A",
+        "status": "IN_SPECTROMETER",
+        "lab_findings": "Refraction verified at 589nm.",
+        "last_tested_date": "2026-08-21T08:47:28.950438",
+        "custody_history": [
+          {
+            "timestamp": "2026-08-21T07:32:50.737691",
+            "status": "IN_SPECTROMETER",
+            "logged_by": "Chief Artificer",
+            "findings_note": "Refraction verified at 589nm."
+          },
+          {
+            "timestamp": "2026-08-21T08:20:33.106401",
+            "status": "IN_SPECTROMETER",
+            "logged_by": "Chief Artificer",
+            "findings_note": "Refraction verified at 589nm."
+          },
+          {
+            "timestamp": "2026-08-21T08:40:21.048273",
+            "status": "IN_SPECTROMETER",
+            "logged_by": "Chief Artificer",
+            "findings_note": "Refraction verified at 589nm."
+          },
+          {
+            "timestamp": "2026-08-21T08:47:28.950438",
+            "status": "IN_SPECTROMETER",
+            "logged_by": "Chief Artificer",
+            "findings_note": "Refraction verified at 589nm."
+          }
+        ]
+      }
+    },
+    "MIN-2244-87E4": {
+      "catalog_id": "MIN-2244-87E4",
+      "entity_type": "mineral",
+      "universal_standard_name": "Test Quartz",
+      "faction_common_names": {
+        "Sun-Forged Hegemony": "Dawn-Test Quartz",
+        "Void-Bound Monks": "Umbral Test Quartz Ghost",
+        "Astrolabe Engineers": "Resonant Test Quartz Mechanism",
+        "Comet-Riders": "Frost-Test Quartz Skimmer",
+        "Nebula-Weavers": "Silken Chromatic Test Quartz",
+        "Deep-Core Miners": "Bedrock Test Quartz Core",
+        "Bio-Alchemists": "Symbiotic Living Test Quartz",
+        "Crystal-Singers": "Singing Prismatic Test Quartz",
+        "Tide-Wardens": "Abyssal Trench Test Quartz",
+        "Magnetar-Leapers": "Electrified Flux-Test Quartz",
+        "Chrono-Navigators": "Chrono-Aligned Test Quartz",
+        "Plasma-Shepherds": "Coronal Flare Test Quartz"
+      },
+      "discovery": {
+        "discoverer": "Dr. Vance",
+        "book_id": 1,
+        "world": "Aethel-Prime",
+        "coordinates": [
+          0,
+          0,
+          0
+        ],
+        "gut_timestamp": 1,
+        "registration_date": "2026-08-21T08:47:28.854541"
+      },
+      "scientific_telemetry": {
+        "spectrum_absorption": "Wavefront Mid-Harmonic",
+        "morphology": "Naturally crystallized mineral structure",
+        "handling_protocol": "Non-violent acoustic and photonic stabilization",
+        "density_g_cm3": 3.45,
+        "thermal_tolerance_k": 1850.0
+      },
+      "specimen_custody": {
+        "sample_id": "SAMP-87E4-A",
+        "status": "COLLECTED",
+        "lab_findings": "Specimen successfully logged in vessel research bay.",
+        "custody_history": [
+          {
+            "timestamp": "2026-08-21T08:47:28.854541",
+            "status": "COLLECTED",
+            "logged_by": "Dr. Vance",
+            "location": "Aethel-Prime Research Bay"
+          }
+        ]
+      }
+    },
+    "MIN-6CA7-4A15": {
+      "catalog_id": "MIN-6CA7-4A15",
+      "entity_type": "mineral",
+      "universal_standard_name": "Resonance-Basalt-Sample",
+      "faction_common_names": {
+        "Sun-Forged Hegemony": "Dawn-Resonance-Basalt-Sample",
+        "Void-Bound Monks": "Umbral Resonance-Basalt-Sample Ghost",
+        "Astrolabe Engineers": "Resonant Resonance-Basalt-Sample Mechanism",
+        "Comet-Riders": "Frost-Resonance-Basalt-Sample Skimmer",
+        "Nebula-Weavers": "Silken Chromatic Resonance-Basalt-Sample",
+        "Deep-Core Miners": "Bedrock Resonance-Basalt-Sample Core",
+        "Bio-Alchemists": "Symbiotic Living Resonance-Basalt-Sample",
+        "Crystal-Singers": "Singing Prismatic Resonance-Basalt-Sample",
+        "Tide-Wardens": "Abyssal Trench Resonance-Basalt-Sample",
+        "Magnetar-Leapers": "Electrified Flux-Resonance-Basalt-Sample",
+        "Chrono-Navigators": "Chrono-Aligned Resonance-Basalt-Sample",
+        "Plasma-Shepherds": "Coronal Flare Resonance-Basalt-Sample"
+      },
+      "discovery": {
+        "discoverer": "Caelum",
+        "book_id": 1,
+        "world": "Helios Prime",
+        "coordinates": [
+          15,
+          -8,
+          42
+        ],
+        "gut_timestamp": 100,
+        "registration_date": "2026-08-21T08:48:25.155072"
+      },
+      "scientific_telemetry": {
+        "spectrum_absorption": "Wavefront Mid-Harmonic",
+        "morphology": "Naturally crystallized mineral structure",
+        "handling_protocol": "Non-violent acoustic and photonic stabilization",
+        "density_g_cm3": 3.45,
+        "thermal_tolerance_k": 1850.0
+      },
+      "specimen_custody": {
+        "sample_id": "SAMP-4A15-A",
+        "status": "UNDER_CRYO_ANALYSIS",
+        "lab_findings": "Specimen successfully logged in vessel research bay.",
+        "custody_history": [
+          {
+            "timestamp": "2026-08-21T08:48:25.155072",
+            "status": "UNDER_CRYO_ANALYSIS",
+            "logged_by": "Caelum",
+            "location": "Helios Prime Research Bay"
+          }
+        ]
+      }
+    }
+  },
+  "discoveries_count": 3
+}

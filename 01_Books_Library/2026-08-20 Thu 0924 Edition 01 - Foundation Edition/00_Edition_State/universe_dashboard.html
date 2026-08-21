@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Stellar Confluence Universe: Grand Master Studio</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: #151c2e;
+            --accent-gold: #f39c12;
+            --accent-solar: #e67e22;
+            --accent-void: #9b59b6;
+            --accent-gear: #3498db;
+            --accent-frost: #1abc9c;
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --border: #2d3748;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 380px;
+            background-color: var(--panel-bg);
+            border-right: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+        .main-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: radial-gradient(circle at center, #1a233a 0%, #0b0f19 100%);
+        }
+        .header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            background-color: var(--accent-gold);
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .radar-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .audio-bar {
+            padding: 16px 24px;
+            background: rgba(21, 28, 46, 0.9);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .btn {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-gold { background: var(--accent-solar); }
+        .btn-void { background: var(--accent-void); }
+        .btn-gear { background: var(--accent-gear); }
+        .star-node { cursor: pointer; transition: transform 0.2s; }
+        .star-node:hover { transform: scale(2); }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            <h1 style="font-size: 20px; margin: 0 0 6px 0; color: #fff;">The Stellar Confluence</h1>
+            <p style="font-size: 13px; color: var(--text-dim); margin: 0;">74-Book Continuous Interstellar Narrative Engine</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px;">Universal Ephemeris State</div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--accent-gold);">GUT 100 &bull; Book 01 Ch 01</div>
+        </div>
+        <div id="inspector-card" style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px;">Protagonist Dossier</div>
+            <div id="insp-hero" style="font-size: 18px; font-weight: 700; color: #fff;">Caelum Dawnrunner</div>
+            <div id="insp-fac" style="font-size: 13px; color: var(--accent-solar); margin-top: 2px;">Sun-Forged Hegemony</div>
+            <div id="insp-world" style="font-size: 12px; color: var(--text-dim); margin-top: 6px;">Homeworld: Helios Prime</div>
+        </div>
+    </div>
+    <div class="main-stage">
+        <div class="header">
+            <span class="badge">Live 3D Confluence Radar</span>
+            <span style="font-size: 13px; color: var(--text-dim);">74 Star-Systems Synchronized</span>
+        </div>
+        <div class="radar-container">
+            <svg width="700" height="700" viewBox="0 0 700 700">
+                <circle cx="350" cy="350" r="280" fill="none" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,4" />
+                <circle cx="350" cy="350" r="200" fill="none" stroke="#1e293b" stroke-width="1" />
+                <circle cx="350" cy="350" r="100" fill="none" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,4" />
+                <line x1="350" y1="50" x2="350" y2="650" stroke="#1e293b" stroke-width="1" />
+                <line x1="50" y1="350" x2="650" y2="350" stroke="#1e293b" stroke-width="1" />
+                <!-- Center Ancient Gateway -->
+                <circle cx="350" cy="350" r="12" fill="#38bdf8" />
+                <circle cx="163" cy="227" r="8" fill="#e67e22" stroke="#ffffff" stroke-width="2" data-hero="Caelum Dawnrunner" data-book="1" data-world="Helios Prime" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="236" cy="364" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Captain Vespera Ray" data-book="2" data-world="Solar Bastion Station" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="309" cy="501" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Tariq Sunstrider" data-book="3" data-world="Kaelen-7 (Desert World)" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="382" cy="118" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Navigator Lyra Solis" data-book="4" data-world="Cruiser *Corona Victor*" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="455" cy="255" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="High Optician Orin" data-book="5" data-world="The Zenith Observatory" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="528" cy="392" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Seraphina Goldvein" data-book="6" data-world="Aurelia Mining Spire" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="601" cy="529" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Commander Brant" data-book="7" data-world="Star-Forge Orbital Aegis" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="154" cy="146" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Kaelen Lightweaver" data-book="8" data-world="Prism Oasis" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="227" cy="283" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Forge-Master Theron" data-book="9" data-world="The Pyre Foundry" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="300" cy="420" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Aria Skydancer" data-book="10" data-world="Thermal Glider Station" data-faction="Sun-Forged Hegemony" class="star-node" /> <circle cx="373" cy="557" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Kage Silentstep" data-book="11" data-world="Umbra Minor (Shadow Moon)" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="446" cy="174" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Nyx Riftseeker" data-book="12" data-world="Abyssal Rift Valley" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="519" cy="311" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Captain Vane" data-book="13" data-world="Stealth Vessel *Ghost-Prow*" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="592" cy="448" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Elder Morren" data-book="14" data-world="The Obsidian Citadel" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="145" cy="585" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Liora Shadeborn" data-book="15" data-world="Sub-surface Crypts" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="218" cy="202" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Brother Ronin" data-book="16" data-world="Penumbra Orbital Spire" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="291" cy="339" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Zephyr the Unseen" data-book="17" data-world="The Void Maw" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="364" cy="476" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Matron Karen" data-book="18" data-world="Nightfall Moon" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="437" cy="93" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Acolyte Fen" data-book="19" data-world="Basalt Sanctum" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="510" cy="230" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Master Kuro" data-book="20" data-world="Umbral Station Alpha" data-faction="Void-Bound Monks" class="star-node" /> <circle cx="583" cy="367" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Tobias Cogsmith" data-book="21" data-world="The Clockwork Moon" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="136" cy="504" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Master Horologist Vera" data-book="22" data-world="Orrery Prime Spire" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="209" cy="121" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Garrick Gearhead" data-book="23" data-world="Ferrum Industrial Basin" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="282" cy="258" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Elia Springtide" data-book="24" data-world="Rig *The Gyro-Anchor*" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="355" cy="395" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Caelen Dialmaker" data-book="25" data-world="Brass Meridian City" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="428" cy="532" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Thurston Ratchet" data-book="26" data-world="Deep Vault Orrery" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="501" cy="149" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Lina Torsion" data-book="27" data-world="Ring Station Archimedes" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="574" cy="286" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Orson Balancemaster" data-book="28" data-world="Harmonic Dam Facility" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="127" cy="423" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Kendra Vector" data-book="29" data-world="Cruiser *Kinetic Drive*" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="200" cy="560" r="4" fill="#3498db" stroke="#ffffff" stroke-width="0.5" data-hero="Grand Clocksmith Aldous" data-book="30" data-world="The Great Chronograph" data-faction="Astrolabe Engineers" class="star-node" /> <circle cx="273" cy="177" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Talon Frostskimmer" data-book="31" data-world="Comet Halley-V" data-faction="Comet-Riders" class="star-node" /> <circle cx="346" cy="314" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Aria Gossamer" data-book="32" data-world="Opal Cloud Cluster" data-faction="Nebula-Weavers" class="star-node" /> <circle cx="419" cy="451" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Magda Magmabore" data-book="33" data-world="Pyros Core Station" data-faction="Deep-Core Miners" class="star-node" /> <circle cx="492" cy="588" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Corin Wellspring" data-book="34" data-world="Singularity Verge Rig" data-faction="Gravity-Surfers" class="star-node" /> <circle cx="565" cy="205" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Joren Plasmahook" data-book="35" data-world="Ion Flare Belt" data-faction="Plasma-Shepherds" class="star-node" /> <circle cx="118" cy="342" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Mira Timefinder" data-book="36" data-world="Subspace Conduit Seven" data-faction="Chrono-Navigators" class="star-node" /> <circle cx="191" cy="479" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Sylva Greenbloom" data-book="37" data-world="Aethel-IV Garden World" data-faction="Bio-Alchemists" class="star-node" /> <circle cx="264" cy="96" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Karris Resonator" data-book="38" data-world="Spires of Lithos" data-faction="Crystal-Singers" class="star-node" /> <circle cx="337" cy="233" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Gideon Stillwater" data-book="39" data-world="Oceanus Twilight Strip" data-faction="Tide-Wardens" class="star-node" /> <circle cx="410" cy="370" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Nesta Skywing" data-book="40" data-world="Jupiter-Class Haven Spire" data-faction="Storm-Gliders" class="star-node" /> <circle cx="483" cy="507" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Zayd Driftwalker" data-book="41" data-world="Asteroid Emporium 9" data-faction="Drift-Merchants" class="star-node" /> <circle cx="556" cy="124" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Tesla Sparkchaser" data-book="42" data-world="Pulsar Ridge Node" data-faction="Magnetar-Leapers" class="star-node" /> <circle cx="109" cy="261" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Volcan Smeltmaster" data-book="43" data-world="Hephaestus Basin" data-faction="Magma-Founders" class="star-node" /> <circle cx="182" cy="398" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Aegis Gatewarden" data-book="44" data-world="The Keystone Gate" data-faction="Stargate Sentinels" class="star-node" /> <circle cx="255" cy="535" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Marina Deepglow" data-book="45" data-world="Hydra Deep Trench" data-faction="Abyssal Divers" class="star-node" /> <circle cx="328" cy="152" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Kite Windrunner" data-book="46" data-world="Light-Sail Barge *Zephyr*" data-faction="Solar-Sailors" class="star-node" /> <circle cx="401" cy="289" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Chip Arborist" data-book="47" data-world="Glass World Silex" data-faction="Silica-Botanists" class="star-node" /> <circle cx="474" cy="426" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Rust Sandtracker" data-book="48" data-world="Crimson Barrens" data-faction="Rust-Nomads" class="star-node" /> <circle cx="547" cy="563" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Vera Ringwarden" data-book="49" data-world="Saturnia Habitat Ring" data-faction="Orbital Architects" class="star-node" /> <circle cx="100" cy="180" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Darius Shadowtracker" data-book="50" data-world="Frigate *Null-Point*" data-faction="Dark-Matter Scavengers" class="star-node" /> <circle cx="173" cy="317" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Aero Cloudstrider" data-book="51" data-world="Zephyr Cloud Port" data-faction="Cloud-Keepers" class="star-node" /> <circle cx="246" cy="454" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Valen Containment" data-book="52" data-world="Positron Spire" data-faction="Annihilation Engineers" class="star-node" /> <circle cx="319" cy="591" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Pyra Flamecaller" data-book="53" data-world="Phaeton Caldera" data-faction="Ember-Dancers" class="star-node" /> <circle cx="392" cy="208" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Wraith Helmsman" data-book="54" data-world="Graveyard Cluster 13" data-faction="Derelict-Salvagers" class="star-node" /> <circle cx="465" cy="345" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Lyrica Beaconkeeper" data-book="55" data-world="Pulsar Relay Epsilon" data-faction="Signal-Keepers" class="star-node" /> <circle cx="538" cy="482" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Gem Crystalline" data-book="56" data-world="Neptunian Core Platform" data-faction="Carbon-Crafters" class="star-node" /> <circle cx="91" cy="99" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Zenith Gravitybound" data-book="57" data-world="Kerr-Hole Observation Spire" data-faction="Horizon-Seekers" class="star-node" /> <circle cx="164" cy="236" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Lumi Ribbondancer" data-book="58" data-world="Borealis Pole City" data-faction="Aurora-Weavers" class="star-node" /> <circle cx="237" cy="373" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Tess Qubit" data-book="59" data-world="Zero-Kelvin Array" data-faction="Quantum-Cryptographers" class="star-node" /> <circle cx="310" cy="510" r="4" fill="#e67e22" stroke="#ffffff" stroke-width="0.5" data-hero="Flare Heatshield" data-book="60" data-world="Diver Vessel *Icarus-XI*" data-faction="Sun-Divers" class="star-node" /> <circle cx="383" cy="127" r="4" fill="#9b59b6" stroke="#ffffff" stroke-width="0.5" data-hero="Levi Singer" data-book="61" data-world="Creature Pod Alpha" data-faction="Void-Fauna Handlers" class="star-node" /> <circle cx="456" cy="264" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Frost Aquanaut" data-book="62" data-world="Europa-Class Ocean" data-faction="Cryo-Explorers" class="star-node" /> <circle cx="529" cy="401" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Braced Slingmaster" data-book="63" data-world="Lunar Launch Rail" data-faction="Mass-Driver Guild" class="star-node" /> <circle cx="602" cy="538" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Symbio Biomancer" data-book="64" data-world="Bio-Vessel *Gaea*" data-faction="Organic-Shipwrights" class="star-node" /> <circle cx="155" cy="155" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Reflect Mirrorwright" data-book="65" data-world="Mirror Field Desolation" data-faction="Heliostat-Masters" class="star-node" /> <circle cx="228" cy="292" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Vector Slingshot" data-book="66" data-world="Transfer Craft *Velocity*" data-faction="Orbital Dynamics Guild" class="star-node" /> <circle cx="301" cy="429" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Ferrus Castellan" data-book="67" data-world="Fortress Asteroid 101" data-faction="Asteroid Fortress Clan" class="star-node" /> <circle cx="374" cy="566" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Pulse Scout" data-book="68" data-world="Deep Sensor Prowler" data-faction="Early-Warning Rangers" class="star-node" /> <circle cx="447" cy="183" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Vapour Ventmaster" data-book="69" data-world="Boiling Shelf Base" data-faction="Thermal Vent Guild" class="star-node" /> <circle cx="520" cy="320" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Atlas Skymapper" data-book="70" data-world="Cartography Dome" data-faction="Cosmic Mapmakers" class="star-node" /> <circle cx="593" cy="457" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Flux Barricader" data-book="71" data-world="Shield Generator Spire" data-faction="Magnetosphere Wardens" class="star-node" /> <circle cx="146" cy="594" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Cable Climber" data-book="72" data-world="Equatorial Spindle 1" data-faction="Space-Elevator Crew" class="star-node" /> <circle cx="219" cy="211" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Beacon Relaymaster" data-book="73" data-world="Relay Hub Prime" data-faction="Interstellar Courier Union" class="star-node" /> <circle cx="292" cy="348" r="4" fill="#1abc9c" stroke="#ffffff" stroke-width="0.5" data-hero="Harmonia Nexus" data-book="74" data-world="The Grand Galactic Confluence Hub" data-faction="Confluence Council" class="star-node" />
+            </svg>
+        </div>
+        <div class="audio-bar">
+            <span style="font-size: 13px; font-weight: 600;">Procedural Soundscapes (Web Audio API):</span>
+            <button class="btn btn-gold" onclick="playTone(144.2, 'sawtooth')">☀️ Solar Hum (144.2 Hz)</button>
+            <button class="btn btn-void" onclick="playTone(128.5, 'sine')">🌑 Umbral Resonance (128.5 Hz)</button>
+            <button class="btn btn-gear" onclick="playTone(160.0, 'triangle')">⚙️ Astrolabe Chime (160 Hz)</button>
+        </div>
+    </div>
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1.2);
+        }
+        document.querySelectorAll('.star-node').forEach(el => {
+            el.addEventListener('click', () => {
+                document.getElementById('insp-hero').innerText = el.dataset.hero;
+                document.getElementById('insp-fac').innerText = el.dataset.faction;
+                document.getElementById('insp-world').innerText = 'Homeworld: ' + el.dataset.world + ' (Book ' + el.dataset.book + ')';
+            });
+        });
+    </script>
+</body>
+</html>

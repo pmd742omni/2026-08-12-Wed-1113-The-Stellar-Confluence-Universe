@@ -133,7 +133,7 @@ python .agents/hub.py edition new --name "Refined Iteration"
 python .agents/hub.py read --book 1 --chapter 1 --edition "2026-08-20 Thu 0924 Edition 01 - Foundation Edition"
 python .agents/hub.py library --edition "2026-08-20 Thu 0924 Edition 01 - Foundation Edition"
 
-# 9. Run comprehensive system doctor & 171+ test sanity suite
+# 9. Run comprehensive system doctor & 201+ test sanity suite
 python .agents/hub.py test
 python .agents/hub.py doctor
 ```
@@ -153,7 +153,7 @@ The Stellar Confluence Universe/
 │   ├── character_arcs.json        <-- Dynamic inventory, wounds, mastery levels & relic custody
 │   ├── character_mastery.json     <-- XP progress, ranks & unlocked skill trees
 │   ├── galactic_tension.json      <-- Inter-faction friction & diplomatic stances
-│   ├── galactic_economy.json      <-- Commodity pricing & convoy dispatch
+│   ├── galactic_economy.json      <-- Commodity pricing, supply crises & convoy dispatch
 │   ├── transit_missions.json      <-- Active starship spaceflight vectors & ETAs
 │   ├── universe_dashboard.html    <-- Interactive visual HTML/SVG galactic radar & timeline
 │   └── diary.md                   <-- Execution log of every completed chapter
@@ -178,8 +178,8 @@ The Stellar Confluence Universe/
     │   └── __init__.py
     └── skills/
         ├── confluence-chapter-authoring/ (19 scripts: engine, beats, evaluator, polish, audio, storyboards, wave physics, quest, dual-layer, prompt)
-        ├── universe-state-manager/       (21 scripts: transport engine, politics & sociology, scale generator, ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
-        ├── world-engine-audit/           (4 scripts: 171+ test regression suite, continuity, paradox, physics, doctor)
+        ├── universe-state-manager/       (21 scripts: 10-energy matrix, transport kinematics, politics & sociology, scale generator, ephemeris, transits, tension, trade, relics, mastery, pathfinding, mesh)
+        ├── world-engine-audit/           (4 scripts: 201+ test regression suite, continuity, paradox, physics, doctor)
         ├── document-now/                 (2 scripts: version registry & 100+ Ndebele lexicon)
         └── prompt-response-flow/         (1 script: interaction journal logging)
 ```
@@ -189,7 +189,7 @@ The Stellar Confluence Universe/
 ## 10. Progress Tracking Rule ("Document Now")
 
 Whenever the developer states **"document now"**, **"document progress"**, or requests a checkpoint:
-1. Refer to and execute `document-now` ([SKILL.md](file:///c:/Users/ignaz/OneDrive/Documents/Projects/2026-05-03%201325%20Syncthing%20Books/2026-05-20%20Wed%202132%20Syncthing%20Gateway/Projects/2026-08-12%20Wed%201113%20The%20Stellar%20Confluence%20Universe/.agents/skills/document-now/SKILL.md)).
+1. Refer to and execute `document-now` ([SKILL.md](file:///c:/Users/ignaz/OneDrive/Documents/Projects/2026-05-03%201325%20Syncthing Books/2026-05-20%20Wed%202132%20Syncthing%20Gateway/Projects/2026-08-12%20Wed%201113%20The%20Stellar%20Confluence%20Universe/.agents/skills/document-now/SKILL.md)).
 2. Collect system timestamp: `python .agents/hub.py document timestamp`.
 3. Check Ndebele codename uniqueness from 100+ catalog: `python .agents/hub.py document check <codename>`.
 4. Write `progress tracking/YYYY-MM-DD_HHMM_Description.md` (with 10-year-old child explanation & next steps, and Peter Dube + Antigravity attributions).
@@ -202,10 +202,10 @@ Whenever the developer states **"document now"**, **"document progress"**, or re
 
 Whenever testing system health or before major release commits:
 ```bash
-# Instant in-process regression suite (151+ sanity checks in ~1.5s)
+# Instant in-process regression suite (201+ sanity checks)
 python .agents/hub.py test
 
 # Full system diagnostic sweep (State + Physics + Paradoxes + Tests)
 python .agents/hub.py doctor
 ```
-*(Runs **151+ automated sanity checks** across all skills with 100% PASS verification)*
+*(Runs **201+ automated sanity checks** across all skills with 100% PASS verification)*

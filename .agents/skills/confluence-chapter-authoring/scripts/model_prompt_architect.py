@@ -123,7 +123,16 @@ def build_model_authoring_context(book_id: int, chapter_num: int = 1, gut: Optio
     }
     treat_pair = next((v for k, v in HOSPITALITY_MAP.items() if k.lower() in faction.lower()), ("warm spiced tea", "fresh hearth bread"))
 
-    # 8. High-Stakes Mature Narrative Dilemma
+    # 8. Biological Tuning & Un-Tuned Realities
+    bio_tuning = {
+        "bones": "Micro-quartz calcium lattice acting as internal grounding rods against coronal discharges.",
+        "nerves": "Silicon-lipid myelin sheathing preventing electrical burn-out during wavefront surges.",
+        "mitochondria": "Light-sensitive chlorophyll-protein complexes producing cellular energy directly from starlight.",
+        "retinal_vision": "4th retinal cone cells allowing visual perception of iridescent cosmic wave crests.",
+        "untuned_contrast": "Baseline mentors/crew wear leaded bronze protective aprons and rely on precision mechanical astrolabes."
+    }
+
+    # 9. High-Stakes Mature Narrative Dilemma
     dilemma_descriptions = [
         f"A critical atmospheric thermal spike threatens to melt the skimmer's cooling manifold during a high-speed orbital vector trial.",
         f"A localized magnetic storm destabilizes the skyhook elevators, leaving an unanchored freight pod falling toward the planetary atmosphere.",
@@ -132,6 +141,9 @@ def build_model_authoring_context(book_id: int, chapter_num: int = 1, gut: Optio
         f"The incoming crest of the Great Confluence Wavefront arrives, demanding all 74 star sectors synchronize their beacon relays simultaneously."
     ]
     active_dilemma = dilemma_descriptions[loc_idx]
+
+    # 10. Relativistic Kinematics Snapshot
+    transit_kin = galactic_transport_engine.calculate_transit_kinetics(vehicle_name, 2.5)
 
     return {
         "book_id": book_id,
@@ -150,10 +162,13 @@ def build_model_authoring_context(book_id: int, chapter_num: int = 1, gut: Optio
         "vehicle_deployed": {
             "name": vehicle_name,
             "propulsion": vehicle_prof.get("propulsion_type", "Solar-Thermal Kinetic"),
-            "cockpit": vehicle_prof.get("cockpit_experience", "Panoramic brass canopy with magnetic rudders")
+            "cockpit": vehicle_prof.get("cockpit_vibe", "Panoramic brass canopy with magnetic rudders"),
+            "thermal_saturation": transit_kin.get("thermal_sink_saturation_pct", "25.0%"),
+            "lorentz_factor": transit_kin.get("lorentz_gamma_factor", 1.0)
         },
         "governance_model": gov_model.get("name", "Artificer Council"),
         "culinary_hospitality": {"drink": treat_pair[0], "food": treat_pair[1]},
+        "biological_tuning": bio_tuning,
         "macro_arc": arc_info,
         "dramatic_dilemma": active_dilemma,
         "voice_profile": voice_prof
